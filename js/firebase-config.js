@@ -10,12 +10,13 @@
 // ----------------------------------------------------------------------------
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyB6e4edmok7RHN4e1NqmlCc22xCey1ITZ0",
+    authDomain: "smb-agri-app.firebaseapp.com",
+    projectId: "smb-agri-app",
+    storageBucket: "smb-agri-app.firebasestorage.app",
+    messagingSenderId: "835572790932",
+    appId: "1:835572790932:web:db3c962e89378f7e33e681",
+    measurementId: "G-WP4YWPY88F"
 };
 
 // Initialize Firebase
