@@ -106,6 +106,34 @@ class ModuleSystem {
                     { title: "How to Present a Data Science Project", url: "https://www.youtube.com/watch?v=r1r4t88r93E" },
                     { title: "Successful AgriTech Startups", url: "https://www.youtube.com/watch?v=1d9g7D9g9g8" }
                 ]
+            },
+            5: {
+                objectives: [
+                    "Design and implement 20 diverse AI/ML projects specifically for agriculture.",
+                    "Apply regression, classification, clustering, and deep learning techniques to real-world datasets.",
+                    "Integrate IoT sensor data with predictive models for automated decision-making.",
+                    "Develop end-to-end solutions from data ingestion to actionable dashboards."
+                ],
+                outcomes: [
+                    "A portfolio of 20 functional AI prototypes addressing critical farming challenges.",
+                    "Proficiency in debugging and optimizing complex ML pipelines in Python.",
+                    "Experience with 'Digital Twins' and simulation-based validation.",
+                    "Capability to explain technical results to non-technical stakeholders (farmers)."
+                ],
+                textbooks: [
+                    "Suthaharan, S. (2016). Machine Learning Models and Algorithms for Big Data Classification.",
+                    "Recent IEEE/Springer Research Papers on Smart Farming (2023-2025)."
+                ],
+                references: [
+                    "Kaggle Agriculture Datasets Collection",
+                    "UCI Machine Learning Repository",
+                    "OpenWeatherMap API Documentation",
+                    "Raspberry Pi & Arduino Sensor Guides"
+                ],
+                youtubeLinks: [
+                    { title: "20 Machine Learning Projects for Portfolio", url: "https://www.youtube.com/watch?v=B7PPQ45SXjk" },
+                    { title: "Smart Farming: The Future of Agriculture", url: "https://www.youtube.com/watch?v=Q4gL3R88yT0" }
+                ]
             }
         };
     }

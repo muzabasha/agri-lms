@@ -8,11 +8,19 @@ class Dashboard {
     }
 
     loadProgress() {
+        if (window.progressTracker) {
+            return window.progressTracker.progress;
+        }
         const saved = localStorage.getItem('agri_lms_progress');
         return saved ? JSON.parse(saved) : {
             completedTopics: [],
             quizScores: {}
         };
+    }
+
+    refresh() {
+        this.progressData = this.loadProgress();
+        this.init();
     }
 
     init() {
@@ -23,7 +31,10 @@ class Dashboard {
         this.setupFilters();
     }
 
+    // ... rest of methods ...
+
     calculateStats() {
+        // ... (existing implementation) ...
         const allTopics = [];
         let totalHours = 0;
         let completedHours = 0;
@@ -49,12 +60,22 @@ class Dashboard {
         const remainingHours = totalHours - completedHours;
 
         // Update UI
-        document.getElementById('completedTopics').textContent = completedCount;
-        document.getElementById('totalTopics').textContent = allTopics.length;
-        document.getElementById('timeSpent').textContent = completedHours;
-        document.getElementById('timeRemaining').textContent = remainingHours;
-        document.getElementById('overallPercentage').textContent = `${percentage}%`;
+        const completedTopicsEl = document.getElementById('completedTopics');
+        if (completedTopicsEl) completedTopicsEl.textContent = completedCount;
+
+        const totalTopicsEl = document.getElementById('totalTopics');
+        if (totalTopicsEl) totalTopicsEl.textContent = allTopics.length;
+
+        const timeSpentEl = document.getElementById('timeSpent');
+        if (timeSpentEl) timeSpentEl.textContent = completedHours;
+
+        const timeRemainingEl = document.getElementById('timeRemaining');
+        if (timeRemainingEl) timeRemainingEl.textContent = remainingHours;
+
+        const overallPercentageEl = document.getElementById('overallPercentage');
+        if (overallPercentageEl) overallPercentageEl.textContent = `${percentage}%`;
     }
+    // ...
 
     renderModuleProgress() {
         const container = document.getElementById('moduleProgress');
@@ -177,6 +198,16 @@ class Dashboard {
 }
 
 // Initialize dashboard when DOM is ready
+// Initialize dashboard when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    const dashboard = new Dashboard();
+    window.dashboard = new Dashboard();
 });
+
+// Allow external refresh
+function initDashboard() {
+    if (window.dashboard) {
+        window.dashboard.refresh();
+    } else {
+        window.dashboard = new Dashboard();
+    }
+}

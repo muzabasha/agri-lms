@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="css/enhancements.css">
     <link rel="stylesheet" href="css/quiz.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDKs (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
@@ -20,6 +24,21 @@
                 <h1>AI/ML in Agriculture</h1>
             </div>
             <nav class="main-nav">
+                <!-- User Auth Section -->
+                <div id="userAuth" class="user-auth" style="margin-right: 15px; display: flex; align-items: center;">
+                    <button id="loginBtn" class="auth-btn" onclick="loginWithGoogle()">
+                        <i class="fab fa-google"></i> Login
+                    </button>
+                    <div id="userProfile" class="user-profile" style="display: none; align-items: center; gap: 10px;">
+                        <span id="userName" style="font-weight: 500;">User</span>
+                        <img id="userAvatar" src="" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
+                        <button id="logoutBtn" class="" onclick="logoutUser()" title="Logout"
+                            style="background:none; border:none; color:inherit; cursor:pointer;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
                 <a href="dashboard.html" class="dashboard-link" title="View Progress Dashboard">
                     <i class="fas fa-chart-line"></i> Dashboard
                 </a>
@@ -164,6 +183,11 @@
     <script src="js/story.js"></script>
     <script src="js/progress.js"></script>
     <script src="js/quiz.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script>
+        // Start Firebase
+        document.addEventListener('DOMContentLoaded', initFirebase);
+    </script>
     <script src="js/router.js"></script>
     <script src="js/app.js"></script>
 </body>
