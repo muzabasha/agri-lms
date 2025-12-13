@@ -3,18 +3,22 @@
     background: linear-gradient(135deg, #1e3a8a, #3b82f6);
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 0 20px;
+    height: 40px;
+    /* Match theme toggle height */
     border-radius: 20px;
     cursor: pointer;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3);
     transition: all 0.3s ease;
     text-decoration: none;
     font-size: 0.9rem;
-    margin-left: 10px;
+    margin-left: 0;
+    /* Remove margin as parent has gap */
 }
 
 .chat-header-btn:hover {

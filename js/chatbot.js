@@ -156,6 +156,10 @@ class AgriBot {
     toggle() {
         this.isOpen = !this.isOpen;
         if (this.isOpen) {
+            // Close Tour if active
+            if (window.tourSystem && window.tourSystem.isActive) {
+                window.tourSystem.endTour();
+            }
             this.window.classList.add('active');
             // Check if we need to adjust position based on header button?
             // Existing CSS puts it bottom right, which is fine.
@@ -246,4 +250,4 @@ class AgriBot {
 }
 
 // Init
-const agriBot = new AgriBot();
+window.agriBot = new AgriBot();

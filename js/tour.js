@@ -169,6 +169,11 @@ class TourSystem {
     }
 
     async startTour() {
+        // Close Chat if open
+        if (window.agriBot && window.agriBot.isOpen) {
+            window.agriBot.toggle();
+        }
+
         this.isActive = true;
         this.isAutoMode = true; // Default to auto
         this.currentStep = 0;
