@@ -57,14 +57,11 @@ class AgriBot {
     init() {
         this.createUI();
         this.attachListeners();
+        this.speechEnabled = false; // Default off
     }
 
     createUI() {
-        // Create Toggle Button
-        this.toggleBtn = document.createElement('button');
-        this.toggleBtn.className = 'chatbot-toggle pulse';
-        this.toggleBtn.innerHTML = `<i class="fas fa-robot"></i><span class="badge">1</span>`;
-        document.body.appendChild(this.toggleBtn);
+        // Floating button moved to Header (HTML)
 
         // Create Chat Window
         this.window = document.createElement('div');
@@ -78,14 +75,17 @@ class AgriBot {
                         <div style="font-size: 0.8em; opacity: 0.9;">AI Tutor</div>
                     </div>
                 </div>
-                <select class="lang-select" id="botLang">
-                    <option value="en">English</option>
-                    <option value="kn">ಕನ್ನಡ</option>
-                    <option value="hi">हिंदी</option>
-                </select>
-                <div class="chat-controls">
-                    <button id="closeChat"><i class="fas fa-times"></i></button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button id="voiceToggle" class="voice-toggle" title="Toggle Voice Output">
+                        <i class="fas fa-volume-mute"></i>
+                    </button>
+                    <select class="lang-select" id="botLang">
+                        <option value="en">English</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="hi">हिंदी</option>
+                    </select>
                 </div>
+                <button id="closeChat" style="background:none; border:none; color:white; cursor:pointer;"><i class="fas fa-times"></i></button>
             </div>
             <div class="chat-messages" id="chatMessages">
                 <div class="message bot">
@@ -111,8 +111,27 @@ class AgriBot {
     }
 
     attachListeners() {
-        this.toggleBtn.addEventListener('click', () => this.toggle());
+        // Header Trigger
+        const headerBtn = document.getElementById('headerChatBtn');
+        if (headerBtn) {
+            headerBtn.addEventListener('click', () => this.toggle());
+        }
+
         document.getElementById('closeChat').addEventListener('click', () => this.toggle());
+
+        // Voice Toggle
+        document.getElementById('voiceToggle').addEventListener('click', (e) => {
+            this.speechEnabled = !this.speechEnabled;
+            const icon = e.currentTarget.querySelector('i');
+            if (this.speechEnabled) {
+                icon.className = 'fas fa-volume-up';
+                e.currentTarget.style.color = '#10b981'; // Green active
+            } else {
+                icon.className = 'fas fa-volume-mute';
+                e.currentTarget.style.color = 'white';
+                window.speechSynthesis.cancel();
+            }
+        });
 
         document.getElementById('sendChat').addEventListener('click', () => this.sendMessage());
         document.getElementById('chatInput').addEventListener('keypress', (e) => {
@@ -138,9 +157,11 @@ class AgriBot {
         this.isOpen = !this.isOpen;
         if (this.isOpen) {
             this.window.classList.add('active');
-            this.toggleBtn.querySelector('.badge').style.display = 'none';
+            // Check if we need to adjust position based on header button?
+            // Existing CSS puts it bottom right, which is fine.
         } else {
             this.window.classList.remove('active');
+            window.speechSynthesis.cancel(); // Stop speech when closing
         }
     }
 
@@ -192,6 +213,35 @@ class AgriBot {
         // For simplicity, strict match on current lang keywords.
 
         this.addBotMessage(reply);
+
+        // Voice Output
+        if (this.speechEnabled) {
+            this.speakResponse(reply);
+        }
+    }
+
+    speakResponse(text) {
+        if (!window.speechSynthesis) return;
+
+        // Strip HTML
+        const safeText = text.replace(/<[^>]*>/g, '');
+        const utterance = new SpeechSynthesisUtterance(safeText);
+
+        // Map language code to BCP 47
+        let langCode = 'en-US';
+        if (this.language === 'hi') langCode = 'hi-IN';
+        if (this.language === 'kn') langCode = 'kn-IN';
+
+        utterance.lang = langCode;
+
+        // Try to find a specific voice
+        const voices = window.speechSynthesis.getVoices();
+        const voice = voices.find(v => v.lang.includes(langCode));
+        if (voice) {
+            utterance.voice = voice;
+        }
+
+        window.speechSynthesis.speak(utterance);
     }
 }
 
