@@ -26,32 +26,6 @@ class AgriBot {
                     'duration': "The course is self-paced. Typically, it takes about 4-6 weeks to complete all modules comfortably."
                 }
             },
-            kn: {
-                welcome: "ನಮಸ್ಕಾರ! ನಾನು ಅಗ್ರಿಬಾಟ್. ಕೃಷಿಯಲ್ಲಿ ಎಐ (AI) ಕಲಿಯಲು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಇಲ್ಲಿದ್ದೇನೆ. ಕೋರ್ಸ್ ಅಥವಾ ಪ್ರಮಾಣಪತ್ರದ ಬಗ್ಗೆ ಕೇಳಿ.",
-                unknown: "ಕ್ಷಮಿಸಿ, ನನಗೆ ಅದು ಸರಿಯಾಗಿ ಅರ್ಥವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು 'ಕೋರ್ಸ್', 'ಪ್ರಮಾಣಪತ್ರ', 'ಕೆಲಸ' ಅಥವಾ 'ಮಾಡ್ಯೂಲ್' ಬಗ್ಗೆ ಕೇಳಿ.",
-                keywords: {
-                    'module': "ನಮ್ಮಲ್ಲಿ ಐದು ಮಾಡ್ಯೂಲ್‌ಗಳಿವೆ. ಇವು ಎಐ ಮೂಲಗಳು, ಡೇಟಾ ಸೈನ್ಸ್ ಮತ್ತು ಕಂಪ್ಯೂಟರ್ ವಿಷನ್ ಬಗ್ಗೆ ತಿಳಿಸುತ್ತವೆ.",
-                    'ಮಾಡ್ಯೂಲ್': "ನಮ್ಮಲ್ಲಿ ಐದು ಮಾಡ್ಯೂಲ್‌ಗಳಿವೆ. ಇವು ಎಐ ಮೂಲಗಳು, ಡೇಟಾ ಸೈನ್ಸ್ ಮತ್ತು ಕಂಪ್ಯೂಟರ್ ವಿಷನ್ ಬಗ್ಗೆ ತಿಳಿಸುತ್ತವೆ.",
-                    'course': "ಇದು 'ಕೃಷಿಯಲ್ಲಿ ಎಐ/ಎಂಎಲ್' (AI/ML in Agriculture) ತರಬೇತಿ ಕಾರ್ಯಕ್ರಮ. ಇದು ರೈತರಿಗೆ ತಂತ್ರಜ್ಞಾನವನ್ನು ಹೇಗೆ ಬಳಸಬೇಕೆಂದು ಕಲಿಸುತ್ತದೆ.",
-                    'ಕೋರ್ಸ್': "ಇದು 'ಕೃಷಿಯಲ್ಲಿ ಎಐ/ಎಂಎಲ್' (AI/ML in Agriculture) ತರಬೇತಿ ಕಾರ್ಯಕ್ರಮ. ಇದು ರೈತರಿಗೆ ತಂತ್ರಜ್ಞಾನವನ್ನು ಹೇಗೆ ಬಳಸಬೇಕೆಂದು ಕಲಿಸುತ್ತದೆ.",
-                    'start': "ಪ್ರಾರಂಭಿಸಲು, ಎಡಭಾಗದಲ್ಲಿರುವ ಸೈಡ್‌ಬಾರ್‌ನಲ್ಲಿ 'ಮಾಡ್ಯೂಲ್ 1' ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.",
-                    'ಪ್ರಾರಂಭ': "ಪ್ರಾರಂಭಿಸಲು, ಎಡಭಾಗದಲ್ಲಿರುವ ಸೈಡ್‌ಬಾರ್‌ನಲ್ಲಿ 'ಮಾಡ್ಯೂಲ್ 1' ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.",
-                    'certificate': "ಹೌದು! ಎಲ್ಲಾ ಐದು ಮಾಡ್ಯೂಲ್‌ಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿದ ನಂತರ ನೀವು ಅಧಿಕೃತ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಪಡೆಯುತ್ತೀರಿ.",
-                    'ಪ್ರಮಾಣಪತ್ರ': "ಹೌದು! ಎಲ್ಲಾ ಐದು ಮಾಡ್ಯೂಲ್‌ಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿದ ನಂತರ ನೀವು ಅಧಿಕೃತ ಪ್ರಮಾಣಪತ್ರವನ್ನು ಪಡೆಯುತ್ತೀರಿ.",
-                    'python': "ಮಾಡ್ಯೂಲ್ 1 ಪೈಥಾನ್ ಭಾಷೆಯ ಮೂಲಭೂತ ಅಂಶಗಳನ್ನು ಕಲಿಸುತ್ತದೆ. ಕೃಷಿ ಎಐಗೆ ಪೈಥಾನ್ ಮುಖ್ಯವಾಗಿದೆ.",
-                    'ಪೈಥಾನ್': "ಮಾಡ್ಯೂಲ್ 1 ಪೈಥಾನ್ ಭಾಷೆಯ ಮೂಲಭೂತ ಅಂಶಗಳನ್ನು ಕಲಿಸುತ್ತದೆ. ಕೃಷಿ ಎಐಗೆ ಪೈಥಾನ್ ಮುಖ್ಯವಾಗಿದೆ.",
-                    'job': "ಈ ಕೋರ್ಸ್ ನಿಮ್ಮನ್ನು ಅಗ್ರಿ-ಟೆಕ್ ಅನಾಲಿಸ್ಟ್ ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಫಾರ್ಮಿಂಗ್ ಕನ್ಸಲ್ಟೆಂಟ್ ಹುದ್ದೆಗಳಿಗೆ ಸಿದ್ಧಪಡಿಸುತ್ತದೆ.",
-                    'ಕೆಲಸ': "ಈ ಕೋರ್ಸ್ ನಿಮ್ಮನ್ನು ಅಗ್ರಿ-ಟೆಕ್ ಅನಾಲಿಸ್ಟ್ ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಫಾರ್ಮಿಂಗ್ ಕನ್ಸಲ್ಟೆಂಟ್ ಹುದ್ದೆಗಳಿಗೆ ಸಿದ್ಧಪಡಿಸುತ್ತದೆ.",
-                    'cost': "ಈ ತರಬೇತಿ ಕಾರ್ಯಕ್ರಮವು ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಂಪೂರ್ಣವಾಗಿ ಉಚಿತವಾಗಿದೆ.",
-                    'ಬೆಲೆ': "ಈ ತರಬೇತಿ ಕಾರ್ಯಕ್ರಮವು ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸಂಪೂರ್ಣವಾಗಿ ಉಚಿತವಾಗಿದೆ.",
-                    'free': "ಹೌದು, ಕೋರ್ಸ್ ವಸ್ತುಗಳು ಮತ್ತು ಪ್ರವೇಶ ಸಂಪೂರ್ಣ ಉಚಿತ.",
-                    'ಉಚಿತ': "ಹೌದು, ಕೋರ್ಸ್ ವಸ್ತುಗಳು ಮತ್ತು ಪ್ರವೇಶ ಸಂಪೂರ್ಣ ಉಚಿತ.",
-                    'help': "ಸಹಾಯ ಬೇಕೇ? ಸೈಡ್‌ಬಾರ್ ಬಳಸಿ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಿ. ಅಥವಾ ಮುಖಪುಟದಲ್ಲಿ 'ವೀಕ್ಷಿಸಿ' (Watch Tour) ಬಟನ್ ಒತ್ತಿ.",
-                    'ಸಹಾಯ': "ಸಹಾಯ ಬೇಕೇ? ಸೈಡ್‌ಬಾರ್ ಬಳಸಿ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಿ. ಅಥವಾ ಮುಖಪುಟದಲ್ಲಿ 'ವೀಕ್ಷಿಸಿ' (Watch Tour) ಬಟನ್ ಒತ್ತಿ.",
-                    'duration': "ಇದು ಸ್ವಯಂ-ಗತಿಯ ಕೋರ್ಸ್. ಸಾಮಾನ್ಯವಾಗಿ, ಎಲ್ಲಾ ಮಾಡ್ಯೂಲ್‌ಗಳನ್ನು ಮುಗಿಸಲು 4 ರಿಂದ 6 ವಾರಗಳು ಬೇಕಾಗುತ್ತವೆ.",
-                    'ಸಮಯ': "ಇದು ಸ್ವಯಂ-ಗತಿಯ ಕೋರ್ಸ್. ಸಾಮಾನ್ಯವಾಗಿ, ಎಲ್ಲಾ ಮಾಡ್ಯೂಲ್‌ಗಳನ್ನು ಮುಗಿಸಲು 4 ರಿಂದ 6 ವಾರಗಳು ಬೇಕಾಗುತ್ತವೆ."
-                }
-            },
             hi: {
                 welcome: "नमस्ते! मैं एग्रीबॉट हूँ। मैं कृषि में एआई सीखने में आपकी मदद करने आया हूँ। आप मुझसे कोर्स या सर्टिफिकेट के बारे में पूछ सकते हैं।",
                 unknown: "क्षमा करें, मुझे यह समझ नहीं आया। कृप्या 'कोर्स', 'सर्टिफिकेट', 'नौकरी' या 'मॉड्यूल' के बारे में पूछें।",
@@ -137,7 +111,6 @@ class AgriBot {
                     </button>
                     <select class="lang-select" id="botLang">
                         <option value="en">English</option>
-                        <option value="kn">ಕನ್ನಡ</option>
                         <option value="hi">हिंदी</option>
                     </select>
                 </div>
@@ -327,7 +300,6 @@ class AgriBot {
         // Map language code to BCP 47
         let langCode = 'en-US';
         if (this.language === 'hi') langCode = 'hi-IN';
-        if (this.language === 'kn') langCode = 'kn-IN';
 
         utterance.lang = langCode;
 
@@ -335,10 +307,7 @@ class AgriBot {
         const voices = this.voices.length > 0 ? this.voices : window.speechSynthesis.getVoices();
         let selectedVoice = null;
 
-        if (this.language === 'kn') {
-            // Priority 1: Specific "Kannada" named voice (Google/Microsoft)
-            selectedVoice = voices.find(v => v.name.includes('Kannada') || v.lang === 'kn-IN');
-        } else if (this.language === 'hi') {
+        if (this.language === 'hi') {
             // Priority 1: Specific "Hindi" named voice
             selectedVoice = voices.find(v => v.name.includes('Hindi') || v.name.includes('Google हिन्दी') || v.lang === 'hi-IN');
         } else {
@@ -351,7 +320,7 @@ class AgriBot {
             if (!selectedVoice) selectedVoice = voices.find(v => v.lang.startsWith('en'));
         }
 
-        // Fallback: If we didn't find a specific voice for KN/HI, we DO NOT force English.
+        // Fallback: If we didn't find a specific voice for HI, we DO NOT force English.
         // We leave selectedVoice as null, so the browser uses its internal default for the 'lang' code provided.
 
         if (selectedVoice) {
