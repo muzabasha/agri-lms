@@ -6,12 +6,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI/ML in Agriculture - Interactive Learning Platform</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/enhancements.css">
+    <link rel="stylesheet" href="css/tour.css">
+    <link rel="stylesheet" href="css/farm-animation.css">
     <link rel="stylesheet" href="css/quiz.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Farm Animation Scene -->
+    <div class="farm-scene-container">
+        <div class="sun"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+
+        <div class="hills">
+            <div class="hill hill-1"></div>
+            <div class="hill hill-2"></div>
+            <div class="hill hill-3"></div>
+        </div>
+
+        <div class="growing-crop c1"><i class="fas fa-leaf"></i></div>
+        <div class="growing-crop c2"><i class="fas fa-leaf"></i></div>
+        <div class="growing-crop c3"><i class="fas fa-leaf"></i></div>
+        <div class="growing-crop c4"><i class="fas fa-leaf"></i></div>
+        <div class="growing-crop c5"><i class="fas fa-leaf"></i></div>
+        <div class="growing-crop c6"><i class="fas fa-leaf"></i></div>
+
+        <div class="tractor-wrapper">
+            <div class="tractor-body">
+                <i class="fas fa-tractor"></i>
+            </div>
+            <div class="dust dust-1"></div>
+            <div class="dust dust-2"></div>
+            <div class="dust dust-3"></div>
+        </div>
+
+        <div class="audience-wrapper">
+            <div class="audience-member am-1">
+                <div class="audience-icon" title="Farmers"><i class="fas fa-hat-cowboy"></i></div>
+                <div class="audience-label">Farmers</div>
+            </div>
+            <div class="audience-member am-2">
+                <div class="audience-icon" title="Students"><i class="fas fa-user-graduate"></i></div>
+                <div class="audience-label">Students</div>
+            </div>
+            <div class="audience-member am-3">
+                <div class="audience-icon" title="Researchers"><i class="fas fa-flask"></i></div>
+                <div class="audience-label">Scientists</div>
+            </div>
+        </div>
+
+        <div class="challenges-wrapper">
+            <div class="challenge-bubble ch-1">
+                <span class="challenge-label">Pests</span>
+                🐛
+            </div>
+            <div class="challenge-bubble ch-2">
+                <span class="challenge-label">Drought</span>
+                🌵
+            </div>
+            <div class="challenge-bubble ch-3">
+                <span class="challenge-label">Market</span>
+                📉
+            </div>
+        </div>
+
+        <div class="growth-board-container">
+            <div class="growth-item gi-1">
+                <div class="growth-title">India Agriculture</div>
+                <div class="growth-stat">#1 Milk Producer 🥛</div>
+            </div>
+            <div class="growth-item gi-2">
+                <div class="growth-title">Karnataka Agriculture</div>
+                <div class="growth-stat">Coffee Capital (70%) ☕</div>
+            </div>
+            <div class="growth-item gi-3">
+                <div class="growth-title">India Agriculture</div>
+                <div class="growth-stat">#2 Rice Producer 🌾</div>
+            </div>
+            <div class="growth-item gi-4">
+                <div class="growth-title">Karnataka Growth</div>
+                <div class="growth-stat">Leading Agri-Tech Hub 🚀</div>
+            </div>
+        </div>
+
+        <div class="sdg-logo-wrapper" title="Sustainable Development Goals">
+            <img src="images/sdg_logo.png" alt="SDG Logo">
+            <span class="sdg-label">SDG</span>
+        </div>
+
+        <div class="crops"></div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="container">
@@ -21,12 +110,11 @@
             </div>
             <nav class="main-nav">
                 <!-- User Auth Section Removed for Open Access -->
-                <a href="dashboard.html" class="dashboard-link" title="View Progress Dashboard">
-                    <i class="fas fa-chart-line"></i> Dashboard
-                </a>
-                <button class="theme-toggle" id="themeToggle">
-                    <i class="fas fa-moon"></i>
+
+                <button class="tour-btn-demo pulse" onclick="tourSystem.startTour()" title="Start Interactive Tour">
+                    <i class="fas fa-play-circle"></i> Take Tour
                 </button>
+
             </nav>
         </div>
     </header>
@@ -175,6 +263,7 @@
     <script src="js/quiz.js"></script>
     <script src="js/router.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/tour.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,199 @@
+/* --- TOUR SYSTEM STYLES --- */
+.tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0, 0, 0, 0.5);  Removed global overlay background to use box-shadow technique */
+    z-index: 9998;
+    /* Below highlight, above everything else */
+    pointer-events: none;
+    /* Allow clicks to pass through generally, we block specific interactions via JS or overlay if needed */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: none;
+}
+
+.tour-overlay.active {
+    opacity: 1;
+    display: block;
+    pointer-events: auto;
+    /* Block interactions with page */
+}
+
+/* The element being highlighted */
+.tour-highlight {
+    position: relative;
+    z-index: 10000;
+    /* Above overlay */
+    box-shadow: 0 0 0 4px #F57C00, 0 0 0 10000px rgba(0, 0, 0, 0.7);
+    /* The ring and the dark overlay */
+    border-radius: 4px;
+    background-color: white;
+    /* Default bg to cover underlying obscure items if transparent */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    /* Prevent interaction with the highlighted element for now, unless we want to allow it */
+}
+
+/* Modifier to fix background issues if element needs to be transparent */
+.tour-highlight-transparent {
+    background-color: transparent !important;
+}
+
+.tour-tooltip {
+    position: absolute;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    width: 320px;
+    z-index: 10001;
+    /* Above highlight */
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #333;
+}
+
+.tour-tooltip.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tour-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.tour-header h3 {
+    margin: 0;
+    color: #E67E22;
+    /* Primary color */
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.tour-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    line-height: 1;
+}
+
+.tour-close:hover {
+    color: #333;
+}
+
+.tour-body p {
+    margin: 0 0 15px 0;
+    color: #555;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.tour-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.tour-steps-count {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.tour-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.tour-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+    font-size: 0.9rem;
+}
+
+.tour-btn-next {
+    background: #27ae60;
+    color: white;
+}
+
+.tour-btn-next:hover {
+    background: #219150;
+    transform: translateY(-1px);
+}
+
+.tour-btn-back {
+    background: #ecf0f1;
+    color: #7f8c8d;
+}
+
+.tour-btn-back:hover {
+    background: #bdc3c7;
+    color: #333;
+}
+
+/* Demo Button Style */
+.tour-btn-demo {
+    background: linear-gradient(135deg, #8E44AD, #9B59B6);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(142, 68, 173, 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.tour-btn-demo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(142, 68, 173, 0.4);
+    background: linear-gradient(135deg, #9B59B6, #8E44AD);
+}
+
+.tour-btn-demo i {
+    font-size: 1rem;
+}
+
+/* Pulse animation for the demo button */
+@keyframes demoPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 6px rgba(142, 68, 173, 0.3);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(142, 68, 173, 0.5);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 6px rgba(142, 68, 173, 0.3);
+    }
+}
+
+.tour-btn-demo.pulse {
+    animation: demoPulse 2s infinite;
+}

@@ -620,19 +620,82 @@ body {
 
 @media (max-width: 768px) {
     .main-container {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        /* Force side-by-side even on mobile */
     }
 
     .sidebar {
+        width: 120px;
+        /* Fixed narrow width for sidebar on mobile */
+        min-width: 120px;
+        flex-shrink: 0;
+        /* Prevent sidebar from shrinking */
+        position: sticky;
+        top: 80px;
+        height: calc(100vh - 80px);
+        border-right: 1px solid var(--border-color);
+        border-bottom: none;
+        padding: var(--spacing-xs);
+        overflow-y: auto;
+        font-size: 0.85rem;
+        /* Smaller font for compact sidebar */
+    }
+
+    .content-area {
+        flex: 1;
+        /* Take remaining space */
+        width: auto;
+        /* Reset width to let flex handle it */
+        min-width: 0;
+        /* Allow content to shrink if needed (prevents overflow issues) */
+        padding: var(--spacing-sm);
+        padding-left: var(--spacing-md);
+        /* Add some separation */
+    }
+
+    /* Adjust sidebar text for very tight space */
+    .module-header {
+        font-size: 0.8rem;
+        padding: 6px;
+        flex-direction: column;
+        /* Stack icon and text if needed */
+        align-items: flex-start;
+        gap: 4px;
+        text-align: center;
+    }
+
+    .module-header .header-content {
+        flex-direction: column;
+        align-items: center;
         width: 100%;
-        position: static;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
+    }
+
+    .topic-link {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    .progress-overview {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .progress-overview h3 {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .progress-text {
+        font-size: 0.8rem;
     }
 
     .hero h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
     }
 
     .features {
@@ -645,6 +708,8 @@ body {
 
     .tab-btn {
         font-size: 0.85rem;
-        padding: var(--spacing-xs) var(--spacing-sm);
+        padding: 4px 8px;
+        flex: 1 1 45%;
+        /* Buttons share space */
     }
 }
