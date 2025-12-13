@@ -61,7 +61,12 @@ class AgriBot {
     }
 
     createUI() {
-        // Floating button moved to Header (HTML)
+        // Create Toggle Button (Floating Bottom Right)
+        this.toggleBtn = document.createElement('button');
+        this.toggleBtn.className = 'chatbot-toggle pulse';
+        this.toggleBtn.innerHTML = `<i class="fas fa-robot"></i><span class="badge">1</span>`;
+        this.toggleBtn.style.display = 'flex'; // Ensure visible
+        document.body.appendChild(this.toggleBtn);
 
         // Create Chat Window
         this.window = document.createElement('div');
@@ -111,7 +116,12 @@ class AgriBot {
     }
 
     attachListeners() {
-        // Header Trigger
+        // Floating Toggle
+        if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => this.toggle());
+        }
+
+        // Header Trigger (Legacy support if re-added later, safe to keep or remove)
         const headerBtn = document.getElementById('headerChatBtn');
         if (headerBtn) {
             headerBtn.addEventListener('click', () => this.toggle());
