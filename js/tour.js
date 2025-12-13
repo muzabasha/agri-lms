@@ -134,6 +134,7 @@ class TourSystem {
         // Tooltip (Now styled as a Popup Window like Chatbot)
         this.tooltip = document.createElement('div');
         this.tooltip.className = 'tour-tooltip'; // Keeping class name for logic, but styling checks out
+        this.tooltip.style.display = 'none'; // Ensure hidden initially
         this.tooltip.innerHTML = `
             <div class="tour-header-styled">
                 <div class="tour-title-wrapper">
@@ -242,7 +243,12 @@ class TourSystem {
 
         // Position Tooltip
         this.positionTooltip(targetEl, step.placement);
-        this.tooltip.classList.add('active');
+        // Show tooltip
+        this.tooltip.style.display = 'block'; // Make visible
+        // slight delay to allow display:block to apply before opacity transition
+        requestAnimationFrame(() => {
+            this.tooltip.classList.add('active');
+        });
         this.tooltip.style.opacity = '1';
 
         // Speak & Auto Advance
@@ -420,6 +426,11 @@ class TourSystem {
 
         this.overlay.classList.remove('active');
         this.tooltip.classList.remove('active');
+
+        // Wait for transition then hide
+        setTimeout(() => {
+            this.tooltip.style.display = 'none';
+        }, 500);
 
         if (this.highlightedElement) {
             this.highlightedElement.classList.remove('tour-highlight');
