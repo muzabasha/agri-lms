@@ -264,9 +264,19 @@ class AgriBot {
         const lowerText = userText.toLowerCase();
         let reply = this.knowledge[this.language].unknown;
 
-        // Simple keyword matching
-        const keywords = this.knowledge[this.language].keywords;
+        // 1. Check for Topic Explanations (Dynamic Search)
+        // matches: "explain supervised", "what is regression", "tell me about crops"
+        if (lowerText.includes('explain') || lowerText.includes('what is') || lowerText.includes('tell me about')) {
+            const topicReply = this.searchCourseContent(lowerText);
+            if (topicReply) {
+                this.addBotMessage(topicReply);
+                if (this.speechEnabled) this.speakResponse(topicReply);
+                return;
+            }
+        }
 
+        // 2. Simple keyword matching from Knowledge Base
+        const keywords = this.knowledge[this.language].keywords;
         for (const key in keywords) {
             if (lowerText.includes(key.toLowerCase())) {
                 reply = keywords[key];
@@ -274,15 +284,34 @@ class AgriBot {
             }
         }
 
-        // Fallback for English keywords if in other lang but no match? 
-        // For simplicity, strict match on current lang keywords.
-
         this.addBotMessage(reply);
 
         // Voice Output
         if (this.speechEnabled) {
             this.speakResponse(reply);
         }
+    }
+
+    // New Helper to search authentic course content
+    searchCourseContent(query) {
+        // Basic keywords mapping to content summaries (Simulating smart search)
+        // In a real app, this would use the `module1Handouts` object if accessible globally.
+        // Let's try to access window.module1Handouts if it exists, otherwise use a small internal specific dictionary.
+
+        const concepts = {
+            'supervised': "Supervised Learning is like learning with a teacher. The computer is given input data along with the correct answers (labels) to learn patterns. Example: Teaching a computer to recognize apples by showing it labeled photos of apples.",
+            'unsupervised': "Unsupervised Learning is like exploring alone. The computer is given data without labels and must find patterns or groups by itself. Example: Grouping fruits by size without knowing their names.",
+            'reinforcement': "Reinforcement Learning is like learning by trial and error. The agent takes actions and gets rewards or penalties. Example: A robot learning to walk by falling and trying again.",
+            'regression': "Regression is a way to predict numbers. For example, predicting the exact price of a crop based on rainfall and temperature.",
+            'classification': "Classification is about putting things into categories. For example, deciding if a leaf is 'Healthy' or 'Diseased'.",
+            'neural network': "A Neural Network is inspired by the human brain. It uses layers of artificial neurons to learn complex patterns from data."
+        };
+
+        for (const [key, val] of Object.entries(concepts)) {
+            if (query.includes(key)) return val;
+        }
+
+        return null;
     }
 
     speakResponse(text) {
@@ -324,7 +353,6 @@ class AgriBot {
 
         // Fallback: If we didn't find a specific voice for KN/HI, we DO NOT force English.
         // We leave selectedVoice as null, so the browser uses its internal default for the 'lang' code provided.
-        // This is critical because forcing an English voice to read Kannada results in it only reading numbers.
 
         if (selectedVoice) {
             utterance.voice = selectedVoice;
