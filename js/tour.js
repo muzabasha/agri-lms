@@ -35,69 +35,94 @@ class TourSystem {
         this.createTourUI();
         window.addEventListener('resize', this.handleResize);
 
-        // Define Intro Steps
-        const introSteps = [
+        const demoTopicId = 'm1-t1';
+
+        this.steps = [
+            // 1. Intro
             {
-                title: "Welcome to Agri-LMS!",
-                message: "This interactive platform helps you master AI & ML concepts in Agriculture. Sit back while I give you a tour.",
+                title: "Welcome to Agri-LMS",
+                message: "Welcome! I will guide you through a complete learning module to show you how effective this platform is. Let's start with <b>Module 1: Introduction to AI</b>.",
                 target: null,
                 placement: "center"
             },
+
+            // 2. Navigate to Topic
             {
-                title: "Navigation & Progress",
-                message: "Use the sidebar to explore Modules. Your progress is tracked automatically as you learn.",
-                target: ".sidebar",
-                placement: "right"
-            }
-        ];
-
-        // Define Module Steps
-        const moduleSteps = [];
-        const modules = [
-            { id: 1, title: "Module 1: Fundamentals", topicId: "m1-t1", desc: "Start with Python & AI basics here." },
-            { id: 2, title: "Module 2: Data Science", topicId: "m2-t1", desc: "Learn data handling with Pandas." },
-            { id: 3, title: "Module 3: Deep Learning", topicId: "m3-t1", desc: "Explore Neural Networks & Computer Vision." },
-            { id: 4, title: "Module 4: Projects", topicId: "m4-t1", desc: "Work on end-to-end Machine Learning projects." },
-            { id: 5, title: "Module 5: Portfolio", topicId: "m5-t1", desc: "Build your professional portfolio." }
-        ];
-
-        modules.forEach(mod => {
-            // Step 1: Navigate and explain
-            moduleSteps.push({
-                title: mod.title,
-                message: `We are now navigating to <b>${mod.title}</b>. ${mod.desc}`,
+                title: "Topic Navigation",
+                message: "We are navigating to <b>Topic 1: The Smart Scarecrow</b>. Every topic focuses on a real-world agricultural problem solved by AI.",
                 target: ".content-area",
                 placement: "left",
                 onShow: () => {
-                    window.location.hash = mod.topicId;
-                    return new Promise(resolve => setTimeout(resolve, 1500)); // Allow time for route & render
+                    window.location.hash = demoTopicId;
+                    return new Promise(resolve => setTimeout(resolve, 2000)); // Wait for render
                 }
-            });
+            },
 
-            // Step 2: Highlight specific components (alternating)
-            moduleSteps.push({
-                title: `${mod.title} Features`,
-                message: "Here you will find handouts, labs, and interactive quizzes. Use the tabs below to switch modes.",
-                target: ".content-tabs",
-                placement: "bottom"
-            });
-        });
-
-        // Define Outro Steps
-        const outroSteps = [
+            // 3. Handout (Theory)
             {
-                title: "You're Ready!",
-                message: "You've seen the highlights. It's time to start your journey with Module 1. Happy Learning!",
-                target: null,
-                placement: "center",
+                title: "Step 1: The Handout",
+                message: "We start with the <b>Handout</b>. Here, we explain that AI is like a 'Smart Scarecrow' that doesn't just scare, but <i>learns</i> from bird patterns.",
+                target: "#handout",
+                placement: "top",
                 onShow: () => {
-                    window.location.hash = 'm1-t1';
-                    return new Promise(resolve => setTimeout(resolve, 500));
+                    document.querySelector('button[data-tab="handout"]').click();
+                    return new Promise(resolve => setTimeout(resolve, 1000));
                 }
+            },
+
+            // 4. Lab (Code)
+            {
+                title: "Step 2: Interactive Lab",
+                message: "Next, we apply this in code. In this Python Lab, we write a simple script to detect crows based on flying speed. If speed > 5, the AI decides to scare!",
+                target: "#code",
+                placement: "top",
+                onShow: () => {
+                    document.querySelector('button[data-tab="code"]').click();
+                    return new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            },
+
+            // 5. Activity (Engagement)
+            {
+                title: "Step 3: Activity",
+                message: "Learning isn't just reading. In the <b>Activity</b> tab, students simulate the 'Smart Scarecrow Game' physically to understand data feedback loops.",
+                target: "#activity",
+                placement: "top",
+                onShow: () => {
+                    document.querySelector('button[data-tab="activity"]').click();
+                    return new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            },
+
+            // 6. Quiz (Assessment)
+            {
+                title: "Step 4: Quiz & Feedback",
+                message: "Finally, we verify mastery. The <b>Quiz</b> provides instant feedback. Let's try answering a question.",
+                target: "#quiz",
+                placement: "top",
+                onShow: () => {
+                    document.querySelector('button[data-tab="quiz"]').click();
+                    return new Promise(resolve => setTimeout(resolve, 1500));
+                }
+            },
+
+            // 7. Simulated Interaction
+            {
+                title: "Mastery Check",
+                message: "For example: 'Which input does AI learn from?'. The answer is <b>Data</b>. Correct answers unlock the next topic!",
+                target: ".quiz-container",
+                placement: "left"
+                // In a real automated test we might click it, but visually pointing is safer for a tour.
+            },
+
+            // 8. Completion
+            {
+                title: "Complete & Continue",
+                message: "Once finished, click <b>Mark as Complete</b> to track your progress and unlock the next lesson. You are now ready to master AI in Agriculture!",
+                target: ".mark-complete-btn",
+                placement: "top"
             }
         ];
-
-        this.steps = [...introSteps, ...moduleSteps, ...outroSteps];
     }
 
     createTourUI() {
