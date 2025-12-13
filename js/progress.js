@@ -29,7 +29,6 @@ class ProgressTracker {
 
     // Remote sync logic removed for open access
 
-
     markComplete(topicId) {
         if (!this.progress.completedTopics.includes(topicId)) {
             this.progress.completedTopics.push(topicId);
@@ -48,7 +47,6 @@ class ProgressTracker {
     }
 
     getTotalTopics() {
-        // Use comprehensiveCourseStructure if available, else fallback to 15
         if (typeof comprehensiveCourseStructure !== 'undefined') {
             let count = 0;
             comprehensiveCourseStructure.modules.forEach(module => {
@@ -56,7 +54,7 @@ class ProgressTracker {
             });
             return count;
         }
-        return 15;
+        return 15; // Fallback
     }
 
     getCompletionPercentage() {
@@ -72,30 +70,31 @@ class ProgressTracker {
         if (progressFill) progressFill.style.width = `${percentage}%`;
         if (progressText) progressText.textContent = `${percentage}% Complete`;
 
-        // Update topic links
+        // Update topic links for completion status
         document.querySelectorAll('.topic-link').forEach(link => {
             const topicId = link.getAttribute('data-topic');
             if (this.isComplete(topicId)) {
                 link.classList.add('completed');
+            } else {
+                link.classList.remove('completed');
             }
         });
 
-        // Dispatch event for other components (Dashboard, etc.)
+        // Dispatch event for other components to use
         document.dispatchEvent(new CustomEvent('progressUpdated', { detail: this.progress }));
     }
 
     resetProgress() {
-        if (confirm('Are you sure you want to reset all progress?')) {
+        if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
             this.progress = {
                 completedTopics: [],
                 currentTopic: null,
                 startDate: new Date().toISOString()
             };
             this.save();
-            this.updateUI();
+            this.updateUI(); // Redraw UI with cleared progress
         }
     }
 }
 
-// Export
 const progressTracker = new ProgressTracker();
