@@ -213,87 +213,95 @@
     background: #e5e7eb;
 }
 
-/* Premium Demo Button Style */
+/* Standardized Professional CTA Button */
 .tour-btn-demo {
     position: relative;
-    background: linear-gradient(135deg, #8E44AD, #9B59B6);
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    /* Deep Vibrant Purple */
     color: white;
     border: none;
-    padding: 0 24px;
-    height: 44px;
-    /* Slightly taller */
-    border-radius: 22px;
+    padding: 0 28px 0 24px;
+    height: 48px;
+    /* Standard 48px touch target */
+    border-radius: 24px;
     cursor: pointer;
-    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     font-size: 0.95rem;
     overflow: hidden;
-    /* For shimmer */
     z-index: 1;
+    text-transform: uppercase;
 }
 
 .tour-btn-demo:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(142, 68, 173, 0.6);
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
 }
 
-/* Shimmer Effect */
+.tour-btn-demo:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+}
+
+/* Icon Container */
+.tour-btn-demo i {
+    background: rgba(255, 255, 255, 0.2);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.tour-btn-demo:hover i {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Subtle Shimmer (Professional) */
 .tour-btn-demo::after {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 200%;
+    left: -150%;
+    width: 100%;
     height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transform: skewX(-20deg);
     transition: 0.5s;
-    pointer-events: none;
-    animation: shimmer 3s infinite;
+    animation: proShimmer 6s infinite;
 }
 
-@keyframes shimmer {
+@keyframes proShimmer {
     0% {
-        left: -100%;
+        left: -150%;
     }
 
-    20% {
-        left: 100%;
+    10% {
+        left: 150%;
     }
 
+    /* Quick pass */
     100% {
-        left: 100%;
+        left: 150%;
     }
+
+    /* Long wait */
 }
 
-.tour-btn-demo i {
-    font-size: 1.1rem;
-    animation: wiggle 3s infinite;
-}
-
-@keyframes wiggle {
-
-    0%,
-    90% {
-        transform: rotate(0);
-    }
-
-    95% {
-        transform: rotate(10deg);
-    }
-
-    100% {
-        transform: rotate(-10deg);
-    }
-}
-
-/* Hide the old pulse if we use wiggle/shimmer */
+/* Remove old animations */
 .tour-btn-demo.pulse {
     animation: none;
 }
