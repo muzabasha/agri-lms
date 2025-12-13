@@ -248,15 +248,43 @@ class TourSystem {
 
         const plainText = text.replace(/<[^>]*>/g, '');
         const utterance = new SpeechSynthesisUtterance(plainText);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+
+        // Voice Settings for "Beautiful Female Voice"
+        const voices = this.speechSynth.getVoices();
+
+        // Priority list for female-sounding voices
+        const preferredVoices = [
+            'Google US English',       // Chrome typical female
+            'Microsoft Zira',          // Windows typical female
+            'Samantha',                 // macOS typical female
+            'Google UK English Female'
+        ];
+
+        let selectedVoice = null;
+        for (const name of preferredVoices) {
+            selectedVoice = voices.find(v => v.name.includes(name));
+            if (selectedVoice) break;
+        }
+
+        // Fallback to any English voice if specific ones fail
+        if (!selectedVoice) {
+            selectedVoice = voices.find(v => v.lang.startsWith('en'));
+        }
+
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+        }
+
+        utterance.rate = 0.95; // Slightly slower for better narration
+        utterance.pitch = 1.1; // Slightly higher pitch for female tone
+        utterance.volume = 1.0;
 
         utterance.onend = () => {
             if (this.isActive && this.isAutoMode) {
                 // Pause briefly then next
                 this.autoTimeout = setTimeout(() => {
                     this.nextStep();
-                }, 1500);
+                }, 2000); // 2s pause for absorption
             }
         };
 

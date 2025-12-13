@@ -23,19 +23,35 @@
 }
 
 /* The element being highlighted */
+/* The element being highlighted */
 .tour-highlight {
     position: relative;
     z-index: 10000;
-    /* Above overlay */
-    box-shadow: 0 0 0 4px #F57C00, 0 0 0 10000px rgba(0, 0, 0, 0.7);
-    /* The ring and the dark overlay */
-    border-radius: 4px;
+    /* Clean highlight with glow */
+    box-shadow: 0 0 0 4px #e67e22, 0 0 20px rgba(230, 126, 34, 0.4), 0 0 0 10000px rgba(0, 0, 0, 0.85);
+    /* Darker overlay for better focus */
+    border-radius: 6px;
     background-color: white;
-    /* Default bg to cover underlying obscure items if transparent */
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s ease;
     pointer-events: none;
-    /* Prevent interaction with the highlighted element for now, unless we want to allow it */
+    animation: pulseHighlight 2s infinite;
 }
+
+@keyframes pulseHighlight {
+    0% {
+        box-shadow: 0 0 0 4px #e67e22, 0 0 20px rgba(230, 126, 34, 0.4), 0 0 0 10000px rgba(0, 0, 0, 0.85);
+    }
+
+    50% {
+        box-shadow: 0 0 0 4px #e67e22, 0 0 30px rgba(230, 126, 34, 0.7), 0 0 0 10000px rgba(0, 0, 0, 0.85);
+    }
+
+    100% {
+        box-shadow: 0 0 0 4px #e67e22, 0 0 20px rgba(230, 126, 34, 0.4), 0 0 0 10000px rgba(0, 0, 0, 0.85);
+    }
+}
+
+/* Modifier to fix background issues if element needs to be transparent */
 
 /* Modifier to fix background issues if element needs to be transparent */
 .tour-highlight-transparent {
@@ -44,22 +60,25 @@
 
 .tour-tooltip {
     position: absolute;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    width: 320px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 340px;
+    max-width: 90vw;
     z-index: 10001;
-    /* Above highlight */
     opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .tour-tooltip.active {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
 .tour-header {
