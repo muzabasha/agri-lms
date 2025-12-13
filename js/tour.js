@@ -131,26 +131,36 @@ class TourSystem {
         this.overlay.className = 'tour-overlay';
         document.body.appendChild(this.overlay);
 
-        // Tooltip
+        // Tooltip (Now styled as a Popup Window like Chatbot)
         this.tooltip = document.createElement('div');
-        this.tooltip.className = 'tour-tooltip';
+        this.tooltip.className = 'tour-tooltip'; // Keeping class name for logic, but styling checks out
         this.tooltip.innerHTML = `
-            <div class="tour-header">
-                <h3 id="tour-title">Title</h3>
-                <button class="tour-close" onclick="tourSystem.endTour()">×</button>
+            <div class="tour-header-styled">
+                <div class="tour-title-wrapper">
+                    <div class="tour-avatar"><i class="fas fa-map-marked-alt"></i></div>
+                    <div>
+                        <div class="tour-title-text">AgriTour</div>
+                        <div class="tour-subtitle-text">Interactive Guide</div>
+                    </div>
+                </div>
+                <button class="tour-close" onclick="tourSystem.endTour()"><i class="fas fa-times"></i></button>
             </div>
-            <div class="tour-body">
+            
+            <div class="tour-content-body">
+                <h3 id="tour-title" style="margin-top:0; color:#1e3a8a;">Title</h3>
                 <p id="tour-message">Message</p>
             </div>
-            <div class="tour-footer">
-                <div class="tour-progress-bar">
-                    <div id="tour-progress-fill" style="width: 0%; height: 4px; background: #E67E22; transition: width 0.3s;"></div>
+
+            <div class="tour-footer-styled">
+                <div class="tour-progress-container">
+                    <div class="tour-progress-bar">
+                        <div id="tour-progress-fill" style="width: 0%; height: 100%; background: #10b981; border-radius: 4px; transition: width 0.3s;"></div>
+                    </div>
+                    <span id="tour-status">Auto-playing...</span>
                 </div>
                 <div class="tour-controls">
-                    <span id="tour-status" style="font-size: 12px; color: #666; margin-right: 10px;">Auto-playing...</span>
-                    <!-- Hidden manually output controls for auto mode -->
-                    <button class="tour-btn tour-btn-back" id="tour-back" style="display:none">Back</button>
-                    <button class="tour-btn tour-btn-next" id="tour-next">Next</button>
+                    <button class="tour-btn-action sec" id="tour-back" style="display:none">Back</button>
+                    <button class="tour-btn-action pri" id="tour-next">Next</button>
                 </div>
             </div>
         `;
