@@ -453,6 +453,8 @@
 }
 
 .sdg-logo-wrapper img {
+    display: block;
+    opacity: 1;
     width: 60px;
     height: 60px;
     border-radius: 50%;
