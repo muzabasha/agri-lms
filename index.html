@@ -9,10 +9,6 @@
     <link rel="stylesheet" href="css/enhancements.css">
     <link rel="stylesheet" href="css/quiz.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDKs (Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
@@ -25,19 +21,7 @@
             </div>
             <nav class="main-nav">
                 <!-- User Auth Section -->
-                <div id="userAuth" class="user-auth" style="margin-right: 15px; display: flex; align-items: center;">
-                    <button id="loginBtn" class="auth-btn" onclick="loginWithGoogle()">
-                        <i class="fab fa-google"></i> Login
-                    </button>
-                    <div id="userProfile" class="user-profile" style="display: none; align-items: center; gap: 10px;">
-                        <span id="userName" style="font-weight: 500;">User</span>
-                        <img id="userAvatar" src="" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
-                        <button id="logoutBtn" class="" onclick="logoutUser()" title="Logout"
-                            style="background:none; border:none; color:inherit; cursor:pointer;">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </div>
-                </div>
+                <!-- User Auth Section Removed for Open Access -->
 
                 <a href="dashboard.html" class="dashboard-link" title="View Progress Dashboard">
                     <i class="fas fa-chart-line"></i> Dashboard
@@ -95,7 +79,7 @@
                             <p>Quizzes and activities to reinforce your learning</p>
                         </div>
                     </div>
-                    <button class="cta-button" onclick="router.navigate('module-1-topic-1')">
+                    <button class="cta-button btn-pulse" onclick="window.location.hash='#m1-t1'">
                         Start Learning <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -146,14 +130,21 @@
                 </div>
 
                 <!-- Main Content Tabs - Handout Only -->
+                <!-- Main Content Tabs -->
                 <div class="content-tabs">
                     <button class="tab-btn active" data-tab="handout"><i class="fas fa-file-alt"></i> Handout</button>
-                    <!-- Quiz tab removed as per Handout-Only requirement -->
+                    <button class="tab-btn" data-tab="presentation"><i class="fas fa-chalkboard"></i> Slides</button>
+                    <button class="tab-btn" data-tab="code"><i class="fas fa-code"></i> Lab</button>
+                    <button class="tab-btn" data-tab="activity"><i class="fas fa-tasks"></i> Activity</button>
+                    <button class="tab-btn" data-tab="quiz"><i class="fas fa-question-circle"></i> Quiz</button>
                 </div>
 
                 <!-- Tab Content -->
                 <div class="tab-content">
                     <div id="handout" class="tab-panel active"></div>
+                    <div id="presentation" class="tab-panel"></div>
+                    <div id="code" class="tab-panel"></div>
+                    <div id="activity" class="tab-panel"></div>
                     <div id="quiz" class="tab-panel"></div>
                 </div>
 
@@ -174,6 +165,9 @@
     </div>
 
     <!-- Scripts -->
+    <!-- Scripts -->
+    <div id="toast-container" class="toast-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="js/comprehensive-structure.js"></script>
     <script src="js/module-content.js"></script>
     <script src="js/lecture-content.js"></script>
@@ -183,11 +177,6 @@
     <script src="js/story.js"></script>
     <script src="js/progress.js"></script>
     <script src="js/quiz.js"></script>
-    <script src="js/firebase-config.js"></script>
-    <script>
-        // Start Firebase
-        document.addEventListener('DOMContentLoaded', initFirebase);
-    </script>
     <script src="js/router.js"></script>
     <script src="js/app.js"></script>
 </body>

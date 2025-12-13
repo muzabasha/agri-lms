@@ -67,7 +67,7 @@ class Router {
         } else {
             // Standard topic view
             topicContent.style.display = 'block';
-            document.querySelector('.content-tabs').style.display = 'none'; // Tabs hidden for Handout-Only mode
+            document.querySelector('.content-tabs').style.display = 'flex'; // Restore tabs
             this.loadTopic(route);
         }
 
@@ -122,12 +122,14 @@ class Router {
         // Update story
         storyManager.displayStory(topicId);
 
-        // Load handout
+        // Load Handout (Primary)
         this.loadHandout(topic);
 
-        // Removed legacy loaders (Code, Presentation, Activity, Quiz) as they are no longer part of the UI
-        // The application is now "Handout-Only".
-        // All necessary content (Colab, Activities, Assessments) should be embedded in the Handout HTML.
+        // Load Supplemental Resources
+        this.loadCodeLab(topic);
+        this.loadPresentation(topic);
+        this.loadActivity(topic.id);
+        this.loadQuiz(topic);
 
         // Update navigation buttons
         this.updateNavButtons(topicId);
@@ -260,12 +262,15 @@ class Router {
 
     loadQuiz(topic) {
         const quizPanel = document.getElementById('quiz');
-        quizPanel.innerHTML = `
-            <div class="quiz-container">
-                <h3><i class="fas fa-question-circle"></i> Test Your Knowledge</h3>
-                ${topic.quiz || '<p>Quiz questions will be added soon.</p>'}
-            </div>
-        `;
+
+        let content = "";
+        if (window.quizSystem) {
+            content = window.quizSystem.loadQuiz(topic.id);
+        } else {
+            content = '<p>Quiz system loading...</p>';
+        }
+
+        quizPanel.innerHTML = content;
     }
 
     updateNavButtons(currentTopicId) {
@@ -307,11 +312,21 @@ class Router {
         if (progressTracker.isComplete(currentTopicId)) {
             markCompleteBtn.innerHTML = '<i class="fas fa-check-double"></i> Completed';
             markCompleteBtn.style.opacity = '0.7';
+            markCompleteBtn.classList.remove('btn-pulse');
+            markCompleteBtn.disabled = true;
         } else {
             markCompleteBtn.innerHTML = '<i class="fas fa-check"></i> Mark as Complete';
             markCompleteBtn.style.opacity = '1';
+            markCompleteBtn.classList.add('btn-pulse'); // Add pulse animation
+            markCompleteBtn.disabled = false;
+
             markCompleteBtn.onclick = () => {
                 progressTracker.markComplete(currentTopicId);
+
+                // Trigger Interactivity
+                if (window.celebrateCompletion) window.celebrateCompletion();
+                if (window.showToast) window.showToast("Topic Completed! Great job!", "success");
+
                 this.updateNavButtons(currentTopicId);
             };
         }

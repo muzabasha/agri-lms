@@ -17,35 +17,18 @@ class ProgressTracker {
 
     save() {
         localStorage.setItem(this.storageKey, JSON.stringify(this.progress));
+        // Callback removed
         if (this.onSaveCallback) {
-            this.onSaveCallback(this.progress);
+            // this.onSaveCallback(this.progress); 
         }
     }
 
     setOnSaveCallback(callback) {
-        this.onSaveCallback = callback;
+        // this.onSaveCallback = callback;
     }
 
-    mergeRemoteData(remoteData) {
-        if (!remoteData) return;
+    // Remote sync logic removed for open access
 
-        // Merge completed topics (union)
-        const localSet = new Set(this.progress.completedTopics);
-        if (remoteData.completedTopics) {
-            remoteData.completedTopics.forEach(t => localSet.add(t));
-        }
-
-        this.progress.completedTopics = Array.from(localSet);
-
-        // Keep the latest currentTopic or merge intelligently? 
-        // For now, if remote has a more recent "last played", maybe use that? 
-        // Simpler: Just ensure we don't lose completed topics.
-
-        this.save(); // This will trigger onSaveCallback, potentially looping if not careful. 
-        // But usually, we only call this from Firebase listener, so we might want to avoid re-uploading.
-        // Actually, calling save() is fine if the DB write checks for changes or debounces.
-        this.updateUI();
-    }
 
     markComplete(topicId) {
         if (!this.progress.completedTopics.includes(topicId)) {

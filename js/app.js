@@ -150,7 +150,49 @@ class App {
             });
         });
     }
+
+    // Global UI Helpers
+    static showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        // Icon map
+        const icons = {
+            success: 'fa-check-circle',
+            info: 'fa-info-circle',
+            warning: 'fa-exclamation-triangle',
+            error: 'fa-times-circle'
+        };
+
+        toast.innerHTML = `
+            <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
+            <span>${message}</span>
+        `;
+
+        container.appendChild(toast);
+
+        // Auto remove
+        setTimeout(() => {
+            toast.classList.add('hide');
+            toast.addEventListener('animationend', () => toast.remove());
+        }, 3000);
+    }
+
+    static celebrateCompletion() {
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    }
 }
+
+// Expose globals
+window.showToast = App.showToast;
+window.celebrateCompletion = App.celebrateCompletion;
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
