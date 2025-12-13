@@ -435,59 +435,6 @@
     }
 }
 
-/* --- SDG LOGO --- */
-.sdg-logo-wrapper {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    left: auto;
-    /* Reset left */
-    width: 60px;
-    height: 60px;
-    z-index: 20;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: floatLogo 4s ease-in-out infinite;
-}
-
-.sdg-logo-wrapper img {
-    display: block;
-    opacity: 1;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-}
-
-.sdg-label {
-    position: absolute;
-    bottom: -15px;
-    background: #0099cc;
-    /* SDG Blue */
-    color: white;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-@keyframes floatLogo {
-    0% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}
 
 /* --- GROWTH STATS BOARD --- */
 .growth-board-container {
@@ -550,18 +497,6 @@
     }
 
     /* Adjust Main Elements */
-    .sdg-logo-wrapper {
-        width: 45px;
-        height: 45px;
-        top: 10px;
-        right: 10px;
-        left: auto;
-    }
-
-    .sdg-logo-wrapper img {
-        width: 40px;
-        height: 40px;
-    }
 
     .growth-board-container {
         width: 200px;
@@ -678,9 +613,6 @@
         margin-top: 0;
     }
 
-    .sdg-label {
-        display: none;
-    }
 
     /* Hide text labels */
     .audience-label {
