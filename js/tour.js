@@ -1,6 +1,7 @@
 /**
  * Agri-LMS Tour System
  * Guides students through the application features.
+ * Features: Auto-play, Text-to-Speech Narration, Dynamic Navigation.
  */
 
 class TourSystem {
@@ -8,6 +9,12 @@ class TourSystem {
         this.steps = [];
         this.currentStep = 0;
         this.isActive = false;
+
+        // Auto-play / Narration settings
+        this.isAutoMode = true;
+        this.speechSynth = window.speechSynthesis;
+        this.currentUtterance = null;
+        this.autoTimeout = null;
 
         // UI Elements
         this.overlay = null;
@@ -19,6 +26,7 @@ class TourSystem {
         this.prevStep = this.prevStep.bind(this);
         this.endTour = this.endTour.bind(this);
         this.handleResize = this.handleResize.bind(this);
+        this.togglePlayPause = this.togglePlayPause.bind(this);
 
         this.init();
     }
@@ -31,13 +39,13 @@ class TourSystem {
         const introSteps = [
             {
                 title: "Welcome to Agri-LMS!",
-                message: "This interactive platform helps you master AI & ML concepts in Agriculture. Let's take a tour of the modules.",
+                message: "This interactive platform helps you master AI & ML concepts in Agriculture. Sit back while I give you a tour.",
                 target: null,
                 placement: "center"
             },
             {
                 title: "Navigation & Progress",
-                message: "Use the sidebar to explore Modules. Your progress is tracked automatically.",
+                message: "Use the sidebar to explore Modules. Your progress is tracked automatically as you learn.",
                 target: ".sidebar",
                 placement: "right"
             }
@@ -46,32 +54,30 @@ class TourSystem {
         // Define Module Steps
         const moduleSteps = [];
         const modules = [
-            { id: 1, title: "Module 1: Fundamentals", topicId: "m1-t1", desc: "Start with Python & AI basics." },
+            { id: 1, title: "Module 1: Fundamentals", topicId: "m1-t1", desc: "Start with Python & AI basics here." },
             { id: 2, title: "Module 2: Data Science", topicId: "m2-t1", desc: "Learn data handling with Pandas." },
-            { id: 3, title: "Module 3: Deep Learning", topicId: "m3-t1", desc: "Explore Neural Networks & Vision." },
-            { id: 4, title: "Module 4: Projects", topicId: "m4-t1", desc: "End-to-end Machine Learning projects." },
+            { id: 3, title: "Module 3: Deep Learning", topicId: "m3-t1", desc: "Explore Neural Networks & Computer Vision." },
+            { id: 4, title: "Module 4: Projects", topicId: "m4-t1", desc: "Work on end-to-end Machine Learning projects." },
             { id: 5, title: "Module 5: Portfolio", topicId: "m5-t1", desc: "Build your professional portfolio." }
         ];
 
         modules.forEach(mod => {
-            // Step 1: Navigate to Topic
+            // Step 1: Navigate and explain
             moduleSteps.push({
                 title: mod.title,
-                message: `Navigating to <b>${mod.title}</b>. ${mod.desc}`,
+                message: `We are now navigating to <b>${mod.title}</b>. ${mod.desc}`,
                 target: ".content-area",
                 placement: "left",
                 onShow: () => {
                     window.location.hash = mod.topicId;
-                    // Expand module in sidebar if needed (optional implementation)
-                    // Wait for load
-                    return new Promise(resolve => setTimeout(resolve, 1000));
+                    return new Promise(resolve => setTimeout(resolve, 1500)); // Allow time for route & render
                 }
             });
 
-            // Step 2: Highlight a specific component of this module
+            // Step 2: Highlight specific components (alternating)
             moduleSteps.push({
-                title: `${mod.title} Content`,
-                message: "Each topic contains Handouts, Slides, Labs, and Activities. Click the tabs to switch views.",
+                title: `${mod.title} Features`,
+                message: "Here you will find handouts, labs, and interactive quizzes. Use the tabs below to switch modes.",
                 target: ".content-tabs",
                 placement: "bottom"
             });
@@ -81,11 +87,11 @@ class TourSystem {
         const outroSteps = [
             {
                 title: "You're Ready!",
-                message: "You've seen the highlights of all modules. Start your journey with Module 1 now!",
+                message: "You've seen the highlights. It's time to start your journey with Module 1. Happy Learning!",
                 target: null,
                 placement: "center",
                 onShow: () => {
-                    window.location.hash = 'm1-t1'; // Return to start
+                    window.location.hash = 'm1-t1';
                     return new Promise(resolve => setTimeout(resolve, 500));
                 }
             }
@@ -112,9 +118,13 @@ class TourSystem {
                 <p id="tour-message">Message</p>
             </div>
             <div class="tour-footer">
-                <span class="tour-steps-count" id="tour-count">1 / 5</span>
+                <div class="tour-progress-bar">
+                    <div id="tour-progress-fill" style="width: 0%; height: 4px; background: #E67E22; transition: width 0.3s;"></div>
+                </div>
                 <div class="tour-controls">
-                    <button class="tour-btn tour-btn-back" id="tour-back">Back</button>
+                    <span id="tour-status" style="font-size: 12px; color: #666; margin-right: 10px;">Auto-playing...</span>
+                    <!-- Hidden manually output controls for auto mode -->
+                    <button class="tour-btn tour-btn-back" id="tour-back" style="display:none">Back</button>
                     <button class="tour-btn tour-btn-next" id="tour-next">Next</button>
                 </div>
             </div>
@@ -122,18 +132,32 @@ class TourSystem {
         document.body.appendChild(this.tooltip);
 
         // Event Listeners
-        document.getElementById('tour-next').addEventListener('click', this.nextStep);
-        document.getElementById('tour-back').addEventListener('click', this.prevStep);
+        document.getElementById('tour-next').addEventListener('click', () => {
+            // If manual click, cancel auto-wait and go next
+            this.cancelAuto();
+            this.nextStep();
+        });
+        document.getElementById('tour-back').addEventListener('click', () => {
+            this.cancelAuto();
+            this.prevStep();
+        });
     }
 
     async startTour() {
         this.isActive = true;
+        this.isAutoMode = true; // Default to auto
         this.currentStep = 0;
+
         this.overlay.classList.add('active');
+        // Ensure overlay blocks interaction
+        this.overlay.style.pointerEvents = 'auto';
+
         await this.showStep(this.currentStep);
     }
 
     async showStep(index) {
+        if (!this.isActive) return;
+
         if (index < 0 || index >= this.steps.length) {
             this.endTour();
             return;
@@ -141,21 +165,24 @@ class TourSystem {
 
         const step = this.steps[index];
 
-        // Execute onShow action if exists
+        // cleanup previous
+        this.cancelAuto();
+
+        // Prepare UI (fade out briefly or keep?)
+        // this.tooltip.style.opacity = '0.7';
+
+        // Execute onShow action
         if (step.onShow) {
-            // Show loading state or temporary pause?
-            this.tooltip.style.opacity = '0';
             await step.onShow();
         }
+
+        if (!this.isActive) return; // In case closed during await
 
         // Find Target
         let targetEl = null;
         if (step.target) {
             targetEl = document.querySelector(step.target);
-            // If target not found (e.g. dynamic content failed), fallback to center
-            if (!targetEl) {
-                console.warn(`Tour target ${step.target} not found.`);
-            }
+            if (!targetEl) console.warn(`Tour target ${step.target} not found.`);
         }
 
         // Highlight
@@ -164,39 +191,89 @@ class TourSystem {
         // Update Content
         document.getElementById('tour-title').innerText = step.title;
         document.getElementById('tour-message').innerHTML = step.message;
-        document.getElementById('tour-count').innerText = `${index + 1} / ${this.steps.length}`;
+
+        // Update Progress
+        const progress = ((index + 1) / this.steps.length) * 100;
+        document.getElementById('tour-progress-fill').style.width = `${progress}%`;
 
         // Button State
-        document.getElementById('tour-back').style.display = index === 0 ? 'none' : 'block';
-        document.getElementById('tour-next').innerText = index === this.steps.length - 1 ? 'Finish' : 'Next';
+        const backBtn = document.getElementById('tour-next');
+        backBtn.innerText = index === this.steps.length - 1 ? 'Finish' : (this.isAutoMode ? 'Skip' : 'Next');
 
         // Position Tooltip
         this.positionTooltip(targetEl, step.placement);
-
         this.tooltip.classList.add('active');
+        this.tooltip.style.opacity = '1';
+
+        // Speak & Auto Advance
+        if (this.isAutoMode) {
+            this.speakAndAdvance(step.message);
+        }
+    }
+
+    speakAndAdvance(text) {
+        if (!this.speechSynth) return;
+
+        this.cancelAuto(); // Safety
+
+        const plainText = text.replace(/<[^>]*>/g, '');
+        const utterance = new SpeechSynthesisUtterance(plainText);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+
+        utterance.onend = () => {
+            if (this.isActive && this.isAutoMode) {
+                // Pause briefly then next
+                this.autoTimeout = setTimeout(() => {
+                    this.nextStep();
+                }, 1500);
+            }
+        };
+
+        this.currentUtterance = utterance;
+        this.speechSynth.speak(utterance);
+    }
+
+    cancelAuto() {
+        if (this.speechSynth) {
+            this.speechSynth.cancel();
+        }
+        if (this.autoTimeout) {
+            clearTimeout(this.autoTimeout);
+            this.autoTimeout = null;
+        }
+    }
+
+    togglePlayPause() {
+        this.isAutoMode = !this.isAutoMode;
+        if (!this.isAutoMode) {
+            this.cancelAuto();
+            document.getElementById('tour-status').innerText = "Paused";
+            document.getElementById('tour-next').innerText = "Next";
+        } else {
+            document.getElementById('tour-status').innerText = "Auto-playing...";
+            this.showStep(this.currentStep); // Restart step logic
+        }
     }
 
     highlightElement(el) {
-        // Remove previous highlight
         if (this.highlightedElement) {
             this.highlightedElement.classList.remove('tour-highlight');
             this.highlightedElement.style.position = '';
-            this.highlightedElement.style.zIndex = '';
+            // Restore zIndex if we touched it (complex to track, assume CSS handles most)
         }
 
         if (el) {
             this.highlightedElement = el;
             el.classList.add('tour-highlight');
-            // We rely on CSS box-shadow for the dimming effect, 
-            // but we need to ensure z-index is high.
-            // Note: If element has 'position: static', z-index won't apply.
+
+            // Ensure visibility above overlay
             const computedStyle = window.getComputedStyle(el);
             if (computedStyle.position === 'static') {
                 el.style.position = 'relative';
             }
-            // Temporarily boost z-index.
-            // Note: This can break some layouts (stacking contexts). 
-            // A safer partial approach is used in simple tours.
+            // Z-index handled by CSS .tour-highlight often, 
+            // but sometimes inline needed for stacking contexts
         } else {
             this.highlightedElement = null;
         }
@@ -205,6 +282,11 @@ class TourSystem {
     positionTooltip(targetEl, placement) {
         const tooltip = this.tooltip;
         const spacing = 15;
+
+        // Reset
+        tooltip.style.top = '';
+        tooltip.style.left = '';
+        tooltip.style.transform = 'translate(0, 0)';
 
         if (!targetEl) {
             // Center
@@ -215,40 +297,40 @@ class TourSystem {
         }
 
         const rect = targetEl.getBoundingClientRect();
-        const tRect = tooltip.getBoundingClientRect(); // Dimensions might be wrong if hidden, but we set width fixed in CSS
+        // Since tooltip might be hidden/invisible, getBoundingClientRect might be 0? 
+        // We assume it has dimensions from CSS width: 320px
+        const tWidth = 320;
+        const tHeight = tooltip.offsetHeight || 150; // Estimate if 0
 
         let top, left;
 
-        // Reset transform
-        tooltip.style.transform = 'none';
-
         switch (placement) {
             case 'top':
-                top = rect.top - tRect.height - spacing;
-                left = rect.left + (rect.width - tRect.width) / 2;
+                top = rect.top - tHeight - spacing;
+                left = rect.left + (rect.width - tWidth) / 2;
                 break;
             case 'bottom':
                 top = rect.bottom + spacing;
-                left = rect.left + (rect.width - tRect.width) / 2;
+                left = rect.left + (rect.width - tWidth) / 2;
                 break;
             case 'left':
-                top = rect.top + (rect.height - tRect.height) / 2;
-                left = rect.left - tRect.width - spacing;
+                top = rect.top + (rect.height - tHeight) / 2;
+                left = rect.left - tWidth - spacing;
                 break;
             case 'right':
-                top = rect.top + (rect.height - tRect.height) / 2;
+                top = rect.top + (rect.height - tHeight) / 2;
                 left = rect.right + spacing;
                 break;
             default: // center
-                top = window.innerHeight / 2 - tRect.height / 2;
-                left = window.innerWidth / 2 - tRect.width / 2;
+                top = window.innerHeight / 2 - tHeight / 2;
+                left = window.innerWidth / 2 - tWidth / 2;
         }
 
-        // Boundary checks (Keep on screen)
+        // Boundary checks
         if (left < 10) left = 10;
         if (top < 10) top = 10;
-        if (left + tRect.width > window.innerWidth) left = window.innerWidth - tRect.width - 10;
-        if (top + tRect.height > window.innerHeight) top = window.innerHeight - tRect.height - 10;
+        if (left + tWidth > window.innerWidth) left = window.innerWidth - tWidth - 10;
+        if (top + tHeight > window.innerHeight) top = window.innerHeight - tHeight - 10;
 
         tooltip.style.top = `${top}px`;
         tooltip.style.left = `${left}px`;
@@ -266,15 +348,19 @@ class TourSystem {
 
     endTour() {
         this.isActive = false;
+        this.cancelAuto();
+
         this.overlay.classList.remove('active');
         this.tooltip.classList.remove('active');
+
         if (this.highlightedElement) {
             this.highlightedElement.classList.remove('tour-highlight');
             this.highlightedElement.style.position = '';
             this.highlightedElement = null;
         }
-        // Optional: Go back to home
-        // window.location.hash = '';
+
+        // Reset overlay pointer events
+        this.overlay.style.pointerEvents = 'none';
     }
 
     handleResize() {
