@@ -27,71 +27,71 @@ class TourSystem {
         this.createTourUI();
         window.addEventListener('resize', this.handleResize);
 
-        // Define Tour Steps
-        this.steps = [
+        // Define Intro Steps
+        const introSteps = [
             {
                 title: "Welcome to Agri-LMS!",
-                message: "This interactive platform helps you master AI & ML concepts in Agriculture. Let's take a quick tour to show you around.",
-                target: null, // Center screen
+                message: "This interactive platform helps you master AI & ML concepts in Agriculture. Let's take a tour of the modules.",
+                target: null,
                 placement: "center"
             },
             {
                 title: "Navigation & Progress",
-                message: "Use the sidebar to explore Modules and Topics. Your learning progress is tracked here automatically as you complete sections.",
+                message: "Use the sidebar to explore Modules. Your progress is tracked automatically.",
                 target: ".sidebar",
                 placement: "right"
-            },
-            {
-                title: "Module Overview",
-                message: "Here you can see all the modules available in the course. Each module is packed with handouts, labs, and activities.",
-                target: "#module-overview", // We might need to navigate here first
-                placement: "top",
-                onShow: () => {
-                    window.location.hash = ''; // Go to overview
-                    return new Promise(resolve => setTimeout(resolve, 500));
-                }
-            },
-            {
-                title: "Topic Content",
-                message: "Let's dive into a topic! This is the main learning area where you'll spend most of your time.",
+            }
+        ];
+
+        // Define Module Steps
+        const moduleSteps = [];
+        const modules = [
+            { id: 1, title: "Module 1: Fundamentals", topicId: "m1-t1", desc: "Start with Python & AI basics." },
+            { id: 2, title: "Module 2: Data Science", topicId: "m2-t1", desc: "Learn data handling with Pandas." },
+            { id: 3, title: "Module 3: Deep Learning", topicId: "m3-t1", desc: "Explore Neural Networks & Vision." },
+            { id: 4, title: "Module 4: Projects", topicId: "m4-t1", desc: "End-to-end Machine Learning projects." },
+            { id: 5, title: "Module 5: Portfolio", topicId: "m5-t1", desc: "Build your professional portfolio." }
+        ];
+
+        modules.forEach(mod => {
+            // Step 1: Navigate to Topic
+            moduleSteps.push({
+                title: mod.title,
+                message: `Navigating to <b>${mod.title}</b>. ${mod.desc}`,
                 target: ".content-area",
                 placement: "left",
                 onShow: () => {
-                    window.location.hash = 'm1-t1'; // Navigate to first topic
-                    return new Promise(resolve => setTimeout(resolve, 800)); // Wait for load
+                    window.location.hash = mod.topicId;
+                    // Expand module in sidebar if needed (optional implementation)
+                    // Wait for load
+                    return new Promise(resolve => setTimeout(resolve, 1000));
                 }
-            },
-            {
-                title: "Learning Tabs",
-                message: "Switch between <strong>Handouts</strong> (Theory), <strong>Slides</strong> (Visuals), <strong>Labs</strong> (Code), and <strong>Activities</strong> using these tabs.",
+            });
+
+            // Step 2: Highlight a specific component of this module
+            moduleSteps.push({
+                title: `${mod.title} Content`,
+                message: "Each topic contains Handouts, Slides, Labs, and Activities. Click the tabs to switch views.",
                 target: ".content-tabs",
                 placement: "bottom"
-            },
-            {
-                title: "Interactive Labs",
-                message: "In the 'Lab' tab, you'll find Python code snippets with explanations. You can even run them in Google Colab!",
-                target: "#content-tabs button[onclick*='code']", // Target specific tab button if possible, else generic
-                placement: "bottom",
-                onShow: () => {
-                    // Simulate click on Lab tab
-                    const btn = document.querySelector(".content-tabs button:nth-child(3)");
-                    if (btn) btn.click();
-                    return new Promise(resolve => setTimeout(resolve, 300));
-                }
-            },
-            {
-                title: "Navigation Controls",
-                message: "Once you're done, use these buttons to move to the Next Topic or return to the Module menu.",
-                target: ".navigation",
-                placement: "top"
-            },
+            });
+        });
+
+        // Define Outro Steps
+        const outroSteps = [
             {
                 title: "You're Ready!",
-                message: "Explore freely. Don't forget to check out the real-world Projects in Module 4 & 5. Happy Learning!",
+                message: "You've seen the highlights of all modules. Start your journey with Module 1 now!",
                 target: null,
-                placement: "center"
+                placement: "center",
+                onShow: () => {
+                    window.location.hash = 'm1-t1'; // Return to start
+                    return new Promise(resolve => setTimeout(resolve, 500));
+                }
             }
         ];
+
+        this.steps = [...introSteps, ...moduleSteps, ...outroSteps];
     }
 
     createTourUI() {
