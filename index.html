@@ -74,22 +74,11 @@
             </div>
         </div>
 
-        <div class="growth-board-container">
-            <div class="growth-item gi-1">
+        <div class="growth-board-container" id="stateStatsBoard">
+            <!-- Content populated dynamically by js/india-agri-stats.js -->
+            <div class="growth-item active">
                 <div class="growth-title">India Agriculture</div>
-                <div class="growth-stat">#1 Milk Producer 🥛</div>
-            </div>
-            <div class="growth-item gi-2">
-                <div class="growth-title">Karnataka Agriculture</div>
-                <div class="growth-stat">Coffee Capital (70%) ☕</div>
-            </div>
-            <div class="growth-item gi-3">
-                <div class="growth-title">India Agriculture</div>
-                <div class="growth-stat">#2 Rice Producer 🌾</div>
-            </div>
-            <div class="growth-item gi-4">
-                <div class="growth-title">Karnataka Growth</div>
-                <div class="growth-stat">Leading Agri-Tech Hub 🚀</div>
+                <div class="growth-stat">Loading Facts... 🚜</div>
             </div>
         </div>
 
@@ -252,6 +241,7 @@
     <!-- Scripts -->
     <div id="toast-container" class="toast-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="js/india-agri-stats.js"></script> <!-- New Stats Script -->
     <script src="js/comprehensive-structure.js"></script>
     <script src="js/module-content.js"></script>
     <script src="js/lecture-content.js"></script>
