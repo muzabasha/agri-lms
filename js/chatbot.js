@@ -88,7 +88,28 @@ class AgriBot {
         this.createUI();
         this.attachListeners();
         this.speechEnabled = false; // Default off
+
+        // Pre-load voices for smoother experience
+        this.voices = [];
+        if (window.speechSynthesis) {
+            const loadVoices = () => {
+                this.voices = window.speechSynthesis.getVoices();
+            };
+            loadVoices();
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = loadVoices;
+            }
+        }
     }
+
+    createUI() {
+        // ... (UI creation code remains the same, skipping to keep this edit focused if possible, but replace_file_content needs contiguity. The user didn't ask to change UI)
+        // actually I can't skip UI creation lines if I'm replacing init unless I target carefully.
+        // Let's just target 'init' and 'speakResponse'.
+        // Wait, 'createUI' is between them? No, init is at top. speakResponse is at bottom.
+        // I will do two edits.
+    }
+    // ...
 
     createUI() {
         // Create Toggle Button (Floating Bottom Right)
@@ -267,6 +288,9 @@ class AgriBot {
     speakResponse(text) {
         if (!window.speechSynthesis) return;
 
+        // Stop any current speech
+        window.speechSynthesis.cancel();
+
         // Strip HTML
         const safeText = text.replace(/<[^>]*>/g, '');
         const utterance = new SpeechSynthesisUtterance(safeText);
@@ -278,12 +302,38 @@ class AgriBot {
 
         utterance.lang = langCode;
 
-        // Try to find a specific voice
-        const voices = window.speechSynthesis.getVoices();
-        const voice = voices.find(v => v.lang.includes(langCode));
-        if (voice) {
-            utterance.voice = voice;
+        // Robust Voice Selection
+        const voices = this.voices.length > 0 ? this.voices : window.speechSynthesis.getVoices();
+        let selectedVoice = null;
+
+        if (this.language === 'kn') {
+            // Priority 1: Specific "Kannada" named voice (Google/Microsoft)
+            selectedVoice = voices.find(v => v.name.includes('Kannada') || v.lang === 'kn-IN');
+        } else if (this.language === 'hi') {
+            // Priority 1: Specific "Hindi" named voice
+            selectedVoice = voices.find(v => v.name.includes('Hindi') || v.name.includes('Google हिन्दी') || v.lang === 'hi-IN');
+        } else {
+            // English: Prefer Female Voices (aligned with Tour)
+            const preferred = ['Google US English', 'Microsoft Zira', 'Samantha'];
+            for (const name of preferred) {
+                selectedVoice = voices.find(v => v.name.includes(name));
+                if (selectedVoice) break;
+            }
         }
+
+        // Fallback: strictly matching lang code
+        if (!selectedVoice) {
+            selectedVoice = voices.find(v => v.lang.startsWith(langCode));
+        }
+
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+            // console.log("Speaking with:", selectedVoice.name); 
+        }
+
+        // Adjustments for clarity
+        utterance.rate = 0.95; // Slightly slower
+        utterance.pitch = 1.0;
 
         window.speechSynthesis.speak(utterance);
     }
