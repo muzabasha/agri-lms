@@ -1,3 +1,32 @@
+/* Chat Header Button */
+.chat-header-btn {
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(30, 58, 138, 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.chat-header-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(30, 58, 138, 0.4);
+    background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+}
+
+.chat-header-btn i {
+    font-size: 1rem;
+}
+
 /* --- CHATBOT TOKENS --- */
 :root {
     --chat-primary: #1e3a8a;
