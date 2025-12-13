@@ -213,55 +213,87 @@
     background: #e5e7eb;
 }
 
-/* Demo Button Style */
+/* Premium Demo Button Style */
 .tour-btn-demo {
+    position: relative;
     background: linear-gradient(135deg, #8E44AD, #9B59B6);
     color: white;
     border: none;
-    padding: 0 20px;
-    height: 40px;
-    border-radius: 20px;
+    padding: 0 24px;
+    height: 44px;
+    /* Slightly taller */
+    border-radius: 22px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(142, 68, 173, 0.3);
-    transition: all 0.3s ease;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
-    font-size: 0.9rem;
-    margin-left: 0;
+    font-size: 0.95rem;
+    overflow: hidden;
+    /* For shimmer */
+    z-index: 1;
 }
 
 .tour-btn-demo:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(142, 68, 173, 0.4);
-    background: linear-gradient(135deg, #9B59B6, #8E44AD);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(142, 68, 173, 0.6);
 }
 
-.tour-btn-demo i {
-    font-size: 1rem;
+/* Shimmer Effect */
+.tour-btn-demo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: skewX(-20deg);
+    transition: 0.5s;
+    pointer-events: none;
+    animation: shimmer 3s infinite;
 }
 
-/* Pulse animation for the demo button */
-@keyframes demoPulse {
+@keyframes shimmer {
     0% {
-        transform: scale(1);
-        box-shadow: 0 4px 6px rgba(142, 68, 173, 0.3);
+        left: -100%;
     }
 
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 6px 15px rgba(142, 68, 173, 0.5);
+    20% {
+        left: 100%;
     }
 
     100% {
-        transform: scale(1);
-        box-shadow: 0 4px 6px rgba(142, 68, 173, 0.3);
+        left: 100%;
     }
 }
 
+.tour-btn-demo i {
+    font-size: 1.1rem;
+    animation: wiggle 3s infinite;
+}
+
+@keyframes wiggle {
+
+    0%,
+    90% {
+        transform: rotate(0);
+    }
+
+    95% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(-10deg);
+    }
+}
+
+/* Hide the old pulse if we use wiggle/shimmer */
 .tour-btn-demo.pulse {
-    animation: demoPulse 2s infinite;
+    animation: none;
 }

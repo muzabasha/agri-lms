@@ -38,18 +38,18 @@ class TourSystem {
         const demoTopicId = 'm1-t1';
 
         this.steps = [
-            // 1. Intro
+            // PAGE 1: HOME / DASHBOARD
             {
-                title: "Welcome to Agri-LMS",
-                message: "Welcome! I will guide you through a complete learning module to show you how effective this platform is. Let's start with <b>Module 1: Introduction to AI</b>.",
-                target: null,
-                placement: "center"
+                title: "Page 1: The Dashboard",
+                message: "Welcome to your <b>Home Dashboard</b>. This sidebar is your main navigation hub. It tracks your progress across all 5 modules.",
+                target: ".sidebar",
+                placement: "right"
             },
 
-            // 2. Navigate to Topic
+            // PAGE 2: LEARNING PAGE (Navigate to Topic)
             {
-                title: "Topic Navigation",
-                message: "We are navigating to <b>Topic 1: The Smart Scarecrow</b>. Every topic focuses on a real-world agricultural problem solved by AI.",
+                title: "Page 2: The Learning Area",
+                message: "Let's move to the <b>Learning Page</b>. Every topic loads here, giving you instant access to all materials.",
                 target: ".content-area",
                 placement: "left",
                 onShow: () => {
@@ -58,12 +58,12 @@ class TourSystem {
                 }
             },
 
-            // 3. Handout (Theory)
+            // PAGE 3: TOOLS (Tabs)
             {
-                title: "Step 1: The Handout",
-                message: "We start with the <b>Handout</b>. Here, we explain that AI is like a 'Smart Scarecrow' that doesn't just scare, but <i>learns</i> from bird patterns.",
-                target: "#handout",
-                placement: "top",
+                title: "Page 3: Interactive Tools",
+                message: "On this page, you have 4 powerful tools: Handouts, Slides, Python Labs, and Quizzes. Switching tabs is like turning the page of a smart book.",
+                target: ".content-tabs",
+                placement: "bottom",
                 onShow: () => {
                     document.querySelector('button[data-tab="handout"]').click();
                     return new Promise(resolve => setTimeout(resolve, 1000));
