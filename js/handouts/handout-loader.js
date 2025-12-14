@@ -33,6 +33,11 @@ const HandoutLoader = {
         }
         if (typeof module2HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module2HandoutsPart2);
+            console.log('[HandoutLoader] Loaded module2HandoutsPart2');
+        }
+        if (typeof module2HandoutsPart3 !== 'undefined') {
+            Object.assign(this.handouts, module2HandoutsPart3);
+            console.log('[HandoutLoader] Loaded module2HandoutsPart3');
         }
 
         // Combine Module 3 handouts
@@ -40,15 +45,45 @@ const HandoutLoader = {
             Object.assign(this.handouts, module3Handouts);
             console.log('[HandoutLoader] Loaded module3Handouts');
         }
+        if (typeof module3HandoutsPart2 !== 'undefined') {
+            Object.assign(this.handouts, module3HandoutsPart2);
+            console.log('[HandoutLoader] Loaded module3HandoutsPart2');
+        }
+        if (typeof module3HandoutsPart3 !== 'undefined') {
+            Object.assign(this.handouts, module3HandoutsPart3);
+            console.log('[HandoutLoader] Loaded module3HandoutsPart3');
+        }
 
         // Combine Module 4 handouts
         if (typeof module4Handouts !== 'undefined') {
             Object.assign(this.handouts, module4Handouts);
+            console.log('[HandoutLoader] Loaded module4Handouts');
+        }
+        if (typeof module4HandoutsPart2 !== 'undefined') {
+            Object.assign(this.handouts, module4HandoutsPart2);
+            console.log('[HandoutLoader] Loaded module4HandoutsPart2');
         }
 
         // Combine Module 5 handouts
         if (typeof module5Handouts !== 'undefined') {
             Object.assign(this.handouts, module5Handouts);
+            console.log('[HandoutLoader] Loaded module5Handouts');
+        }
+
+        // Combine Activities
+        if (typeof activitiesHandouts !== 'undefined') {
+            Object.assign(this.handouts, activitiesHandouts);
+            console.log('[HandoutLoader] Loaded activitiesHandouts');
+        }
+
+        // Combine Extended Modules
+        if (typeof module3HandoutsPart4 !== 'undefined') {
+            Object.assign(this.handouts, module3HandoutsPart4);
+            console.log('[HandoutLoader] Loaded module3HandoutsPart4');
+        }
+        if (typeof module4HandoutsPart3 !== 'undefined') {
+            Object.assign(this.handouts, module4HandoutsPart3);
+            console.log('[HandoutLoader] Loaded module4HandoutsPart3');
         }
 
         this.initialized = true;
