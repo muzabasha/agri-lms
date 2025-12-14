@@ -70,7 +70,7 @@ class App {
                     topicLink.className = 'topic-link';
                     topicLink.setAttribute('data-topic', topic.id);
 
-                    const progress = progressTracker.isTopicCompleted(topic.id);
+                    const progress = progressTracker.isComplete(topic.id);
                     if (progress) {
                         topicLink.classList.add('completed');
                     }
