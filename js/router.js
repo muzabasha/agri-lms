@@ -32,9 +32,9 @@ class Router {
         const moduleOverview = document.getElementById('moduleOverview');
 
         // Reset displays
-        welcomeScreen.style.display = 'none';
-        topicContent.style.display = 'none';
-        moduleOverview.style.display = 'none';
+        if (welcomeScreen) welcomeScreen.style.display = 'none';
+        if (topicContent) topicContent.style.display = 'none';
+        if (moduleOverview) moduleOverview.style.display = 'none';
 
         if (route === '' || route === 'home') {
             welcomeScreen.style.display = 'block';
