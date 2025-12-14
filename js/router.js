@@ -161,8 +161,19 @@ class Router {
             console.log('[ROUTER] loadHandout called with topic:', topic);
             console.log('[ROUTER] typeof lectureSystem:', typeof lectureSystem);
 
-            // PRIORITY 1: Try lectureSystem first (for comprehensive handouts)
-            if (typeof lectureSystem !== 'undefined') {
+            // PRIORITY 0: Try HandoutLoader (comprehensive handouts with farming analogies)
+            if (typeof HandoutLoader !== 'undefined' && HandoutLoader.hasHandout && HandoutLoader.hasHandout(topic.id)) {
+                try {
+                    content = HandoutLoader.getHandout(topic.id);
+                    console.log('[SUCCESS] Comprehensive handout loaded from HandoutLoader for:', topic.id);
+                } catch (e) {
+                    console.error('[ERROR] HandoutLoader.getHandout() error:', e);
+                    content = null;
+                }
+            }
+
+            // PRIORITY 1: Try lectureSystem (for comprehensive handouts)
+            if (!content && typeof lectureSystem !== 'undefined') {
                 try {
                     console.log('[ROUTER] Calling lectureSystem.getContent(' + topic.id + ')');
                     const handoutObj = lectureSystem.getContent(topic.id);
