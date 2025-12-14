@@ -119,8 +119,8 @@ class Router {
             topic = legacyTopic;
         }
 
-        // Update story
-        storyManager.displayStory(topicId);
+        // Story feature removed
+        // storyManager.displayStory(topicId);
 
         // Load Handout (Primary and ONLY content in handout-only mode)
         this.loadHandout(topic);
