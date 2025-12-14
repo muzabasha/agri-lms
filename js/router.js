@@ -152,49 +152,38 @@ class Router {
         const handoutPanel = document.getElementById('handout');
 
         // Show loading state
-        handoutPanel.innerHTML = `
-            <div class="content-loading">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Loading content...</div>
-            </div>
-        `;
-
-        // Simulate slight delay for smooth UX (prevents flash)
-        setTimeout(() => {
+        // Update functionality using View Transitions API for modern, instant feel
+        const updateContent = () => {
             let content = "";
 
             console.log('[ROUTER] loadHandout called with topic:', topic);
-            console.log('[ROUTER] typeof lectureSystem:', typeof lectureSystem);
 
             // PRIORITY 0: Try HandoutLoader (comprehensive handouts with farming analogies)
-            if (typeof HandoutLoader !== 'undefined' && HandoutLoader.hasHandout && HandoutLoader.hasHandout(topic.id)) {
-                try {
-                    content = HandoutLoader.getHandout(topic.id);
-                    console.log('[SUCCESS] Comprehensive handout loaded from HandoutLoader for:', topic.id);
-                } catch (e) {
-                    console.error('[ERROR] HandoutLoader.getHandout() error:', e);
-                    content = null;
+            if (typeof HandoutLoader !== 'undefined') {
+                // Force init if needed to ensure content availability
+                if (!HandoutLoader.initialized) HandoutLoader.init();
+
+                if (HandoutLoader.hasHandout(topic.id)) {
+                    try {
+                        content = HandoutLoader.getHandout(topic.id);
+                        console.log('[SUCCESS] Comprehensive handout loaded from HandoutLoader for:', topic.id);
+                    } catch (e) {
+                        console.error('[ERROR] HandoutLoader.getHandout() error:', e);
+                        content = null;
+                    }
                 }
             }
 
             // PRIORITY 1: Try lectureSystem (for comprehensive handouts)
             if (!content && typeof lectureSystem !== 'undefined') {
                 try {
-                    console.log('[ROUTER] Calling lectureSystem.getContent(' + topic.id + ')');
                     const handoutObj = lectureSystem.getContent(topic.id);
-                    console.log('[ROUTER] Result from lectureSystem.getContent():', handoutObj);
-                    console.log('[ROUTER] handoutObj.handout type:', typeof (handoutObj ? handoutObj.handout : 'N/A'));
-
                     if (handoutObj && handoutObj.handout) {
                         content = handoutObj.handout;
                         console.log('[SUCCESS] Handout loaded from lectureSystem for topic.id:', topic.id);
-                    } else {
-                        console.warn('[WARN] lectureSystem.getContent returned no handout for topic.id:', topic.id);
-                        content = null;
                     }
                 } catch (e) {
-                    console.error('[ERROR] lectureSystem.getContent() threw error:', e);
-                    content = null;
+                    console.error('[ERROR] lectureSystem error:', e);
                 }
             }
 
@@ -205,17 +194,30 @@ class Router {
                     console.log('[SUCCESS] Handout loaded from topic.handout for topic.id:', topic.id);
                 } else {
                     content = `<div style='background:#ffcccc; color:#990000; padding:20px; border-radius:8px;'><h3>⚠️ Handout Not Available</h3><p>Topic ID: <code>${topic.id}</code></p><p>Neither lectureSystem nor topic.handout has content for this topic.</p></div>`;
-                    console.error('[ERROR] No handout found in lectureSystem or topic.handout for topic.id:', topic.id);
+                    console.error('[ERROR] No handout found for topic.id:', topic.id);
                 }
             }
 
-            // Render content with fade-in animation
+            // Render content instantly
             handoutPanel.innerHTML = `
-                <div class="handout-content">
+                <div class="handout-content fade-in-up">
                     ${content}
                 </div>
             `;
-        }, 200); // Small delay for loading state visibility
+
+            // Re-highlight code snippets
+            if (window.hljs) window.hljs.highlightAll();
+        };
+
+        // Use View Transition if supported (Modern Chrome/Edge)
+        if (document.startViewTransition) {
+            document.startViewTransition(() => {
+                updateContent();
+            });
+        } else {
+            // Fallback for Safari/Firefox
+            updateContent();
+        }
     }
 
     loadCodeLab(topic) {
