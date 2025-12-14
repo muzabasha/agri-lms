@@ -876,3 +876,5 @@ document.addEventListener('click', function (e) {
         }
     }
 });
+
+window.quizSystem = quizSystem;

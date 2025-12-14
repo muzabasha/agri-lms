@@ -98,3 +98,5 @@ class ProgressTracker {
 }
 
 const progressTracker = new ProgressTracker();
+
+window.progressTracker = progressTracker;

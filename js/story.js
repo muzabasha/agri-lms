@@ -179,3 +179,5 @@ class StoryManager {
 
 // Export
 const storyManager = new StoryManager();
+
+window.storyManager = storyManager;

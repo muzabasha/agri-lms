@@ -1388,3 +1388,5 @@ class ActivitySystem {
 }
 
 const activitySystem = new ActivitySystem();
+
+window.activitySystem = activitySystem;
