@@ -222,3 +222,5 @@ class LabSystem {
 
 const labSystem = new LabSystem();
 
+
+window.labSystem = labSystem;

@@ -225,3 +225,5 @@ class CourseContent {
 
 // Export
 const courseContent = new CourseContent();
+
+window.courseContent = courseContent;

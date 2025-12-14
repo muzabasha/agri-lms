@@ -597,3 +597,5 @@ crop_efficiency = [<span style="color: #60a5fa;">95, 88, 75, 60, 98</span>]
 const lectureSystem = new LectureSystem();
 window.courseContent = lectureSystem;
 console.log('[INIT] Enhanced LectureSystem loaded with comprehensive Module 1 content');
+
+window.lectureSystem = lectureSystem;

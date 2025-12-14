@@ -820,3 +820,5 @@ const totalHours = comprehensiveCourseStructure.modules.reduce((sum, mod) => sum
 
 console.log(`Total Topics: ${totalTopics}`);
 console.log(`Total Hours: ${totalHours}`);
+
+window.comprehensiveCourseStructure = comprehensiveCourseStructure;

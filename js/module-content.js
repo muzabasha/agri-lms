@@ -144,3 +144,5 @@ class ModuleSystem {
 }
 
 const moduleSystem = new ModuleSystem();
+
+window.moduleSystem = moduleSystem;
