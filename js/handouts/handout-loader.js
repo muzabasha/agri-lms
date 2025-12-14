@@ -4,23 +4,32 @@
 const HandoutLoader = {
     // All handouts combined from multiple files
     handouts: {},
+    initialized: false,
 
     // Initialize - call this after all handout files are loaded
     init: function () {
+        if (this.initialized) return;
+
+        console.log('[HandoutLoader] Initializing...');
+
         // Combine Module 1 handouts
         if (typeof module1Handouts !== 'undefined') {
             Object.assign(this.handouts, module1Handouts);
+            console.log('[HandoutLoader] Loaded module1Handouts');
         }
         if (typeof module1HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module1HandoutsPart2);
+            console.log('[HandoutLoader] Loaded module1HandoutsPart2');
         }
         if (typeof module1HandoutsPart3 !== 'undefined') {
             Object.assign(this.handouts, module1HandoutsPart3);
+            console.log('[HandoutLoader] Loaded module1HandoutsPart3');
         }
 
         // Combine Module 2 handouts
         if (typeof module2Handouts !== 'undefined') {
             Object.assign(this.handouts, module2Handouts);
+            console.log('[HandoutLoader] Loaded module2Handouts');
         }
         if (typeof module2HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module2HandoutsPart2);
@@ -29,6 +38,7 @@ const HandoutLoader = {
         // Combine Module 3 handouts
         if (typeof module3Handouts !== 'undefined') {
             Object.assign(this.handouts, module3Handouts);
+            console.log('[HandoutLoader] Loaded module3Handouts');
         }
 
         // Combine Module 4 handouts
@@ -41,12 +51,21 @@ const HandoutLoader = {
             Object.assign(this.handouts, module5Handouts);
         }
 
+        this.initialized = true;
         console.log(`📚 HandoutLoader: Loaded ${Object.keys(this.handouts).length} handouts`);
+        console.log('[HandoutLoader] Available:', Object.keys(this.handouts).slice(0, 10), '...');
     },
 
-    // Get handout by topic ID
+    // Get handout by topic ID - auto-init if needed
     getHandout: function (topicId) {
-        return this.handouts[topicId] || this.generatePlaceholder(topicId);
+        if (!this.initialized) this.init();
+        const handout = this.handouts[topicId];
+        if (handout) {
+            console.log(`[HandoutLoader] Found handout for ${topicId}`);
+            return handout;
+        }
+        console.log(`[HandoutLoader] No handout for ${topicId}, using placeholder`);
+        return null; // Return null so fallback systems can be used
     },
 
     // Generate placeholder for missing handouts
@@ -73,18 +92,23 @@ const HandoutLoader = {
         `;
     },
 
-    // Check if handout exists
+    // Check if handout exists - auto-init if needed
     hasHandout: function (topicId) {
-        return topicId in this.handouts;
+        if (!this.initialized) this.init();
+        const has = topicId in this.handouts;
+        console.log(`[HandoutLoader] hasHandout(${topicId}): ${has}`);
+        return has;
     },
 
     // Get list of available handout IDs
     getAvailableHandouts: function () {
+        if (!this.initialized) this.init();
         return Object.keys(this.handouts);
     },
 
     // Get handout count by module
     getModuleStats: function () {
+        if (!this.initialized) this.init();
         const stats = { m1: 0, m2: 0, m3: 0, m4: 0, m5: 0 };
         for (const id of Object.keys(this.handouts)) {
             const module = id.substring(0, 2);
@@ -96,7 +120,10 @@ const HandoutLoader = {
     }
 };
 
-// Auto-initialize when DOM is ready
+// Initialize immediately when script loads
+HandoutLoader.init();
+
+// Also run on DOMContentLoaded as backup  
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', function () {
         HandoutLoader.init();
@@ -107,3 +134,4 @@ if (typeof document !== 'undefined') {
 if (typeof window !== 'undefined') {
     window.HandoutLoader = HandoutLoader;
 }
+

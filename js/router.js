@@ -40,25 +40,29 @@ class Router {
             welcomeScreen.style.display = 'block';
         } else if (route === 'final-exam') {
             // Show topic content container but hide tabs (special mode)
-            topicContent.style.display = 'block';
+            if (topicContent) topicContent.style.display = 'block';
 
             // Explicitly hide Story Section
             const storySection = document.getElementById('storySection');
             if (storySection) storySection.style.display = 'none';
 
-            // Hide standard tabs
-            document.querySelector('.content-tabs').style.display = 'none';
-            document.querySelector('.tab-content').style.display = 'block';
+            // Hide standard tabs (if they exist)
+            const contentTabsExam = document.querySelector('.content-tabs');
+            if (contentTabsExam) contentTabsExam.style.display = 'none';
+            const tabContent = document.querySelector('.tab-content');
+            if (tabContent) tabContent.style.display = 'block';
 
             // Hide all panels except quiz
             document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
             const quizPanel = document.getElementById('quiz');
-            quizPanel.style.display = 'block';
-            quizPanel.classList.add('active');
+            if (quizPanel) {
+                quizPanel.style.display = 'block';
+                quizPanel.classList.add('active');
 
-            // Load the Grand Quiz
-            if (window.quizSystem) {
-                quizPanel.innerHTML = window.quizSystem.loadQuiz('final-exam');
+                // Load the Grand Quiz
+                if (window.quizSystem) {
+                    quizPanel.innerHTML = window.quizSystem.loadQuiz('final-exam');
+                }
             }
         } else if (route.startsWith('module-')) {
             moduleOverview.style.display = 'block';
@@ -66,8 +70,9 @@ class Router {
             this.loadModule(moduleId);
         } else {
             // Standard topic view
-            topicContent.style.display = 'block';
-            document.querySelector('.content-tabs').style.display = 'flex'; // Restore tabs
+            if (topicContent) topicContent.style.display = 'block';
+            const contentTabs = document.querySelector('.content-tabs');
+            if (contentTabs) contentTabs.style.display = 'flex'; // Restore tabs if they exist
             this.loadTopic(route);
         }
 
