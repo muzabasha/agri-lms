@@ -1,0 +1,128 @@
+/* Handout-Only LMS Styles */
+/* Enhanced styles for handout content wrapper */
+
+.handout-content-wrapper {
+    background: var(--card-bg);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    min-height: 500px;
+}
+
+.handout-panel {
+    width: 100%;
+    display: block !important;
+    /* Always visible */
+    opacity: 1 !important;
+}
+
+/* Enhanced handout typography */
+.handout-panel h1,
+.handout-content h1,
+.handout-premium h1 {
+    color: var(--primary-color);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.handout-panel h2,
+.handout-content h2,
+.handout-premium h2 {
+    color: var(--secondary-color);
+    margin-top: 1.3rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.handout-panel h3,
+.handout-content h3,
+.handout-premium h3 {
+    color: var(--accent-color);
+    margin-top: 1.1rem;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+}
+
+.handout-panel p,
+.handout-content p,
+.handout-premium p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.handout-panel ul,
+.handout-panel ol,
+.handout-content ul,
+.handout-content ol {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+.handout-panel li,
+.handout-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Code blocks in handouts */
+.handout-panel pre,
+.handout-content pre,
+.handout-premium pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 0.95em;
+    line-height: 1.6;
+}
+
+.handout-panel code,
+.handout-content code {
+    background: var(--bg-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: var(--accent-color);
+    font-size: 0.9em;
+}
+
+.handout-panel pre code,
+.handout-content pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .handout-content-wrapper {
+        padding: var(--spacing-md);
+    }
+
+    .handout-panel h1,
+    .handout-content h1 {
+        font-size: 1.8em;
+    }
+
+    .handout-panel h2,
+    .handout-content h2 {
+        font-size: 1.4em;
+    }
+}
+
+/* Remove old tab-related styles conflicts */
+.tab-content,
+.content-tabs,
+.tab-btn,
+.tab-panel {
+    display: none !important;
+}
+
+/* Ensure handout panel is always visible */
+#handout.handout-panel {
+    display: block !important;
+}

@@ -1,4 +1,4 @@
-// App.js - Main application initialization
+// App.js - Main application initialization with PERMANENT tab system
 
 class App {
     constructor() {
@@ -12,11 +12,14 @@ class App {
         // Setup theme toggle
         this.setupThemeToggle();
 
-        // Setup tab switching
-        this.setupTabs();
+        // Setup PERMANENT tab system (event delegation)
+        this.setupTabsPermanent();
 
         // Initialize progress UI
         progressTracker.updateUI();
+
+        // Setup Mobile Menu
+        this.setupMobileMenu();
 
         // Log initialization
         console.log('🌾 Agri-LMS initialized successfully!');
@@ -45,33 +48,20 @@ class App {
                 <i class="fas fa-chevron-down toggle-icon"></i>
             `;
 
+                // Module click to navigate to overview
+                moduleHeader.addEventListener('click', () => {
+                    window.location.hash = `module-${module.id}`;
+                    moduleHeader.querySelector('.toggle-icon').classList.add('rotate');
+                });
+
+                moduleDiv.appendChild(moduleHeader);
+
                 const topicList = document.createElement('ul');
                 topicList.className = 'topic-list';
-                topicList.id = `module-list-${module.id}`;
-                topicList.style.display = 'none'; // Hidden by default
 
-                // Add click event for module overview and toggle
-                moduleHeader.onclick = () => {
-                    // Navigate to overview
-                    window.location.hash = `#module-${module.id}`;
+                module.topics.forEach(topic => {
+                    if (topic.isActivity) return; // Skip activity markers
 
-                    // Toggle Dropdown
-                    const isHidden = topicList.style.display === 'none';
-
-                    // Optional: Close others? For now, we allow multiple open
-                    // toggle
-                    topicList.style.display = isHidden ? 'block' : 'none';
-
-                    // Rotate icon
-                    const icon = moduleHeader.querySelector('.toggle-icon');
-                    if (isHidden) {
-                        icon.classList.add('rotate');
-                    } else {
-                        icon.classList.remove('rotate');
-                    }
-                };
-
-                module.topics.forEach((topic, index) => {
                     const topicItem = document.createElement('li');
                     topicItem.className = 'topic-item';
 
@@ -79,85 +69,144 @@ class App {
                     topicLink.href = `#${topic.id}`;
                     topicLink.className = 'topic-link';
                     topicLink.setAttribute('data-topic', topic.id);
-                    // Use explicit number if available, else generate 1.1 style
-                    const topicNum = topic.number || `${module.id}.${index + 1}`;
-                    topicLink.textContent = `${topicNum} - ${topic.title}`;
 
+                    const progress = progressTracker.isTopicCompleted(topic.id);
+                    if (progress) {
+                        topicLink.classList.add('completed');
+                    }
+
+                    topicLink.innerHTML = `<span>${topic.title}</span>`;
                     topicItem.appendChild(topicLink);
                     topicList.appendChild(topicItem);
                 });
 
-                moduleDiv.appendChild(moduleHeader);
                 moduleDiv.appendChild(topicList);
                 navContainer.appendChild(moduleDiv);
             });
-
-        } catch (e) {
-            console.error("Error building module navigation:", e);
-        }
-
-        // Add Final Assessment Link (Always ensure this runs)
-        try {
-            console.log("Adding Final Assessment Link...");
-            const finalDiv = document.createElement('div');
-            finalDiv.className = 'module-item final-assessment';
-            finalDiv.innerHTML = `
-                <div class="module-header clickable-module" onclick="window.location.hash='#final-exam'">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Final Assessment</span>
-                </div>
-            `;
-            navContainer.appendChild(finalDiv);
-        } catch (e) {
-            console.error("Error adding Final Assessment link:", e);
+        } catch (err) {
+            console.error('Error building navigation:', err);
         }
     }
 
     setupThemeToggle() {
         const themeToggle = document.getElementById('themeToggle');
-        const savedTheme = localStorage.getItem('theme') || 'light';
 
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
         }
 
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
 
-            themeToggle.innerHTML = isDark ?
-                '<i class="fas fa-sun"></i>' :
-                '<i class="fas fa-moon"></i>';
-
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        }
     }
 
-    setupTabs() {
-        const tabBtns = document.querySelectorAll('.tab-btn');
+    setupTabsPermanent() {
+        console.log('[APP] Setting up PERMANENT tab system with event delegation...');
 
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active from all
-                tabBtns.forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        // Wait for DOM to be ready
+        const initTabs = () => {
+            const topicContent = document.getElementById('topicContent');
 
-                // Add active to clicked
-                btn.classList.add('active');
-                const tabId = btn.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
+            if (!topicContent) {
+                console.warn('[APP] topicContent not found, will retry...');
+                return;
+            }
+
+            // Use event delegation on topicContent (parent that never gets replaced)
+            topicContent.addEventListener('click', function (e) {
+                // Check if click was on a tab button
+                const clickedTab = e.target.closest('.tab-btn');
+
+                if (!clickedTab) return; // Not a tab click
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                const targetTabId = clickedTab.getAttribute('data-tab');
+                console.log('[TAB] User clicked:', targetTabId);
+
+                // Get all tab buttons and panels
+                const allTabBtns = topicContent.querySelectorAll('.tab-btn');
+                const allPanels = topicContent.querySelectorAll('.tab-panel');
+
+                // Remove active from all tabs
+                allTabBtns.forEach(btn => btn.classList.remove('active'));
+
+                // Hide all panels
+                allPanels.forEach(panel => {
+                    panel.classList.remove('active');
+                    panel.style.display = 'none';
+                });
+
+                // Activate clicked tab
+                clickedTab.classList.add('active');
+
+                // Show target panel
+                const targetPanel = document.getElementById(targetTabId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                    targetPanel.style.display = 'block';
+                    console.log('[TAB] ✓ Switched to:', targetTabId);
+                } else {
+                    console.error('[TAB] ✗ Panel not found:', targetTabId);
+                }
+            });
+
+            console.log('[APP] ✓ PERMANENT tab system active (event delegation on topicContent)');
+        };
+
+        // Try immediately
+        initTabs();
+
+        // Also try after a short delay in case DOM isn't ready
+        setTimeout(initTabs, 100);
+    }
+
+    setupMobileMenu() {
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const navLinks = document.querySelectorAll('.sidebar a'); // Close on link click
+
+        if (!menuBtn || !sidebar || !overlay) {
+            console.warn("Mobile menu elements not found");
+            return;
+        }
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a nav link (mobile)
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
             });
         });
     }
 
-    // Global UI Helpers
     static showToast(message, type = 'info') {
-        const container = document.getElementById('toast-container');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
+        const container = document.getElementById('toast-container') || document.body;
 
-        // Icon map
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+
         const icons = {
             success: 'fa-check-circle',
             info: 'fa-info-circle',
@@ -190,13 +239,19 @@ class App {
     }
 }
 
-// Expose globals
+// Make toast and celebration global
 window.showToast = App.showToast;
 window.celebrateCompletion = App.celebrateCompletion;
+
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const app = new App();
+
+    // Make app globally accessible (but DON'T export reinitializeTabs - not needed anymore!)
+    window.appInstance = app;
+
+    console.log('[INIT] ✓ App initialized with permanent tab system');
 
     // FORCE ADD Final Assessment Link (Fix for missing sidebar link)
     setTimeout(() => {
@@ -215,5 +270,5 @@ document.addEventListener('DOMContentLoaded', () => {
             navContainer.appendChild(finalDiv);
             console.log("Final Assessment link appended successfully.");
         }
-    }, 500); // Small delay to ensure buildNavigation is done
+    }, 1000); // End of Timeout
 });

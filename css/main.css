@@ -100,19 +100,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: rgba(39, 174, 96, 0.08);
-    /* Light premium green tint */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 8px 10px;
-    border-radius: 50px;
-    border: 1px solid rgba(39, 174, 96, 0.15);
+    /* Styles removed to eliminate empty green circle */
     transition: all 0.3s ease;
-}
-
-.main-nav:hover {
-    background: rgba(39, 174, 96, 0.12);
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.1);
 }
 
 .theme-toggle {
@@ -784,80 +773,108 @@ body.dark-mode .cta-tour-special:hover {
     color: var(--important-color);
 }
 
-@media (max-width: 768px) {
-    .main-container {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        /* Force side-by-side even on mobile */
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    /* Hidden on desktop */
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 15px;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 98;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Responsive Design */
+/* Tablet/Small Laptop Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+        /* Slightly narrower sidebar */
     }
 
-    .sidebar {
-        width: 120px;
-        /* Fixed narrow width for sidebar on mobile */
-        min-width: 120px;
-        flex-shrink: 0;
-        /* Prevent sidebar from shrinking */
-        position: sticky;
-        top: 80px;
-        height: calc(100vh - 80px);
-        border-right: 1px solid var(--border-color);
-        border-bottom: none;
-        padding: var(--spacing-xs);
-        overflow-y: auto;
-        font-size: 0.85rem;
-        /* Smaller font for compact sidebar */
+    .header .container {
+        padding: 0 15px;
     }
 
     .content-area {
-        flex: 1;
-        /* Take remaining space */
-        width: auto;
-        /* Reset width to let flex handle it */
-        min-width: 0;
-        /* Allow content to shrink if needed (prevents overflow issues) */
-        padding: var(--spacing-sm);
-        padding-left: var(--spacing-md);
-        /* Add some separation */
-    }
-
-    /* Adjust sidebar text for very tight space */
-    .module-header {
-        font-size: 0.8rem;
-        padding: 6px;
-        flex-direction: column;
-        /* Stack icon and text if needed */
-        align-items: flex-start;
-        gap: 4px;
-        text-align: center;
-    }
-
-    .module-header .header-content {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    .topic-link {
-        font-size: 0.85rem;
-        padding: 4px 8px;
-    }
-
-    .progress-overview {
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-
-    .progress-overview h3 {
-        font-size: 0.9rem;
-        margin-bottom: 5px;
-    }
-
-    .progress-text {
-        font-size: 0.8rem;
+        padding: var(--spacing-md);
+        /* Reduce padding slightly */
     }
 
     .hero h1 {
-        font-size: 1.5rem;
+        font-size: 2.5rem;
+    }
+
+    .features {
+        grid-template-columns: repeat(2, 1fr);
+        /* Force 2 columns */
+    }
+}
+
+@media (max-width: 768px) {
+    .header .container {
+        padding: 10px 15px;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .main-container {
+        display: block;
+        /* Stack sidebar and content */
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        /* Full height from top */
+        left: -280px;
+        /* Hide off-screen */
+        width: 280px;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        padding-top: 20px;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* Add a close button space inside sidebar if needed, 
+       or users click overlay to close */
+
+    .content-area {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .welcome-screen h1 {
+        font-size: 2rem;
     }
 
     .subtitle {
@@ -870,12 +887,37 @@ body.dark-mode .cta-tour-special:hover {
 
     .content-tabs {
         flex-wrap: wrap;
+        gap: 5px;
     }
 
     .tab-btn {
-        font-size: 0.85rem;
-        padding: 4px 8px;
-        flex: 1 1 45%;
-        /* Buttons share space */
+        flex: 1 1 calc(50% - 5px);
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .logo h1 {
+        font-size: 1.2rem;
+        /* Smaller logo text on mobile */
+    }
+
+    /* Adjust module overview for mobile */
+    .module-overview {
+        padding: 1rem;
+    }
+
+    .module-hero {
+        padding: 1.5rem;
+    }
+
+    .module-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Hide theme toggle text/adjust size if needed */
+    .theme-toggle {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
     }
 }

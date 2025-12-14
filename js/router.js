@@ -122,17 +122,15 @@ class Router {
         // Update story
         storyManager.displayStory(topicId);
 
-        // Load Handout (Primary)
+        // Load Handout (Primary and ONLY content in handout-only mode)
         this.loadHandout(topic);
 
-        // Load Supplemental Resources
-        this.loadCodeLab(topic);
-        this.loadPresentation(topic);
-        this.loadActivity(topic.id);
-        this.loadQuiz(topic);
+        // Removed: Supplemental resources (tabs removed from UI)
+        // this.loadCodeLab(topic);
+        // this.loadPresentation(topic);
+        // this.loadActivity(topic.id);
+        // this.loadQuiz(topic);
 
-        // Update navigation buttons
-        this.updateNavButtons(topicId);
 
         // Update navigation buttons
         this.updateNavButtons(topicId);
@@ -144,51 +142,64 @@ class Router {
         window.scrollTo(0, 0);
     }
 
+
     loadHandout(topic) {
         const handoutPanel = document.getElementById('handout');
 
-        let content = "";
-
-        console.log('[ROUTER] loadHandout called with topic:', topic);
-        console.log('[ROUTER] typeof lectureSystem:', typeof lectureSystem);
-
-        // PRIORITY 1: Try lectureSystem first (for comprehensive handouts)
-        if (typeof lectureSystem !== 'undefined') {
-            try {
-                console.log('[ROUTER] Calling lectureSystem.getContent(' + topic.id + ')');
-                const handoutObj = lectureSystem.getContent(topic.id);
-                console.log('[ROUTER] Result from lectureSystem.getContent():', handoutObj);
-                console.log('[ROUTER] handoutObj.handout type:', typeof (handoutObj ? handoutObj.handout : 'N/A'));
-
-                if (handoutObj && handoutObj.handout) {
-                    content = handoutObj.handout;
-                    console.log('[SUCCESS] Handout loaded from lectureSystem for topic.id:', topic.id);
-                } else {
-                    console.warn('[WARN] lectureSystem.getContent returned no handout for topic.id:', topic.id);
-                    content = null;
-                }
-            } catch (e) {
-                console.error('[ERROR] lectureSystem.getContent() threw error:', e);
-                content = null;
-            }
-        }
-
-        // PRIORITY 2: Fall back to topic.handout from content.js
-        if (!content) {
-            if (topic.handout) {
-                content = topic.handout;
-                console.log('[SUCCESS] Handout loaded from topic.handout for topic.id:', topic.id);
-            } else {
-                content = `<div style='background:#ffcccc; color:#990000; padding:20px; border-radius:8px;'><h3>⚠️ Handout Not Available</h3><p>Topic ID: <code>${topic.id}</code></p><p>Neither lectureSystem nor topic.handout has content for this topic.</p></div>`;
-                console.error('[ERROR] No handout found in lectureSystem or topic.handout for topic.id:', topic.id);
-            }
-        }
-
+        // Show loading state
         handoutPanel.innerHTML = `
-            <div class="handout-content">
-                ${content}
+            <div class="content-loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading content...</div>
             </div>
         `;
+
+        // Simulate slight delay for smooth UX (prevents flash)
+        setTimeout(() => {
+            let content = "";
+
+            console.log('[ROUTER] loadHandout called with topic:', topic);
+            console.log('[ROUTER] typeof lectureSystem:', typeof lectureSystem);
+
+            // PRIORITY 1: Try lectureSystem first (for comprehensive handouts)
+            if (typeof lectureSystem !== 'undefined') {
+                try {
+                    console.log('[ROUTER] Calling lectureSystem.getContent(' + topic.id + ')');
+                    const handoutObj = lectureSystem.getContent(topic.id);
+                    console.log('[ROUTER] Result from lectureSystem.getContent():', handoutObj);
+                    console.log('[ROUTER] handoutObj.handout type:', typeof (handoutObj ? handoutObj.handout : 'N/A'));
+
+                    if (handoutObj && handoutObj.handout) {
+                        content = handoutObj.handout;
+                        console.log('[SUCCESS] Handout loaded from lectureSystem for topic.id:', topic.id);
+                    } else {
+                        console.warn('[WARN] lectureSystem.getContent returned no handout for topic.id:', topic.id);
+                        content = null;
+                    }
+                } catch (e) {
+                    console.error('[ERROR] lectureSystem.getContent() threw error:', e);
+                    content = null;
+                }
+            }
+
+            // PRIORITY 2: Fall back to topic.handout from content.js
+            if (!content) {
+                if (topic.handout) {
+                    content = topic.handout;
+                    console.log('[SUCCESS] Handout loaded from topic.handout for topic.id:', topic.id);
+                } else {
+                    content = `<div style='background:#ffcccc; color:#990000; padding:20px; border-radius:8px;'><h3>⚠️ Handout Not Available</h3><p>Topic ID: <code>${topic.id}</code></p><p>Neither lectureSystem nor topic.handout has content for this topic.</p></div>`;
+                    console.error('[ERROR] No handout found in lectureSystem or topic.handout for topic.id:', topic.id);
+                }
+            }
+
+            // Render content with fade-in animation
+            handoutPanel.innerHTML = `
+                <div class="handout-content">
+                    ${content}
+                </div>
+            `;
+        }, 200); // Small delay for loading state visibility
     }
 
     loadCodeLab(topic) {

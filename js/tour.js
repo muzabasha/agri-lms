@@ -35,147 +35,223 @@ class TourSystem {
         this.createTourUI();
         window.addEventListener('resize', this.handleResize);
 
-        const demoTopicId = 'm1-t1';
-
         this.steps = [
-            // PAGE 1: HOME / DASHBOARD
+            // 1. Welcome
             {
-                title: "Page 1: The Dashboard",
-                message: "Welcome to your <b>Home Dashboard</b>. This sidebar is your main navigation hub. It tracks your progress across all 5 modules.",
-                target: ".sidebar",
-                placement: "right"
+                title: "Welcome to Agri-LMS",
+                message: "This platform is your gateway to mastering AI in Agriculture. Let's take a live tour of the learning experience.",
+                target: ".logo",
+                placement: "bottom"
             },
 
-            // PAGE 2: LEARNING PAGE (Navigate to Topic)
+            // 2. Sidebar / Modules
             {
-                title: "Page 2: The Learning Area",
-                message: "Let's move to the <b>Learning Page</b>. Every topic loads here, giving you instant access to all materials.",
-                target: ".content-area",
+                title: "Course Navigation",
+                message: "Your journey begins here. The sidebar organizes all 5 Modules. Let's look at Module 1.",
+                target: ".sidebar",
+                placement: "right",
+                onShow: () => {
+                    // Ensure sidebar is open on mobile
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar && window.innerWidth <= 768) sidebar.classList.add('active');
+
+                    // Simulate looking at the first module
+                    const firstModule = document.querySelector('.module-header');
+                    if (firstModule) firstModule.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return new Promise(r => setTimeout(r, 1500));
+                }
+            },
+
+            // 3. Module Overview (Trigger Click)
+            {
+                title: "Module Overview",
+                message: "Clicking a module shows its roadmap. Here we see the <b>Objectives</b> and <b>Outcomes</b>.",
+                target: "#moduleOverview",
+                placement: "center",
+                onShow: () => {
+                    // Find and click the first module header to trigger overview
+                    const firstModule = document.querySelector('.module-header');
+                    if (firstModule) firstModule.click();
+                    return new Promise(r => setTimeout(r, 2000)); // Wait for view switch
+                }
+            },
+
+            // 4. Objectives (Highlight)
+            {
+                title: "Learning Objectives",
+                message: "Every module defines clear goals. You'll know exactly what you're aiming to achieve.",
+                target: ".module-card.objectives",
+                placement: "right",
+                onShow: () => {
+                    document.querySelector('.module-card.objectives')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return new Promise(r => setTimeout(r, 1000));
+                }
+            },
+
+            // 5. Outcomes (Highlight)
+            {
+                title: "Skills & Outcomes",
+                message: "And here are the tangible skills you will gain by the end of the module.",
+                target: ".module-card.outcomes",
                 placement: "left",
                 onShow: () => {
-                    window.location.hash = demoTopicId;
-                    return new Promise(resolve => setTimeout(resolve, 2000)); // Wait for render
+                    document.querySelector('.module-card.outcomes')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return new Promise(r => setTimeout(r, 1000));
                 }
             },
 
-            // PAGE 3: TOOLS (Tabs)
+            // 6. Enter Topic
             {
-                title: "Page 3: Interactive Tools",
-                message: "On this page, you have 4 powerful tools: Handouts, Slides, Python Labs, and Quizzes. Switching tabs is like turning the page of a smart book.",
-                target: ".content-tabs",
+                title: "Interactive Topics",
+                message: "Now, let's step into a real lesson: <b>Introduction to AI</b>.",
+                target: ".topic-content",
+                placement: "center",
+                onShow: () => {
+                    // Click the first topic link
+                    const firstTopic = document.querySelector('.topic-link');
+                    if (firstTopic) firstTopic.click();
+                    // Fallback if click fails or navigation logic differs
+                    else window.location.hash = 'm1-t1';
+
+                    return new Promise(r => setTimeout(r, 2000));
+                }
+            },
+
+            // 7. Handout Tab
+            {
+                title: "The Handout",
+                message: "This is your textbook. Detailed explanations, analogies, and examples live here.",
+                target: "button[data-tab='handout']",
                 placement: "bottom",
                 onShow: () => {
-                    document.querySelector('button[data-tab="handout"]').click();
-                    return new Promise(resolve => setTimeout(resolve, 1000));
+                    document.querySelector('button[data-tab="handout"]')?.click();
+                    return new Promise(r => setTimeout(r, 1000));
                 }
             },
 
-            // 4. Lab (Code)
+            // 8. Slides Tab
             {
-                title: "Step 2: Interactive Lab",
-                message: "Next, we apply this in code. In this Python Lab, we write a simple script to detect crows based on flying speed. If speed > 5, the AI decides to scare!",
-                target: "#code",
+                title: "Presentation Slides",
+                message: "Prefer visuals? The Slides tab offers a quick, graphical summary of the topic.",
+                target: "button[data-tab='presentation']",
+                placement: "bottom",
+                onShow: () => {
+                    document.querySelector('button[data-tab="presentation"]')?.click();
+                    return new Promise(r => setTimeout(r, 1000));
+                }
+            },
+
+            // 9. Lab Tab
+            {
+                title: "Hands-on Lab",
+                message: "Theory to Practice! Run real Python code right in the browser to solve agricultural problems.",
+                target: "button[data-tab='code']",
+                placement: "bottom",
+                onShow: () => {
+                    document.querySelector('button[data-tab="code"]')?.click();
+                    return new Promise(r => setTimeout(r, 1000));
+                }
+            },
+
+            // 10. Activity Tab
+            {
+                title: "Field Activity",
+                message: "Learning by doing. These physical activities connect AI concepts to farming reality.",
+                target: "button[data-tab='activity']",
+                placement: "bottom",
+                onShow: () => {
+                    document.querySelector('button[data-tab="activity"]')?.click();
+                    return new Promise(r => setTimeout(r, 1000));
+                }
+            },
+
+            // 11. Quiz Tab
+            {
+                title: "Knowledge Check",
+                message: "Finally, test your understanding. Instant feedback helps you master the concepts.",
+                target: "button[data-tab='quiz']",
+                placement: "bottom",
+                onShow: () => {
+                    document.querySelector('button[data-tab="quiz"]')?.click();
+                    return new Promise(r => setTimeout(r, 1000));
+                }
+            },
+
+            // 12. Conclusion
+            {
+                title: "Ready to Start?",
+                message: "To finish a topic, click 'Mark as Complete'. Good luck on your learning journey!",
+                target: "#markCompleteBtn",
                 placement: "top",
                 onShow: () => {
-                    document.querySelector('button[data-tab="code"]').click();
-                    return new Promise(resolve => setTimeout(resolve, 1000));
+                    document.querySelector('#markCompleteBtn')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return new Promise(r => setTimeout(r, 1000));
                 }
-            },
-
-            // 5. Activity (Engagement)
-            {
-                title: "Step 3: Activity",
-                message: "Learning isn't just reading. In the <b>Activity</b> tab, students simulate the 'Smart Scarecrow Game' physically to understand data feedback loops.",
-                target: "#activity",
-                placement: "top",
-                onShow: () => {
-                    document.querySelector('button[data-tab="activity"]').click();
-                    return new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            },
-
-            // 6. Quiz (Assessment)
-            {
-                title: "Step 4: Quiz & Feedback",
-                message: "Finally, we verify mastery. The <b>Quiz</b> provides instant feedback. Let's try answering a question.",
-                target: "#quiz",
-                placement: "top",
-                onShow: () => {
-                    document.querySelector('button[data-tab="quiz"]').click();
-                    return new Promise(resolve => setTimeout(resolve, 1500));
-                }
-            },
-
-            // 7. Simulated Interaction
-            {
-                title: "Mastery Check",
-                message: "For example: 'Which input does AI learn from?'. The answer is <b>Data</b>. Correct answers unlock the next topic!",
-                target: ".quiz-container",
-                placement: "left"
-                // In a real automated test we might click it, but visually pointing is safer for a tour.
-            },
-
-            // 8. Completion
-            {
-                title: "Complete & Continue",
-                message: "Once finished, click <b>Mark as Complete</b> to track your progress and unlock the next lesson. You are now ready to master AI in Agriculture!",
-                target: ".mark-complete-btn",
-                placement: "top"
             }
         ];
     }
 
     createTourUI() {
-        // Overlay
+        // Overlay (Optional: remove if user wants full interactability, but keeping for focus)
         this.overlay = document.createElement('div');
         this.overlay.className = 'tour-overlay';
         document.body.appendChild(this.overlay);
 
-        // Tooltip (Now styled as a Popup Window like Chatbot)
+        // Tooltip -> Now a fixed "Audio Controller"
         this.tooltip = document.createElement('div');
-        this.tooltip.className = 'tour-tooltip'; // Keeping class name for logic, but styling checks out
-        this.tooltip.style.display = 'none'; // Ensure hidden initially
+        this.tooltip.className = 'tour-audio-controller';
+        this.tooltip.style.display = 'none';
+
+        // Inline styles for the fixed controller
+        this.tooltip.style.position = 'fixed';
+        this.tooltip.style.bottom = '20px';
+        this.tooltip.style.right = '20px';
+        this.tooltip.style.width = '300px';
+        this.tooltip.style.background = 'white';
+        this.tooltip.style.padding = '15px';
+        this.tooltip.style.borderRadius = '12px';
+        this.tooltip.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+        this.tooltip.style.zIndex = '10001';
+        this.tooltip.style.display = 'none';
+        this.tooltip.style.flexDirection = 'column';
+        this.tooltip.style.gap = '10px';
+
         this.tooltip.innerHTML = `
-            <div class="tour-header-styled">
-                <div class="tour-title-wrapper">
-                    <div class="tour-avatar"><i class="fas fa-map-marked-alt"></i></div>
-                    <div>
-                        <div class="tour-title-text">AgriTour</div>
-                        <div class="tour-subtitle-text">Interactive Guide</div>
-                    </div>
-                </div>
-                <button class="tour-close" onclick="tourSystem.endTour()"><i class="fas fa-times"></i></button>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                <div style="font-weight: bold; color: #27ae60;"><i class="fas fa-volume-up"></i> Tour Narration</div>
+                <button id="tour-close-btn" style="background:none; border:none; cursor:pointer; font-size: 1.2rem; color: #666;"><i class="fas fa-times"></i></button>
             </div>
             
-            <div class="tour-content-body">
-                <h3 id="tour-title" style="margin-top:0; color:#1e3a8a;">Title</h3>
-                <p id="tour-message">Message</p>
+            <div style="font-size: 0.9rem; color: #333; font-style: italic;">
+                <span id="tour-title">Loading...</span>
             </div>
 
-            <div class="tour-footer-styled">
-                <div class="tour-progress-container">
-                    <div class="tour-progress-bar">
-                        <div id="tour-progress-fill" style="width: 0%; height: 100%; background: #10b981; border-radius: 4px; transition: width 0.3s;"></div>
-                    </div>
-                    <span id="tour-status">Auto-playing...</span>
-                </div>
-                <div class="tour-controls">
-                    <button class="tour-btn-action sec" id="tour-back" style="display:none">Back</button>
-                    <button class="tour-btn-action pri" id="tour-next">Next</button>
-                </div>
+            <!-- Hidden message container (Text removed as per request) -->
+            <div id="tour-message" style="display: none;"></div>
+
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button id="tour-stop" style="flex: 1; padding: 8px; background: #e74c3c; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                    Stop Narration
+                </button>
+                <button id="tour-next" style="flex: 1; padding: 8px; background: #27ae60; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                    Next
+                </button>
             </div>
         `;
         document.body.appendChild(this.tooltip);
 
         // Event Listeners
         document.getElementById('tour-next').addEventListener('click', () => {
-            // If manual click, cancel auto-wait and go next
             this.cancelAuto();
             this.nextStep();
         });
-        document.getElementById('tour-back').addEventListener('click', () => {
-            this.cancelAuto();
-            this.prevStep();
+
+        document.getElementById('tour-stop').addEventListener('click', () => {
+            this.endTour();
+        });
+
+        document.getElementById('tour-close-btn').addEventListener('click', () => {
+            this.endTour();
         });
     }
 
@@ -230,25 +306,23 @@ class TourSystem {
         this.highlightElement(targetEl);
 
         // Update Content
-        document.getElementById('tour-title').innerText = step.title;
-        document.getElementById('tour-message').innerHTML = step.message;
+        const titleEl = document.getElementById('tour-title');
+        if (titleEl) titleEl.innerText = step.title;
 
-        // Update Progress
-        const progress = ((index + 1) / this.steps.length) * 100;
-        document.getElementById('tour-progress-fill').style.width = `${progress}%`;
+        const msgEl = document.getElementById('tour-message');
+        if (msgEl) msgEl.innerHTML = step.message;
 
         // Button State
-        const backBtn = document.getElementById('tour-next');
-        backBtn.innerText = index === this.steps.length - 1 ? 'Finish' : (this.isAutoMode ? 'Skip' : 'Next');
+        const nextBtn = document.getElementById('tour-next');
+        if (nextBtn) {
+            nextBtn.innerText = index === this.steps.length - 1 ? 'Finish' : 'Next';
+        }
 
-        // Position Tooltip
-        this.positionTooltip(targetEl, step.placement);
+        // Position Tooltip (Disabled for Fixed UI)
+        // this.positionTooltip(targetEl, step.placement);
+
         // Show tooltip
-        this.tooltip.style.display = 'block'; // Make visible
-        // slight delay to allow display:block to apply before opacity transition
-        requestAnimationFrame(() => {
-            this.tooltip.classList.add('active');
-        });
+        this.tooltip.style.display = 'flex'; // Flex for layout
         this.tooltip.style.opacity = '1';
 
         // Speak & Auto Advance
@@ -320,12 +394,13 @@ class TourSystem {
 
     togglePlayPause() {
         this.isAutoMode = !this.isAutoMode;
+        const statusEl = document.getElementById('tour-status');
+
         if (!this.isAutoMode) {
             this.cancelAuto();
-            document.getElementById('tour-status').innerText = "Paused";
-            document.getElementById('tour-next').innerText = "Next";
+            if (statusEl) statusEl.innerText = "Paused";
         } else {
-            document.getElementById('tour-status').innerText = "Auto-playing...";
+            if (statusEl) statusEl.innerText = "Auto-playing...";
             this.showStep(this.currentStep); // Restart step logic
         }
     }
@@ -354,60 +429,9 @@ class TourSystem {
     }
 
     positionTooltip(targetEl, placement) {
-        const tooltip = this.tooltip;
-        const spacing = 15;
-
-        // Reset
-        tooltip.style.top = '';
-        tooltip.style.left = '';
-        tooltip.style.transform = 'translate(0, 0)';
-
-        if (!targetEl) {
-            // Center
-            tooltip.style.top = '50%';
-            tooltip.style.left = '50%';
-            tooltip.style.transform = 'translate(-50%, -50%)';
-            return;
-        }
-
-        const rect = targetEl.getBoundingClientRect();
-        // Since tooltip might be hidden/invisible, getBoundingClientRect might be 0? 
-        // We assume it has dimensions from CSS width: 320px
-        const tWidth = 320;
-        const tHeight = tooltip.offsetHeight || 150; // Estimate if 0
-
-        let top, left;
-
-        switch (placement) {
-            case 'top':
-                top = rect.top - tHeight - spacing;
-                left = rect.left + (rect.width - tWidth) / 2;
-                break;
-            case 'bottom':
-                top = rect.bottom + spacing;
-                left = rect.left + (rect.width - tWidth) / 2;
-                break;
-            case 'left':
-                top = rect.top + (rect.height - tHeight) / 2;
-                left = rect.left - tWidth - spacing;
-                break;
-            case 'right':
-                top = rect.top + (rect.height - tHeight) / 2;
-                left = rect.right + spacing;
-                break;
-            default: // center
-                top = window.innerHeight / 2 - tHeight / 2;
-                left = window.innerWidth / 2 - tWidth / 2;
-        }
-
-        // Boundary checks
-        if (left < 10) left = 10;
-        if (top < 10) top = 10;
-        if (left + tWidth > window.innerWidth) left = window.innerWidth - tWidth - 10;
-        if (top + tHeight > window.innerHeight) top = window.innerHeight - tHeight - 10;
-
-        tooltip.style.top = `${top}px`;
-        tooltip.style.left = `${left}px`;
+        // Disabled for Fixed UI
+        // We now use a fixed bottom-right controller
+        return;
     }
 
     nextStep() {
