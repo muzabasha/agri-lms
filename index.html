@@ -13,25 +13,10 @@
     <link rel="stylesheet" href="css/chatbot.css">
     <link rel="stylesheet" href="css/handout-only.css"> <!-- Handout-only mode styles -->
     <link rel="stylesheet" href="css/premium-ux.css"> <!-- Premium UX enhancements -->
-    <link rel="stylesheet" href="css/user-profile.css"> <!-- User profile styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <!-- Authentication Protection -->
-    <script>
-        // Check if user is authenticated
-        (function () {
-            const isLoggedIn = localStorage.getItem('agri_lms_logged_in');
-            const currentUser = sessionStorage.getItem('agri_lms_current_user');
-
-            if (isLoggedIn !== 'true' || !currentUser) {
-                // Not authenticated, redirect to login
-                window.location.href = 'login.html';
-            }
-        })();
-    </script>
-
     <!-- Farm Animation Scene -->
     <div class="farm-scene-container">
         <div class="sun"></div>
@@ -39,26 +24,16 @@
         <div class="cloud cloud-2"></div>
         <div class="cloud cloud-3"></div>
 
-        <div class="hills">
-            <div class="hill hill-1"></div>
-            <div class="hill hill-2"></div>
-            <div class="hill hill-3"></div>
-        </div>
-
-        <div class="growing-crop c1"><i class="fas fa-leaf"></i></div>
-        <div class="growing-crop c2"><i class="fas fa-leaf"></i></div>
-        <div class="growing-crop c3"><i class="fas fa-leaf"></i></div>
-        <div class="growing-crop c4"><i class="fas fa-leaf"></i></div>
-        <div class="growing-crop c5"><i class="fas fa-leaf"></i></div>
-        <div class="growing-crop c6"><i class="fas fa-leaf"></i></div>
-
-        <div class="tractor-wrapper">
-            <div class="tractor-body">
-                <i class="fas fa-tractor"></i>
+        <div class="farm-landscape">
+            <div class="hill"></div>
+            <div class="field"></div>
+            <div class="tractor-container">
+                <img src="assets/ai_tractor.png" class="tractor" alt="AI Tractor">
+                <div class="dust"></div>
             </div>
-            <div class="dust dust-1"></div>
-            <div class="dust dust-2"></div>
-            <div class="dust dust-3"></div>
+            <div class="scarecrow-container">
+                <img src="assets/ai_scarecrow.png" class="scarecrow" alt="Smart Scarecrow">
+            </div>
         </div>
 
         <div class="audience-wrapper">
@@ -275,7 +250,6 @@
     <script src="js/quiz.js"></script>
     <script src="js/router.js"></script>
     <script src="js/tour.js"></script> <!-- Added Tour Script -->
-    <script src="js/user-session.js"></script> <!-- User session handler -->
     <script src="js/app.js"></script>
     <script src="js/chatbot.js"></script>
 </body>
