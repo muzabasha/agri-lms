@@ -85,3 +85,7 @@ window.module4HandoutsPart3 = {
     'm4-t24': `<div class="handout-premium"><div class="topic-header"><h1>🗣️ Presentation</h1></div><div class="code-section"><h2>💻 Slides</h2><pre><code class="language-python"># Presentation Tips</code></pre></div></div>`,
     'm4-t25': `<div class="handout-premium"><div class="topic-header"><h1>🎓 Viva Voce</h1></div><div class="code-section"><h2>💻 Q&A</h2><pre><code class="language-python"># Be ready for questions!</code></pre></div></div>`
 };
+if (typeof window !== 'undefined') {
+    window.module3HandoutsPart4 = module3HandoutsPart4;
+    window.module4HandoutsPart3 = module4HandoutsPart3;
+}

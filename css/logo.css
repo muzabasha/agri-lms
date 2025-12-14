@@ -1,0 +1,26 @@
+/* Logo Styling */
+.app-logo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    /* Blend mode to hide white background if image has it */
+    mix-blend-mode: multiply;
+}
+
+/* Ensure Header background allows for blending or is cleaner */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode adjustment if exists */
+@media (prefers-color-scheme: dark) {
+    .app-logo {
+        mix-blend-mode: normal;
+        /* Blending acts weird in dark mode usually */
+        border: 2px solid white;
+    }
+}
