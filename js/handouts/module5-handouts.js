@@ -830,15 +830,14 @@ res = linprog(c, A_ub=A, b_ub=b, bounds=[x0_bounds, x1_bounds], method='highs')
 print("=== 📦 Optimized Logistics ===")
 if res.success:
     print(f"Optimal Usage: Truck A = {res.x[0]:.0f} tons, Truck B = {res.x[1]:.0f} tons")
-    print(f"Min Total Cost: ${res.fun: .2f
-}")
+    print(f"Min Total Cost: \${res.fun:.2f}")
 else:
-print("No solution found")
-            </code ></pre ></div >
-        </div >
+    print("No solution found")
+            </code></pre></div>
+        </div>
     `,
     'm5-t17': `
-    < div class="handout-premium" >
+    <div class="handout-premium">
             <div class="topic-header"><h1>🏙️ Bonus Project 16: Hydroponics Monitoring</h1></div>
             <div class="code-section"><h2>💻 Colab Code</h2>
             <pre><code class="language-python">

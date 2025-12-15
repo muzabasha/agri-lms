@@ -473,6 +473,162 @@ for color, spots, spot_type in samples:
         </div>
     `,
 
+    'm3-t8': `
+        <div class="handout-premium">
+            <div class="topic-header">
+                <h1>🌾 Computer Vision Fundamentals</h1>
+                <p class="duration">⏱️ Duration: 3 hours</p>
+            </div>
+
+            <div class="learning-objectives">
+                <h2>📌 Learning Objectives</h2>
+                <ul>
+                    <li>Understand how computers "see" images (Pixels & Channels)</li>
+                    <li>Learn basic operations with OpenCV (Load, Resize, Blur)</li>
+                    <li>Understand Color Spaces (RGB vs HSV) for object detection</li>
+                </ul>
+            </div>
+
+            <div class="farming-analogy">
+                <h2>🚜 The Farming Connection</h2>
+                <div class="analogy-box">
+                    <p><strong>Computer Vision = The Digital Agronomist's Eye</strong></p>
+                    <p>To a computer, an image of a farm field isn't "crops and soil"—it's a giant spreadsheet of numbers (pixels). By analyzing these numbers, we can teach the computer to spot weeds just like a farmer spots them by their distinct green color against brown soil.</p>
+                </div>
+            </div>
+
+            <div class="core-concepts">
+                <h2>📖 Key Concepts</h2>
+                <div class="concept-card" style="margin-bottom: 20px;">
+                    <h3>1. What is an Image?</h3>
+                    <p>An image is a grid of pixels. In color images, each pixel has 3 values: <strong>Red, Green, Blue (RGB)</strong>. Each value ranges from 0 (Black) to 255 (Bright).</p>
+                </div>
+                
+                <div class="concept-card">
+                    <h3>2. OpenCV Library</h3>
+                    <p><strong>OpenCV</strong> is the most popular library for Computer Vision. It helps us manipulate these pixel grids to extract useful information.</p>
+                </div>
+            </div>
+
+            <div class="code-section">
+                <h2>💻 Python Implementation</h2>
+                <pre><code class="language-python">
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# === 1. CREATING A SYNTHETIC IMAGE ===
+print("=== Creating and Processing Images ===")
+
+# Create a black image (100x100 pixels, 3 channels for RGB)
+# Note: OpenCV uses BGR format mainly
+image = np.zeros((100, 100, 3), dtype=np.uint8)
+
+# Draw a brown rectangle (representing Soil)
+# BGR for Brown: (30, 70, 120) roughly
+cv2.rectangle(image, (0, 0), (100, 100), (30, 70, 120), -1)
+
+# Draw a green circle (representing a Crop)
+cv2.circle(image, (50, 50), 30, (0, 255, 0), -1)
+
+print(f"Image Shape: {image.shape} (Height, Width, Channels)")
+
+# === 2. COLOR SPACE CONVERSION ===
+print("\\n=== Converting Color Spaces ===")
+# Convert BGR to RGB for plotting with Matplotlib
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+# Convert to Grayscale (Simpler, just light intensity)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Convert to HSV (Hue, Saturation, Value) - Best for color detection
+hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+print("Converted to RGB, Grayscale, and HSV.")
+
+# === 3. SEGMENTATION (WEED DETECTION) ===
+print("\\n=== Simple Color Segmentation ===")
+# We want to isolate the Green plant from the Brown soil.
+# HSV is robust for this. Green hue is around 60.
+
+# Define range of Green color in HSV
+lower_green = np.array([35, 50, 50])
+upper_green = np.array([85, 255, 255])
+
+# Create a mask: White (255) where green matches, Black (0) otherwise
+mask = cv2.inRange(hsv, lower_green, upper_green)
+
+# Calculate area (pixels)
+plant_area = np.sum(mask > 0)
+total_area = mask.size
+coverage = (plant_area / total_area) * 100
+
+print(f"Plant Pixels Detected: {plant_area}")
+print(f"Field Coverage: {coverage:.2f}%")
+
+# Visualize (simulated via text since we can't show plot here)
+# In lab: plt.imshow(mask, cmap='gray')
+                </code></pre>
+            </div>
+
+            <div class="student-activity">
+                <h2>🎯 Hands-On Activity</h2>
+                <div class="activity-box">
+                    <h3>Build a "Digital Weed Spotter"</h3>
+                    <p>Using Google Colab and OpenCV:</p>
+                    <ol>
+                        <li>Upload a photo of a plant on soil.</li>
+                        <li>Convert it to <strong>HSV</strong> color space.</li>
+                        <li>Experiment with <code>cv2.inRange()</code> values to create a mask that shows <strong>only</strong> the green plant parts.</li>
+                        <li>Count the white pixels in your mask to estimate the plant's size!</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="quiz-section">
+                <h2>📝 Knowledge Check</h2>
+                
+                <div class="quiz-question">
+                    <p><strong>Q1:</strong> In an RGB image, what does the value (255, 0, 0) represent?</p>
+                    <ul>
+                        <li>A) Pure Green</li>
+                        <li>B) Pure Blue</li>
+                        <li>C) Pure Red</li>
+                        <li>D) Black</li>
+                    </ul>
+                    <details>
+                        <summary>Show Answer</summary>
+                        <p><strong>Answer: C</strong> - RGB stands for Red, Green, Blue. The first channel is Red.</p>
+                    </details>
+                </div>
+
+                <div class="quiz-question">
+                    <p><strong>Q2:</strong> Why do we use HSV instead of RGB for color detection?</p>
+                    <ul>
+                        <li>A) It uses fewer bytes</li>
+                        <li>B) It separates Color (Hue) from Brightness (Value)</li>
+                        <li>C) It is the default for cameras</li>
+                        <li>D) It looks better</li>
+                    </ul>
+                    <details>
+                        <summary>Show Answer</summary>
+                        <p><strong>Answer: B</strong> - HSV makes it easier to track a color (like green) even if shadows make it darker or lighter.</p>
+                    </details>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h2>📋 Key Takeaways</h2>
+                <ul>
+                    <li>Images are 3D arrays of numbers (Height, Width, Channels).</li>
+                    <li><strong>OpenCV</strong> is the essential library for computer vision in Python.</li>
+                    <li><strong>HSV</strong> color space is superior for detecting objects by color (like crops vs soil).</li>
+                    <li>Thresholding (Masking) is the simplest form of object detection.</li>
+                </ul>
+            </div>
+        </div>
+    `,
+
     'm3-t9': `
         <div class="handout-premium">
             <div class="topic-header">

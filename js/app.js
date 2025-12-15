@@ -83,6 +83,19 @@ class App {
                 moduleDiv.appendChild(topicList);
                 navContainer.appendChild(moduleDiv);
             });
+
+            // Add Final Assessment Link explicitly
+            const finalDiv = document.createElement('div');
+            finalDiv.className = 'module-item final-assessment';
+            finalDiv.innerHTML = `
+                <div class="module-header clickable-module" onclick="window.location.hash='#final-exam'">
+                    <div class="header-content">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Final Assessment</span>
+                    </div>
+                </div>
+            `;
+            navContainer.appendChild(finalDiv);
         } catch (err) {
             console.error('Error building navigation:', err);
         }
@@ -253,22 +266,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('[INIT] ✓ App initialized with permanent tab system');
 
-    // FORCE ADD Final Assessment Link (Fix for missing sidebar link)
-    setTimeout(() => {
-        const navContainer = document.getElementById('courseNav');
-        console.log("Forcing append of Final Assessment link. NavContainer:", navContainer);
-
-        if (navContainer && !navContainer.querySelector('.final-assessment')) {
-            const finalDiv = document.createElement('div');
-            finalDiv.className = 'module-item final-assessment';
-            finalDiv.innerHTML = `
-                <div class="module-header clickable-module" onclick="window.location.hash='#final-exam'">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Final Assessment</span>
-                </div>
-            `;
-            navContainer.appendChild(finalDiv);
-            console.log("Final Assessment link appended successfully.");
-        }
-    }, 1000); // End of Timeout
+    console.log('[INIT] ✓ App initialized with permanent tab system');
 });

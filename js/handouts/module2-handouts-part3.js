@@ -313,7 +313,7 @@ print("\\nNote: For classification with imbalanced classes (e.g., detecting rare
     'm2-t18': `
         <div class="handout-premium">
             <div class="topic-header">
-                <h1>🌾 Overfitting and Underfitting</h1>
+                <h1>🌾 Overfitting and Underfitting (Bias vs Variance)</h1>
                 <p class="duration">⏱️ Duration: 2 hours</p>
             </div>
 
@@ -321,26 +321,62 @@ print("\\nNote: For classification with imbalanced classes (e.g., detecting rare
                 <h2>📌 Learning Objectives</h2>
                 <ul>
                     <li>Diagnose overfitting (high variance) and underfitting (high bias)</li>
-                    <li>Understand the Bias-Variance Tradeoff</li>
-                    <li>Learn techniques to prevent both</li>
+                    <li>Understand the Bias-Variance Tradeoff using the Bullseye Analogy</li>
+                    <li>Analyze real-world agricultural scenarios for each case</li>
+                    <li>Learn techniques to balance the two for the "Goldilocks" fit</li>
                 </ul>
             </div>
 
             <div class="farming-analogy">
-                <h2>🚜 The Farming Connection</h2>
+                <h2>🚜 The Farming Connection: The Bullseye Analogy</h2>
                 <div class="analogy-box">
-                    <p><strong>Overfitting = Memorizing ONE Season</strong></p>
-                    <p>A farmer who only prepares for exactly 2023's weather will fail in 2024. They "overfit" to last year's patterns instead of learning general climate rules.</p>
-                    <p><strong>Underfitting = Ignoring Everything</strong></p>
-                    <p>A farmer who applies the same water every day regardless of rain or heat. Too simple!</p>
+                    <p>Imagine your goal is to hit the center of a target (perfect prediction). Your shots are your model's predictions.</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="assets/images/bias-variance.png" alt="Bias vs Variance Bullseye Diagram" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Figure 1: Visualizing Model Performance</p>
+                    </div>
                 </div>
             </div>
 
             <div class="core-concepts">
-                <h2>📖 Key Signs</h2>
+                <h2>📖 Understanding the Combinations</h2>
+                
+                <div class="concept-card" style="background: #f0fdf4; border-left: 5px solid #16a34a; padding: 15px; margin-bottom: 15px;">
+                    <h3>1. Low Bias, Low Variance (Ideal Model) ✅</h3>
+                    <p><strong>The Bullseye:</strong> Your shots are clustered tightly in the center.</p>
+                    <p><strong>Scenario:</strong> A crop yield model that accurately predicts 3.5 tons/ha ± 0.1 tons for most fields, matching reality.</p>
+                    <p><strong>Verdict:</strong> The model captures the true pattern and generalizes well to new data.</p>
+                </div>
+
+                <div class="concept-card" style="background: #eff6ff; border-left: 5px solid #3b82f6; padding: 15px; margin-bottom: 15px;">
+                    <h3>2. High Bias, Low Variance (Underfitting) 📉</h3>
+                    <p><strong>The "Stubborn" Miss:</strong> Your shots are clustered tightly, but far from the center.</p>
+                    <p><strong>Scenario:</strong> A simple model assumes "Yield = 2 tons" for everyone, regardless of rain. It is consistent (Low Variance) but consistently wrong (High Bias).</p>
+                    <p><strong>Verdict:</strong> The model is too simple. It fails to capture important relationships (like rain vs yield).</p>
+                </div>
+
+                <div class="concept-card" style="background: #fef2f2; border-left: 5px solid #ef4444; padding: 15px; margin-bottom: 15px;">
+                    <h3>3. Low Bias, High Variance (Overfitting) 📈</h3>
+                    <p><strong>The "Nervous" Scatter:</strong> Your shots are all over the place, centering on the target but with huge spread.</p>
+                    <p><strong>Scenario:</strong> A complex model memorizes that "Field A had 3.21 tons because a bird flew over it." It works perfectly for Field A (Low Bias on training) but fails wildly for Field B (High Variance).</p>
+                    <p><strong>Verdict:</strong> The model is too sensitive to noise. It memorizes the training data but fails to generalize.</p>
+                </div>
+
+                <div class="concept-card" style="background: #fff7ed; border-left: 5px solid #f97316; padding: 15px; margin-bottom: 15px;">
+                    <h3>4. High Bias, High Variance (Worst Case) ❌</h3>
+                    <p><strong>The Random Mess:</strong> Your shots are scattered and far from the center.</p>
+                    <p><strong>Scenario:</strong> A model that guesses random numbers based on irrelevant features like "Farmer's shirt color".</p>
+                    <p><strong>Verdict:</strong> The model is fundamentally broken or learning from garbage data.</p>
+                </div>
+            </div>
+
+            <div class="core-concepts">
+                <h2>📊 Summary Matrix</h2>
                 <table>
                     <tr>
                         <th>Problem</th>
+                        <th>Bias</th>
+                        <th>Variance</th>
                         <th>Training Error</th>
                         <th>Test Error</th>
                         <th>Solution</th>
@@ -348,20 +384,26 @@ print("\\nNote: For classification with imbalanced classes (e.g., detecting rare
                     <tr>
                         <td><strong>Underfitting</strong></td>
                         <td>High</td>
+                        <td>Low</td>
                         <td>High</td>
-                        <td>More complex model, more features</td>
+                        <td>High</td>
+                        <td>Increase complexity, add features</td>
                     </tr>
                     <tr>
                         <td><strong>Overfitting</strong></td>
+                        <td>Low</td>
+                        <td>High</td>
                         <td>Extremely Low</td>
                         <td>High</td>
-                        <td>Regularization, more data, simpler model</td>
+                        <td>Regularization, more data, simplify</td>
                     </tr>
                     <tr>
                         <td><strong>Good Fit</strong></td>
                         <td>Low</td>
                         <td>Low</td>
-                        <td>Perfect balance!</td>
+                        <td>Low</td>
+                        <td>Low</td>
+                        <td>Maintain & Monitor</td>
                     </tr>
                 </table>
             </div>
@@ -382,17 +424,18 @@ X = np.sort(np.random.rand(20))
 y = np.cos(1.5 * np.pi * X) + np.random.normal(0, 0.1, 20)
 X = X[:, np.newaxis]
 
-# Model 1: Underfit (Degree 1 - Line)
+# Model 1: Underfit (Degree 1 - Line) -> High Bias
 model1 = LinearRegression().fit(X, y)
 
-# Model 2: Good Fit (Degree 4)
+# Model 2: Good Fit (Degree 4) -> Balanced
 model4 = make_pipeline(PolynomialFeatures(4), LinearRegression()).fit(X, y)
 
-# Model 3: Overfit (Degree 15)
+# Model 3: Overfit (Degree 15) -> High Variance
 model15 = make_pipeline(PolynomialFeatures(15), LinearRegression()).fit(X, y)
 
-# Visualization code would follow here to plot lines against data...
-print("Use simpler models (lower polynomial degree) to prevent overfitting!")
+print("Degree 1 (Underfit): Too simple, misses the curve.")
+print("Degree 4 (Good): Captures the cosine wave.")
+print("Degree 15 (Overfit): Wiggles to hit every single noise point.")
                 </code></pre>
             </div>
 
@@ -414,14 +457,14 @@ print("Use simpler models (lower polynomial degree) to prevent overfitting!")
                 <div class="quiz-question">
                     <p><strong>Q1:</strong> If your model does great on training data but fails on real-world data, it is:</p>
                     <ul>
-                        <li>A) Underfitting</li>
-                        <li>B) Overfitting</li>
+                        <li>A) Underfitting (High Bias)</li>
+                        <li>B) Overfitting (High Variance)</li>
                         <li>C) Perfectly fit</li>
                         <li>D) Broken</li>
                     </ul>
                     <details>
                         <summary>Show Answer</summary>
-                        <p><strong>Answer: B</strong> - Overfitting (High Variance).</p>
+                        <p><strong>Answer: B</strong> - Overfitting (High Variance). It has learned the "noise" of the training data.</p>
                     </details>
                 </div>
             </div>
@@ -429,9 +472,10 @@ print("Use simpler models (lower polynomial degree) to prevent overfitting!")
             <div class="summary">
                 <h2>📋 Key Takeaways</h2>
                 <ul>
-                    <li>Seek generalized patterns, not noise</li>
-                    <li>Use Regularization (L1/L2) to penalize complexity</li>
-                    <li>More data almost always reduces overfitting</li>
+                    <li><strong>Bias:</strong> Error from erroneous assumptions (Simplicity).</li>
+                    <li><strong>Variance:</strong> Error from sensitivity to small fluctuations (Complexity).</li>
+                    <li><strong>Tradeoff:</strong> You must balance bias and variance to minimize total error.</li>
+                    <li>More data helps reduce variance (overfitting).</li>
                 </ul>
             </div>
         </div>

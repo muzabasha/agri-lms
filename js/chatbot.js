@@ -438,7 +438,7 @@ class AgriBot {
                 <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
             </div>
 
-            <div class="chat-suggestions" id="chatSuggestions" style="overflow-x: auto; white-space: nowrap; padding-bottom: 5px;">
+            <div class="chat-suggestions" id="chatSuggestions" style="display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto; padding: 10px; border-top: 1px solid #f3f4f6;">
             </div>
 
             <div class="chat-input-area">
@@ -462,9 +462,10 @@ class AgriBot {
 
     updateSuggestions() {
         const container = document.getElementById('chatSuggestions');
-        const questions = this.knowledge[this.language].questions.slice(0, 5);
+        // User requested to see ALL questions and vertical layout
+        const questions = this.knowledge[this.language].questions;
         container.innerHTML = questions.map(q =>
-            `<div class="suggestion-chip" data-key="${q.key}">${q.label}</div>`
+            `<div class="suggestion-chip" data-key="${q.key}" style="width: fit-content; max-width: 100%; white-space: normal; text-align: left;">${q.label}</div>`
         ).join('');
     }
 

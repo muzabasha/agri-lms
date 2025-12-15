@@ -61,7 +61,6 @@ class QuizSystem {
 
         if (this.courseData && this.courseData.modules) {
             this.courseData.modules.forEach(module => {
-                // Iterate through EVERY topic to ensure we hit 100+ questions
                 module.topics.forEach(topic => {
                     let quizData = null;
 
@@ -73,34 +72,16 @@ class QuizSystem {
                             quizData = this.generateDynamicQuiz(topic, module.title);
                         }
 
-                        // Add the first question from every topic
+                        // Add ALL questions from the topic
                         if (quizData && quizData.questions && quizData.questions.length > 0) {
-                            const q = { ...quizData.questions[0] }; // Clone to avoid ref issues
-                            q.id = questionId++;
-                            q.question = `[${module.title}] ${q.question}`; // Add context tag
-                            allQuestions.push(q);
-                        } else {
-                            // FALLBACK: If dynamic generation failed, create a generic one
-                            const fallbackQ = {
-                                id: questionId++,
-                                question: `[${module.title}] True or False: ${topic.title} is a critical component of this module?`,
-                                options: ["True", "False"],
-                                correct: 0,
-                                explanation: "This topic is an essential part of the curriculum."
-                            };
-                            allQuestions.push(fallbackQ);
+                            quizData.questions.forEach(q => {
+                                const qClone = { ...q }; // Clone to avoid ref issues
+                                qClone.question = `[${module.title} - ${topic.title}] ${qClone.question}`; // Add context
+                                allQuestions.push(qClone);
+                            });
                         }
                     } catch (e) {
                         console.error(`Error generating quiz for ${topic.id}:`, e);
-                        // Fallback on error
-                        const errorQ = {
-                            id: questionId++,
-                            question: `[${module.title}] Review Question: What is the primary focus of ${topic.title}?`,
-                            options: ["Understanding core concepts", "Ignoring the data", "Random guessing", "None of the above"],
-                            correct: 0,
-                            explanation: "Focusing on core concepts is key."
-                        };
-                        allQuestions.push(errorQ);
                     }
                 });
             });
@@ -113,15 +94,18 @@ class QuizSystem {
             [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
         }
 
-        // Re-index after shuffle to keep UI clean
-        allQuestions.forEach((q, index) => q.id = index + 1);
+        // Select exactly 100 questions (or all if less than 100)
+        const selectedQuestions = allQuestions.slice(0, 100);
 
-        console.log(`Final Assessment Generated with ${allQuestions.length} questions.`);
+        // Re-index to 1..100
+        selectedQuestions.forEach((q, index) => q.id = index + 1);
+
+        console.log(`Final Assessment Generated with ${selectedQuestions.length} questions.`);
 
         this.currentQuiz = {
-            title: "Final Course Assessment (100+ Questions)",
-            description: `A massive comprehensive exam covering the entire syllabus associated with ${allQuestions.length} topics. Good luck!`,
-            questions: allQuestions
+            title: "Final Course Assessment (100 Questions)",
+            description: `A comprehensive exam covering the entire syllabus. You have ${selectedQuestions.length} questions. Good luck!`,
+            questions: selectedQuestions
         };
 
         this.score = 0;
@@ -857,24 +841,24 @@ class QuizSystem {
 }
 
 // Initialize
-// Wait for comprehensiveStructure to be loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // If we're on a page that needs quiz, ensure it's loaded
+// Initialize immediately (comprehensiveStructure should be loaded)
+try {
     window.quizSystem = new QuizSystem();
-});
+    console.log('[QuizSystem] Initialized successfully');
+} catch (e) {
+    console.error('[QuizSystem] Initialization failed:', e);
+}
 
-// Event Delegation
+// Event Delegation for Quiz Interactions
 document.addEventListener('click', function (e) {
     const option = e.target.closest('.quiz-option');
     if (option && option.querySelector('input[type="radio"]')) {
         const qId = parseInt(option.getAttribute('data-question'));
         const optId = parseInt(option.getAttribute('data-option'));
         const input = option.querySelector('input[type="radio"]');
-        if (!input.disabled) {
+        if (input && !input.disabled && window.quizSystem) {
             input.checked = true;
             window.quizSystem.checkAnswer(qId, optId);
         }
     }
 });
-
-window.quizSystem = quizSystem;

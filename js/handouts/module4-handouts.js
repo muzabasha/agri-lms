@@ -158,37 +158,221 @@ plt.show()
                 </code></pre>
             </div>
         </div>
-    `
-};
+    `,
 
-// Fill simpler content for planning topics to ensure coverage
-const planningTopics = ['m4-t3', 'm4-t4', 'm4-t5', 'm4-t6', 'm4-t7', 'm4-t8'];
-planningTopics.forEach((id, index) => {
-    const titles = [
-        "Literature Review Methodology", "Dataset Selection", "Feasibility Analysis",
-        "Project Timeline Planning", "Resource Allocation", "Team Collaboration"
-    ];
-    module4Handouts[id] = `
+    'm4-t3': `
         <div class="handout-premium">
             <div class="topic-header">
-                <h1>${titles[index]}</h1>
-                <p class="duration">⏱️ Project Planning Phase</p>
+                <h1>Literature Review Methodology</h1>
+                <p class="duration">⏱️ Duration: 2 hours</p>
             </div>
             <div class="learning-objectives">
                 <h2>📌 Learning Objectives</h2>
                 <ul>
-                    <li>Mastering the art of ${titles[index]}</li>
-                    <li>Applying best practices for efficiency</li>
-                    <li>Avoiding common pitfalls</li>
+                    <li>Find credible sources (Google Scholar, arXiv)</li>
+                    <li>Synthesize existing research on Agri-AI</li>
+                    <li>Identify "Research Gaps" to solve</li>
+                </ul>
+            </div>
+            <div class="farming-analogy">
+                <h2>🚜 The Farming Connection</h2>
+                <div class="analogy-box">
+                    <p><strong>Literature Review = Asking the Neighbors</strong></p>
+                    <p>Before trying a new crop variety, you ask other farmers what worked for them. You don't want to repeat their mistakes (e.g., planting rice in sandy soil). Research is just learning from others' experiments.</p>
+                </div>
+            </div>
+            <div class="student-activity">
+                <h2>🎯 Hands-On Activity</h2>
+                <div class="activity-box">
+                    <h3>Mini-Review</h3>
+                    <p>Find 3 papers on "Deep Learning for Tomato Disease". Comparison table columns: Algorithm Used, Dataset Size, Accuracy Achieved, Limitations.</p>
+                </div>
+            </div>
+        </div>
+    `,
+    // ... (This content is already there, I just need to fix the junction and the end)
+    // Wait, replace_file_content replaces the whole chunk. I should just fix the junction lines 161-165 and the end lines.
+    // It's safer to not re-print the whole huge m4-t3 content if I can avoid it, but I need to match the TargetContent.
+
+    // Strategy: Modify lines 162-164 and lines 336-339.
+    // Actually, I can use two chunks if `AllowMultiple` is true? No, the tool documentation says "Do NOT make multiple parallel calls to this tool or the multi_replace_file_content tool for the same file."
+    // I should use `multi_replace_file_content` if I want to do two chunks.
+    // Or just one `replace_file_content` if I cover the range. But the range is huge (lines 162 to 336).
+
+    // Use `multi_replace_file_content` for Module 4.
+
+        < div class="handout-premium" >
+            <div class="topic-header">
+                <h1>Literature Review Methodology</h1>
+                <p class="duration">⏱️ Duration: 2 hours</p>
+            </div>
+            <div class="learning-objectives">
+                <h2>📌 Learning Objectives</h2>
+                <ul>
+                    <li>Find credible sources (Google Scholar, arXiv)</li>
+                    <li>Synthesize existing research on Agri-AI</li>
+                    <li>Identify "Research Gaps" to solve</li>
+                </ul>
+            </div>
+            <div class="farming-analogy">
+                <h2>🚜 The Farming Connection</h2>
+                <div class="analogy-box">
+                    <p><strong>Literature Review = Asking the Neighbors</strong></p>
+                    <p>Before trying a new crop variety, you ask other farmers what worked for them. You don't want to repeat their mistakes (e.g., planting rice in sandy soil). Research is just learning from others' experiments.</p>
+                </div>
+            </div>
+            <div class="student-activity">
+                <h2>🎯 Hands-On Activity</h2>
+                <div class="activity-box">
+                    <h3>Mini-Review</h3>
+                    <p>Find 3 papers on "Deep Learning for Tomato Disease". Comparison table columns: Algorithm Used, Dataset Size, Accuracy Achieved, Limitations.</p>
+                </div>
+            </div>
+        </div >
+    `,
+
+    'm4-t4': `
+    < div class="handout-premium" >
+            <div class="topic-header">
+                <h1>Dataset Selection & Sources</h1>
+                <p class="duration">⏱️ Duration: 2 hours</p>
+            </div>
+            <div class="learning-objectives">
+                <h2>📌 Learning Objectives</h2>
+                <ul>
+                    <li>Known repositories (Kaggle, UCI, PlantVillage)</li>
+                    <li>Evaluating dataset quality (Resolution, Labels, Balance)</li>
+                    <li>Licensing (Creative Commons, Open Source)</li>
                 </ul>
             </div>
             <div class="summary">
-                <h2>📋 Key Principles</h2>
-                <p>Success in this phase ensures a smooth execution later. "Measure twice, cut once."</p>
+                <h2>📋 Top Agri-Datasets</h2>
+                <ul>
+                    <li><strong>PlantVillage:</strong> Leaf diseases (Classification)</li>
+                    <li><strong>Global Wheat Head:</strong> Object Detection</li>
+                    <li><strong>Crop Recommendation:</strong> Soil/Climate data (Tabular)</li>
+                </ul>
             </div>
-        </div>
-    `;
-});
+        </div >
+    `,
+
+        'm4-t5': `
+    < div class="handout-premium" >
+            <div class="topic-header">
+                <h1>Feasibility Analysis</h1>
+                <p class="duration">⏱️ Duration: 1 hour</p>
+            </div>
+            <div class="core-concepts">
+                <h2>📖 Technical vs Economic Feasibility</h2>
+                <p><strong>Technical:</strong> Can we build it? (Do we have data? GPU? Skills?)</p>
+                <p><strong>Economic:</strong> Should we build it? (Does it crave money? Is the ROI positive?)</p>
+            </div>
+            <div class="farming-analogy">
+                <h2>🚜 The Farming Connection</h2>
+                <div class="analogy-box">
+                    <p><strong>Feasibility = Can I afford this tractor?</strong></p>
+                    <p>A giant combine harvester is "technically" great, but on a 1-acre farm, it's "economically" a disaster. Same with using a supercomputer for a simple regression task.</p>
+                </div>
+            </div>
+        </div >
+    `,
+
+            'm4-t6': `
+    < div class="handout-premium" >
+            <div class="topic-header">
+                <h1>Project Timeline Planning</h1>
+                <p class="duration">⏱️ Duration: 1 hour</p>
+            </div>
+            <div class="learning-objectives">
+                <h2>📌 Learning Objectives</h2>
+                <ul>
+                    <li>Create a Gantt Chart</li>
+                    <li>Set Milestones (Data Ready, Prototype, Final)</li>
+                    <li>Buffer for debugging time</li>
+                </ul>
+            </div>
+            <div class="code-section">
+                <h2>💻 Python Implementation</h2>
+                <pre><code class="language-python">
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Simple Gantt Chart Data
+tasks = pd.DataFrame([
+    {'Task': 'Literature Review', 'Start': 1, 'Duration': 2},
+    {'Task': 'Data Collection', 'Start': 3, 'Duration': 3},
+    {'Task': 'Preprocessing', 'Start': 6, 'Duration': 2},
+    {'Task': 'Model Training', 'Start': 8, 'Duration': 5},
+    {'Task': 'Evaluation', 'Start': 13, 'Duration': 2}
+])
+
+plt.barh(y=tasks['Task'], width=tasks['Duration'], left=tasks['Start'], color='skyblue')
+plt.xlabel('Weeks')
+plt.title('Project Timeline')
+plt.grid(axis='x')
+plt.show()
+                </code></pre>
+            </div>
+        </div >
+    `,
+
+                'm4-t7': `
+    < div class="handout-premium" >
+            <div class="topic-header">
+                <h1>Resource Allocation (Compute & Tools)</h1>
+                <p class="duration">⏱️ Duration: 1 hour</p>
+            </div>
+            <div class="summary">
+                <h2>📋 Essential Tools</h2>
+                <ul>
+                    <li><strong>Coding:</strong> VS Code, Jupyter, Google Colab (Free GPU!)</li>
+                    <li><strong>Version Control:</strong> Git & GitHub</li>
+                    <li><strong>Tracking:</strong> Trello / Jira</li>
+                </ul>
+            </div>
+            <div class="farming-analogy">
+                <h2>🚜 The Farming Connection</h2>
+                <div class="analogy-box">
+                    <p><strong>Allocation = Assigning the Oxen</strong></p>
+                    <p>You don't use your best ox for light cart duty. Similarly, don't waste GPU hours on data cleaning that the CPU can handle.</p>
+                </div>
+            </div>
+        </div >
+    `,
+
+                    'm4-t8': `
+    < div class="handout-premium" >
+            <div class="topic-header">
+                <h1>Team Collaboration Best Practices</h1>
+                <p class="duration">⏱️ Duration: 1 hour</p>
+            </div>
+            <div class="learning-objectives">
+                <h2>📌 Learning Objectives</h2>
+                <ul>
+                    <li>Version Control (Git Commit/Push/Pull)</li>
+                    <li>Code Comments and Documentation</li>
+                    <li>Dividing tasks (Data Lead, Model Lead, Frontend Lead)</li>
+                </ul>
+            </div>
+            <div class="code-section">
+                <h2>💻 Git Basics</h2>
+                <pre><code class="language-bash">
+# 1. Clone repo
+git clone https://github.com/agri-lms/project.git
+
+# 2. Create branch
+git checkout -b feature-model-v1
+
+# 3. Save changes
+git add model.py
+git commit -m "Added Random Forest baseline"
+
+# 4. Share
+git push origin feature-model-v1
+                </code></pre>
+            </div>
+        </div >
+    `,
 
 if (typeof window !== 'undefined') {
     window.module4Handouts = module4Handouts;

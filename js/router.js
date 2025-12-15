@@ -46,6 +46,10 @@ class Router {
             const storySection = document.getElementById('storySection');
             if (storySection) storySection.style.display = 'none';
 
+            // Hide Handout Panel for Final Exam
+            const handoutPanel = document.getElementById('handout');
+            if (handoutPanel) handoutPanel.style.display = 'none';
+
             // Hide standard tabs (if they exist)
             const contentTabsExam = document.querySelector('.content-tabs');
             if (contentTabsExam) contentTabsExam.style.display = 'none';
@@ -134,7 +138,8 @@ class Router {
         // this.loadCodeLab(topic);
         // this.loadPresentation(topic);
         // this.loadActivity(topic.id);
-        // this.loadQuiz(topic);
+        // Load Quiz
+        this.loadQuiz(topic);
 
 
         // Update navigation buttons
@@ -204,6 +209,7 @@ class Router {
                     ${content}
                 </div>
             `;
+            handoutPanel.style.display = 'block'; // Ensure visible for topics
 
             // Re-highlight code snippets
             if (window.hljs) window.hljs.highlightAll();
@@ -291,6 +297,7 @@ class Router {
 
     loadQuiz(topic) {
         const quizPanel = document.getElementById('quiz');
+        if (!quizPanel) return;
 
         let content = "";
         if (window.quizSystem) {
@@ -300,6 +307,7 @@ class Router {
         }
 
         quizPanel.innerHTML = content;
+        quizPanel.style.display = 'block'; // Ensure it's visible
     }
 
     updateNavButtons(currentTopicId) {
