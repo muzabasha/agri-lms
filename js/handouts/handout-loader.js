@@ -6,90 +6,105 @@ const HandoutLoader = {
     handouts: {},
     initialized: false,
 
-    // Initialize - call this after all handout files are loaded
+    // Optimized Initialize - conditionally loads modules to prevent redundant merging
     init: function () {
-        // Always try to load/merge handlers to ensure we catch lazily loaded scripts
-        // if (this.initialized) return; <--- REMOVED strict check to allow updates
+        // Flags to track loaded modules (internal state)
+        this.loadedModules = this.loadedModules || {};
 
-        console.log('[HandoutLoader] Initializing...');
+        console.log('[HandoutLoader] Checking for new content...');
+        let newContentAdded = false;
 
         // Combine Module 1 handouts
-        if (typeof module1Handouts !== 'undefined') {
+        if (!this.loadedModules.m1 && typeof module1Handouts !== 'undefined') {
             Object.assign(this.handouts, module1Handouts);
-            console.log('[HandoutLoader] Loaded module1Handouts');
+            this.loadedModules.m1 = true;
+            newContentAdded = true;
         }
-        if (typeof module1HandoutsPart2 !== 'undefined') {
+        if (!this.loadedModules.m1p2 && typeof module1HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module1HandoutsPart2);
-            console.log('[HandoutLoader] Loaded module1HandoutsPart2');
+            this.loadedModules.m1p2 = true;
+            newContentAdded = true;
         }
-        if (typeof module1HandoutsPart3 !== 'undefined') {
+        if (!this.loadedModules.m1p3 && typeof module1HandoutsPart3 !== 'undefined') {
             Object.assign(this.handouts, module1HandoutsPart3);
-            console.log('[HandoutLoader] Loaded module1HandoutsPart3');
+            this.loadedModules.m1p3 = true;
+            newContentAdded = true;
         }
 
         // Combine Module 2 handouts
-        if (typeof module2Handouts !== 'undefined') {
+        if (!this.loadedModules.m2 && typeof module2Handouts !== 'undefined') {
             Object.assign(this.handouts, module2Handouts);
-            console.log('[HandoutLoader] Loaded module2Handouts');
+            this.loadedModules.m2 = true;
+            newContentAdded = true;
         }
-        if (typeof module2HandoutsPart2 !== 'undefined') {
+        if (!this.loadedModules.m2p2 && typeof module2HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module2HandoutsPart2);
-            console.log('[HandoutLoader] Loaded module2HandoutsPart2');
+            this.loadedModules.m2p2 = true;
+            newContentAdded = true;
         }
-        if (typeof module2HandoutsPart3 !== 'undefined') {
+        if (!this.loadedModules.m2p3 && typeof module2HandoutsPart3 !== 'undefined') {
             Object.assign(this.handouts, module2HandoutsPart3);
-            console.log('[HandoutLoader] Loaded module2HandoutsPart3');
+            this.loadedModules.m2p3 = true;
+            newContentAdded = true;
         }
 
         // Combine Module 3 handouts
-        if (typeof module3Handouts !== 'undefined') {
+        if (!this.loadedModules.m3 && typeof module3Handouts !== 'undefined') {
             Object.assign(this.handouts, module3Handouts);
-            console.log('[HandoutLoader] Loaded module3Handouts');
+            this.loadedModules.m3 = true;
+            newContentAdded = true;
         }
-        if (typeof module3HandoutsPart2 !== 'undefined') {
+        if (!this.loadedModules.m3p2 && typeof module3HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module3HandoutsPart2);
-            console.log('[HandoutLoader] Loaded module3HandoutsPart2');
+            this.loadedModules.m3p2 = true;
+            newContentAdded = true;
         }
-        if (typeof module3HandoutsPart3 !== 'undefined') {
+        if (!this.loadedModules.m3p3 && typeof module3HandoutsPart3 !== 'undefined') {
             Object.assign(this.handouts, module3HandoutsPart3);
-            console.log('[HandoutLoader] Loaded module3HandoutsPart3');
+            this.loadedModules.m3p3 = true;
+            newContentAdded = true;
+        }
+        if (!this.loadedModules.m3p4 && typeof module3HandoutsPart4 !== 'undefined') {
+            Object.assign(this.handouts, module3HandoutsPart4);
+            this.loadedModules.m3p4 = true;
+            newContentAdded = true;
         }
 
         // Combine Module 4 handouts
-        if (typeof module4Handouts !== 'undefined') {
+        if (!this.loadedModules.m4 && typeof module4Handouts !== 'undefined') {
             Object.assign(this.handouts, module4Handouts);
-            console.log('[HandoutLoader] Loaded module4Handouts');
+            this.loadedModules.m4 = true;
+            newContentAdded = true;
         }
-        if (typeof module4HandoutsPart2 !== 'undefined') {
+        if (!this.loadedModules.m4p2 && typeof module4HandoutsPart2 !== 'undefined') {
             Object.assign(this.handouts, module4HandoutsPart2);
-            console.log('[HandoutLoader] Loaded module4HandoutsPart2');
+            this.loadedModules.m4p2 = true;
+            newContentAdded = true;
+        }
+        if (!this.loadedModules.m4p3 && typeof module4HandoutsPart3 !== 'undefined') {
+            Object.assign(this.handouts, module4HandoutsPart3);
+            this.loadedModules.m4p3 = true;
+            newContentAdded = true;
         }
 
         // Combine Module 5 handouts
-        if (typeof module5Handouts !== 'undefined') {
+        if (!this.loadedModules.m5 && typeof module5Handouts !== 'undefined') {
             Object.assign(this.handouts, module5Handouts);
-            console.log('[HandoutLoader] Loaded module5Handouts');
+            this.loadedModules.m5 = true;
+            newContentAdded = true;
         }
 
         // Combine Activities
-        if (typeof activitiesHandouts !== 'undefined') {
+        if (!this.loadedModules.activities && typeof activitiesHandouts !== 'undefined') {
             Object.assign(this.handouts, activitiesHandouts);
-            console.log('[HandoutLoader] Loaded activitiesHandouts');
-        }
-
-        // Combine Extended Modules
-        if (typeof module3HandoutsPart4 !== 'undefined') {
-            Object.assign(this.handouts, module3HandoutsPart4);
-            console.log('[HandoutLoader] Loaded module3HandoutsPart4');
-        }
-        if (typeof module4HandoutsPart3 !== 'undefined') {
-            Object.assign(this.handouts, module4HandoutsPart3);
-            console.log('[HandoutLoader] Loaded module4HandoutsPart3');
+            this.loadedModules.activities = true;
+            newContentAdded = true;
         }
 
         this.initialized = true;
-        console.log(`📚 HandoutLoader: Loaded ${Object.keys(this.handouts).length} handouts`);
-        console.log('[HandoutLoader] Available:', Object.keys(this.handouts).slice(0, 10), '...');
+        if (newContentAdded) {
+            console.log(`📚 HandoutLoader: Updated content. Total handouts: ${Object.keys(this.handouts).length}`);
+        }
     },
 
     // Get handout by topic ID - auto-init if needed

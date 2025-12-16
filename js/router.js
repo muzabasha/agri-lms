@@ -165,47 +165,35 @@ class Router {
     loadHandout(topic) {
         const handoutPanel = document.getElementById('handout');
 
-        // Show loading state
-        // Update functionality using View Transitions API for modern, instant feel
+        // Show loading state - Optimized for perceived performance
         const updateContent = () => {
             let content = "";
 
-            console.log('[ROUTER] loadHandout called with topic:', topic);
-
-            // PRIORITY 0: Try HandoutLoader (comprehensive handouts with farming analogies)
+            // PRIORITY 0: Try HandoutLoader
             if (typeof HandoutLoader !== 'undefined') {
-                // Force init if needed to ensure content availability
                 if (!HandoutLoader.initialized) HandoutLoader.init();
 
                 if (HandoutLoader.hasHandout(topic.id)) {
-                    try {
-                        content = HandoutLoader.getHandout(topic.id);
-                        console.log('[SUCCESS] Comprehensive handout loaded from HandoutLoader for:', topic.id);
-                    } catch (e) {
-                        console.error('[ERROR] HandoutLoader.getHandout() error:', e);
-                        content = null;
-                    }
+                    content = HandoutLoader.getHandout(topic.id);
                 }
             }
 
-            // PRIORITY 1: Try lectureSystem (for comprehensive handouts)
+            // PRIORITY 1: Try lectureSystem
             if (!content && typeof lectureSystem !== 'undefined') {
                 try {
                     const handoutObj = lectureSystem.getContent(topic.id);
                     if (handoutObj && handoutObj.handout) {
                         content = handoutObj.handout;
-                        console.log('[SUCCESS] Handout loaded from lectureSystem for topic.id:', topic.id);
                     }
                 } catch (e) {
                     console.error('[ERROR] lectureSystem error:', e);
                 }
             }
 
-            // PRIORITY 2: Fall back to topic.handout from content.js
+            // PRIORITY 2: Fall back to topic.handout
             if (!content) {
                 if (topic.handout) {
                     content = topic.handout;
-                    console.log('[SUCCESS] Handout loaded from topic.handout for topic.id:', topic.id);
                 } else {
                     content = `<div style='background:#ffcccc; color:#990000; padding:20px; border-radius:8px;'><h3>⚠️ Handout Not Available</h3><p>Topic ID: <code>${topic.id}</code></p><p>Neither lectureSystem nor topic.handout has content for this topic.</p></div>`;
                     console.error('[ERROR] No handout found for topic.id:', topic.id);
@@ -213,15 +201,22 @@ class Router {
             }
 
             // Render content instantly
-            handoutPanel.innerHTML = `
-                <div class="handout-content fade-in-up">
-                    ${content}
-                </div>
-            `;
-            handoutPanel.style.display = 'block'; // Ensure visible for topics
+            // We use requestAnimationFrame to ensure the browser is ready to paint
+            requestAnimationFrame(() => {
+                handoutPanel.innerHTML = `
+                    <div class="handout-content fade-in-up">
+                        ${content}
+                    </div>
+                `;
+                handoutPanel.style.display = 'block';
 
-            // Re-highlight code snippets
-            if (window.hljs) window.hljs.highlightAll();
+                // Defer syntax highlighting to next frame to allow main content to paint first
+                if (window.hljs) {
+                    requestAnimationFrame(() => {
+                        window.hljs.highlightAll();
+                    });
+                }
+            });
         };
 
         // Use View Transition if supported (Modern Chrome/Edge)
@@ -230,7 +225,6 @@ class Router {
                 updateContent();
             });
         } else {
-            // Fallback for Safari/Firefox
             updateContent();
         }
     }
