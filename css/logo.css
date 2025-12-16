@@ -1,28 +1,51 @@
-/* Logo Styling */
+/* Logo Styling with Glow Effect */
 .app-logo {
-    height: 50px;
-    width: 50px;
+    height: 52px;
+    width: 52px;
     border-radius: 50%;
     margin-right: 15px;
     object-fit: cover;
-    /* Blend mode to hide white background if image has it */
-    mix-blend-mode: multiply;
+
+    /* Premium Look */
+    border: 3px solid #ffffff;
+    box-shadow:
+        0 0 10px rgba(46, 204, 113, 0.5),
+        /* Inner soft green glow */
+        0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Subtle lift shadow */
+
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background-color: white;
+    /* Ensure background is white for transparency-like effect */
 }
 
-/* Ensure Header background allows for blending or is cleaner */
+/* Hover Animation */
+.app-logo:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow:
+        0 0 15px rgba(46, 204, 113, 0.8),
+        /* Intense green glow */
+        0 0 30px rgba(46, 204, 113, 0.4),
+        /* Outer radiant glow */
+        0 8px 12px rgba(0, 0, 0, 0.15);
+    border-color: #e8f5e9;
+}
+
+/* Ensure Header allows glow to shine */
 .header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(46, 204, 113, 0.15);
+    /* Subtle green tint on border */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
 }
 
-/* Dark mode adjustment if exists */
+/* Dark mode adjustment */
 @media (prefers-color-scheme: dark) {
     .app-logo {
-        mix-blend-mode: normal;
-        /* Blending acts weird in dark mode usually */
-        border: 2px solid white;
+        border-color: #2d3436;
+        box-shadow:
+            0 0 15px rgba(46, 204, 113, 0.4),
+            0 0 5px rgba(255, 255, 255, 0.1);
     }
 }
-
-/* Verified deployment settings v2.1 */
