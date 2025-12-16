@@ -26,19 +26,28 @@ class Router {
             window.location.hash = route;
         }
 
-        // Hide/show screens
+        // Ensure HandoutLoader is up to date (fix for cross-module switching)
+        if (typeof HandoutLoader !== 'undefined') HandoutLoader.init();
+
+        // Get screen elements
         const welcomeScreen = document.getElementById('welcomeScreen');
         const topicContent = document.getElementById('topicContent');
         const moduleOverview = document.getElementById('moduleOverview');
 
-        // Reset displays
+        // Reset displays - HIDE ALL PREVIOUS CONTENT
         if (welcomeScreen) welcomeScreen.style.display = 'none';
-        if (topicContent) topicContent.style.display = 'none';
+
+        /* 
+           CRITICAL FIX: Ensure topic content acts as the single source of truth for topics.
+           We explicitly hide moduleOverview to prevent overlap/z-index issues.
+        */
         if (moduleOverview) moduleOverview.style.display = 'none';
+        if (topicContent) topicContent.style.display = 'none';
 
         if (route === '' || route === 'home') {
             welcomeScreen.style.display = 'block';
         } else if (route === 'final-exam') {
+            // ... (Exam logic remains the same)
             // Show topic content container but hide tabs (special mode)
             if (topicContent) topicContent.style.display = 'block';
 
@@ -69,12 +78,12 @@ class Router {
                 }
             }
         } else if (route.startsWith('module-')) {
-            moduleOverview.style.display = 'block';
+            moduleOverview.style.display = 'block'; // Only show overview
             const moduleId = route.split('-')[1];
             this.loadModule(moduleId);
         } else {
             // Standard topic view
-            if (topicContent) topicContent.style.display = 'block';
+            if (topicContent) topicContent.style.display = 'block'; // Show content
             const contentTabs = document.querySelector('.content-tabs');
             if (contentTabs) contentTabs.style.display = 'flex'; // Restore tabs if they exist
             this.loadTopic(route);

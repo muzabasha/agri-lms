@@ -8,7 +8,8 @@ const HandoutLoader = {
 
     // Initialize - call this after all handout files are loaded
     init: function () {
-        if (this.initialized) return;
+        // Always try to load/merge handlers to ensure we catch lazily loaded scripts
+        // if (this.initialized) return; <--- REMOVED strict check to allow updates
 
         console.log('[HandoutLoader] Initializing...');
 
