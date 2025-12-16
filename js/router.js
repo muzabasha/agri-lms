@@ -210,6 +210,41 @@ class Router {
                 `;
                 handoutPanel.style.display = 'block';
 
+                // === Feature: One-Click Copy Buttons ===
+                const codeBlocks = handoutPanel.querySelectorAll('pre');
+                codeBlocks.forEach(pre => {
+                    // Create button
+                    const btn = document.createElement('button');
+                    btn.className = 'copy-btn';
+                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy Code';
+                    btn.title = "Copy to clipboard";
+
+                    // Click event
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent interfering with any other clicks
+                        // Get code text (exclude button text itself if appended to pre)
+                        const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText.replace('Copy Code', '');
+
+                        navigator.clipboard.writeText(code).then(() => {
+                            const originalHtml = btn.innerHTML;
+                            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            btn.classList.add('copied');
+
+                            // Reset after 2 seconds
+                            setTimeout(() => {
+                                btn.innerHTML = originalHtml;
+                                btn.classList.remove('copied');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                            btn.innerHTML = '<i class="fas fa-times"></i> Error';
+                        });
+                    });
+
+                    // Append to pre block
+                    pre.appendChild(btn);
+                });
+
                 // Defer syntax highlighting to next frame to allow main content to paint first
                 if (window.hljs) {
                     requestAnimationFrame(() => {
