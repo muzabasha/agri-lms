@@ -1,28 +1,16 @@
 node_modules/
 .env
 .DS_Store
-.vercel
 .env*.local
 
-# Local development files (not needed for Netlify)
-server.js
-START_AGRI_LMS.bat
-node_modules/
-.env
-.DS_Store
-.env*.local
-
-# Local development files (not needed for Netlify)
-server.js
+# Local development files
 START_AGRI_LMS.bat
 package-lock.json
 
-# Development documentation (optional - can keep)
+# Development documentation
 # TESTING_LINKS.md
 # DEPLOYMENT_VERIFICATION.md
 
-# Local Netlify folder (remove if not using Netlify)
+# Platform specific
 .netlify
-
-# Vercel
 .vercel
