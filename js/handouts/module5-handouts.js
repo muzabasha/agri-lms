@@ -961,6 +961,135 @@ else:
     print("Quality: Poor ❌")
             </code></pre></div>
         </div>
+    `,
+    'm5-t20': `
+        <div class="handout-premium">
+            <div class="topic-header"><h1>🧬 Bonus Project 19: Crop Scheduling Genetic Algo</h1></div>
+            <div class="code-section"><h2>💻 Colab Code</h2>
+            <pre><code class="language-python">
+# 🧬 Genetic Algorithm for Crop Selection Optimization
+# Goal: Maximize Profit given Constraints (Water, Cost)
+import random
+import pandas as pd
+import numpy as np
+
+# 1. Setup Data
+crops = ['Wheat', 'Corn', 'Rice', 'Soybean', 'Tomato']
+profits = [1000, 1500, 2000, 1200, 3000] # Profit per acre
+water_req = [100, 150, 300, 120, 200]    # Liters per acre
+max_acres = 100
+max_water = 15000
+
+# Chromosome: [Acres_Wheat, Acres_Corn, Acres_Rice, Acres_Soybean, Acres_Tomato]
+def create_chromosome():
+    # Randomly assign acres (some simple logic)
+    return [random.randint(0, 30) for _ in range(5)]
+
+def fitness(chrom):
+    total_acres = sum(chrom)
+    if total_acres > max_acres: return 0 # Penalty: Exceeded Land
+    
+    total_water = sum([c * w for c, w in zip(chrom, water_req)])
+    if total_water > max_water: return 0 # Penalty: Exceeded Water
+    
+    total_profit = sum([c * p for c, p in zip(chrom, profits)])
+    return total_profit
+
+# 2. Genetic Algorithm
+population_size = 50
+generations = 100
+population = [create_chromosome() for _ in range(population_size)]
+
+for gen in range(generations):
+    # Selection (Top 50%)
+    population = sorted(population, key=lambda x: fitness(x), reverse=True)
+    population = population[:population_size//2]
+    
+    # Crossover & Mutation (Repopulate)
+    while len(population) < population_size:
+        p1 = random.choice(population)
+        p2 = random.choice(population)
+        child = [(g1 + g2)//2 for g1, g2 in zip(p1, p2)] # Simple Average Crossover
+        
+        # Mutation
+        if random.random() < 0.1:
+            idx = random.randint(0, 4)
+            child[idx] += random.randint(-5, 5)
+            child[idx] = max(0, child[idx])
+            
+        population.append(child)
+
+best_sol = sorted(population, key=lambda x: fitness(x), reverse=True)[0]
+
+print("=== 🧬 Optimization Result ===")
+print("Allocations (Acres):")
+for crop, acre in zip(crops, best_sol):
+    print(f"{crop}: {acre}")
+    
+print(f"\\nTotal Profit: {fitness(best_sol)}")
+print(f"Total Water Used: {sum([c * w for c, w in zip(best_sol, water_req)])}/{max_water}")
+            </code></pre></div>
+        </div>
+    `,
+    'm5-t21': `
+        <div class="handout-premium">
+            <div class="topic-header"><h1>⚙️ Bonus Project 20: Equipment Maintenance Predictor</h1></div>
+            <div class="code-section"><h2>💻 Colab Code</h2>
+            <pre><code class="language-python">
+# ⚙️ Predictive Maintenance for Tractors (Vibration Analysis)
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# 1. Simulate Sensor Data
+# Features: Vibration (Hz), Temperature (C), RPM
+np.random.seed(42)
+n_samples = 1000
+
+# Healthy Machine
+healthy = pd.DataFrame({
+    'Vibration': np.random.normal(50, 5, 800),
+    'Temperature': np.random.normal(70, 5, 800),
+    'RPM': np.random.normal(2000, 100, 800),
+    'Status': 0 # Healthy
+})
+
+# Faulty Machine
+faulty = pd.DataFrame({
+    'Vibration': np.random.normal(120, 20, 200),
+    'Temperature': np.random.normal(95, 10, 200),
+    'RPM': np.random.normal(1800, 300, 200),
+    'Status': 1 # Faulty
+})
+
+data = pd.concat([healthy, faulty]).sample(frac=1).reset_index(drop=True)
+X = data.drop('Status', axis=1)
+y = data['Status']
+
+# 2. Train Model
+model = RandomForestClassifier()
+model.fit(X, y)
+
+# 3. Live Prediction
+print("=== 🛠️ Diagnostic Tool ===")
+readings = pd.DataFrame([{
+    'Vibration': 115, 
+    'Temperature': 92, 
+    'RPM': 1850
+}])
+
+pred = model.predict(readings)[0]
+prob = model.predict_proba(readings)[0][1]
+
+print(f"Input Readings: {readings.to_dict(orient='records')[0]}")
+print(f"Failure Probability: {prob:.2%}")
+if pred == 1:
+    print("🚨 ALERT: Maintenance Required Immediately!")
+else:
+    print("✅ System Healthy")
+            </code></pre></div>
+        </div>
     `
 };
 
