@@ -164,15 +164,31 @@ class Router {
 
     loadHandout(topic) {
         const handoutPanel = document.getElementById('handout');
+        if (!handoutPanel) return;
 
-        // Show loading state - Optimized for perceived performance
-        const updateContent = () => {
+        // 1. Transition Out (Fade Out)
+        handoutPanel.style.opacity = '0';
+        handoutPanel.style.transform = 'translateY(10px)';
+        handoutPanel.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+
+        // 2. Wait for fade out, then swap content
+        setTimeout(() => {
+            // Show Loading Skeleton momentarily
+            handoutPanel.innerHTML = `
+                <div class="skeleton-loader" style="height: 40px; margin-bottom: 20px; width: 60%"></div>
+                <div class="skeleton-loader" style="height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton-loader" style="height: 20px; margin-bottom: 10px;"></div>
+                <div class="skeleton-loader" style="height: 200px; margin-top: 20px;"></div>
+            `;
+            handoutPanel.style.opacity = '1';
+            handoutPanel.style.transform = 'translateY(0)';
+
+            // Prepare actual content (Logic from previous implementation)
             let content = "";
 
             // PRIORITY 0: Try HandoutLoader
             if (typeof HandoutLoader !== 'undefined') {
                 if (!HandoutLoader.initialized) HandoutLoader.init();
-
                 if (HandoutLoader.hasHandout(topic.id)) {
                     content = HandoutLoader.getHandout(topic.id);
                 }
@@ -185,9 +201,7 @@ class Router {
                     if (handoutObj && handoutObj.handout) {
                         content = handoutObj.handout;
                     }
-                } catch (e) {
-                    console.error('[ERROR] lectureSystem error:', e);
-                }
+                } catch (e) { console.error('[ERROR] lectureSystem error:', e); }
             }
 
             // PRIORITY 2: Fall back to topic.handout
@@ -195,73 +209,66 @@ class Router {
                 if (topic.handout) {
                     content = topic.handout;
                 } else {
-                    content = `<div style='background:#ffcccc; color:#990000; padding:20px; border-radius:8px;'><h3>⚠️ Handout Not Available</h3><p>Topic ID: <code>${topic.id}</code></p><p>Neither lectureSystem nor topic.handout has content for this topic.</p></div>`;
-                    console.error('[ERROR] No handout found for topic.id:', topic.id);
+                    content = `<div style='background:#ffcccc; color:#990000; padding:20px; border-radius:8px;'><h3>⚠️ Handout Not Available</h3><p>Topic ID: <code>${topic.id}</code></p></div>`;
                 }
             }
 
-            // Render content instantly
-            // We use requestAnimationFrame to ensure the browser is ready to paint
+            // 3. Render Final Content (Short delay to let skeleton be seen for "feel")
             requestAnimationFrame(() => {
-                handoutPanel.innerHTML = `
-                    <div class="handout-content fade-in-up">
-                        ${content}
-                    </div>
-                `;
-                handoutPanel.style.display = 'block';
+                // Use View Transition if supported for the final reveal
+                const render = () => {
+                    handoutPanel.innerHTML = `
+                        <div class="handout-content fade-in-up">
+                            ${content}
+                        </div>
+                    `;
 
-                // === Feature: One-Click Copy Buttons ===
-                const codeBlocks = handoutPanel.querySelectorAll('pre');
-                codeBlocks.forEach(pre => {
-                    // Create button
-                    const btn = document.createElement('button');
-                    btn.className = 'copy-btn';
-                    btn.innerHTML = '<i class="fas fa-copy"></i> Copy Code';
-                    btn.title = "Copy to clipboard";
+                    // === Feature: One-Click Copy Buttons ===
+                    this.attachCopyButtons(handoutPanel);
 
-                    // Click event
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Prevent interfering with any other clicks
-                        // Get code text (exclude button text itself if appended to pre)
-                        const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText.replace('Copy Code', '');
+                    // Syntax Highlight
+                    if (window.hljs) window.hljs.highlightAll();
 
-                        navigator.clipboard.writeText(code).then(() => {
-                            const originalHtml = btn.innerHTML;
-                            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                            btn.classList.add('copied');
+                    // Reset Scroll
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                };
 
-                            // Reset after 2 seconds
-                            setTimeout(() => {
-                                btn.innerHTML = originalHtml;
-                                btn.classList.remove('copied');
-                            }, 2000);
-                        }).catch(err => {
-                            console.error('Failed to copy: ', err);
-                            btn.innerHTML = '<i class="fas fa-times"></i> Error';
-                        });
-                    });
-
-                    // Append to pre block
-                    pre.appendChild(btn);
-                });
-
-                // Defer syntax highlighting to next frame to allow main content to paint first
-                if (window.hljs) {
-                    requestAnimationFrame(() => {
-                        window.hljs.highlightAll();
-                    });
+                if (document.startViewTransition) {
+                    document.startViewTransition(() => render());
+                } else {
+                    render();
                 }
             });
-        };
 
-        // Use View Transition if supported (Modern Chrome/Edge)
-        if (document.startViewTransition) {
-            document.startViewTransition(() => {
-                updateContent();
+        }, 200); // Wait for fade-out css
+    }
+
+    // Extracted helper for cleaner code
+    attachCopyButtons(panel) {
+        const codeBlocks = panel.querySelectorAll('pre');
+        codeBlocks.forEach(pre => {
+            if (pre.querySelector('.copy-btn')) return; // Avoid duplicates
+
+            const btn = document.createElement('button');
+            btn.className = 'copy-btn';
+            btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const code = pre.querySelector('code') ? pre.querySelector('code').innerText : pre.innerText.replace('Copy', '');
+
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
             });
-        } else {
-            updateContent();
-        }
+            pre.appendChild(btn);
+        });
     }
 
     loadCodeLab(topic) {
