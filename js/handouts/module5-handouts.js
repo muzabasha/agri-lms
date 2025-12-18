@@ -837,7 +837,7 @@ else:
         </div>
     `,
     'm5-t17': `
-    <div class="handout-premium">
+        <div class="handout-premium">
             <div class="topic-header"><h1>🏙️ Bonus Project 16: Hydroponics Monitoring</h1></div>
             <div class="code-section"><h2>💻 Colab Code</h2>
             <pre><code class="language-python">
@@ -874,10 +874,11 @@ plt.ylabel("pH")
 plt.legend()
 plt.show()
             </code></pre></div>
-        </div >
+        </div>
     `,
+
     'm5-t18': `
-    < div class="handout-premium" >
+        <div class="handout-premium">
             <div class="topic-header"><h1>🦟 Bonus Project 17: Pest Count from Traps</h1></div>
             <div class="code-section"><h2>💻 Colab Code</h2>
             <pre><code class="language-python">
@@ -909,10 +910,11 @@ plt.show()
 if bug_count > 10:
     print("🚨 Threshold Exceeded! Spray Required.")
             </code></pre></div>
-        </div >
+        </div>
     `,
+
     'm5-t19': `
-    < div class="handout-premium" >
+        <div class="handout-premium">
             <div class="topic-header"><h1>💧 Bonus Project 18: Water Quality Indexer</h1></div>
             <div class="code-section"><h2>💻 Colab Code</h2>
             <pre><code class="language-python">
@@ -958,7 +960,7 @@ elif wqi < 100:
 else:
     print("Quality: Poor ❌")
             </code></pre></div>
-        </div >
+        </div>
     `
 };
 
