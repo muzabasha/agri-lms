@@ -64,11 +64,7 @@ const HandoutLoader = {
             this.loadedModules.m3p3 = true;
             newContentAdded = true;
         }
-        if (!this.loadedModules.m3p4 && typeof module3HandoutsPart4 !== 'undefined') {
-            Object.assign(this.handouts, module3HandoutsPart4);
-            this.loadedModules.m3p4 = true;
-            newContentAdded = true;
-        }
+
 
         // Combine Module 4 handouts
         if (!this.loadedModules.m4 && typeof module4Handouts !== 'undefined') {
@@ -81,11 +77,7 @@ const HandoutLoader = {
             this.loadedModules.m4p2 = true;
             newContentAdded = true;
         }
-        if (!this.loadedModules.m4p3 && typeof module4HandoutsPart3 !== 'undefined') {
-            Object.assign(this.handouts, module4HandoutsPart3);
-            this.loadedModules.m4p3 = true;
-            newContentAdded = true;
-        }
+
 
         // Combine Module 5 handouts
         if (!this.loadedModules.m5 && typeof module5Handouts !== 'undefined') {

@@ -190,49 +190,8 @@ plt.show()
             </div>
         </div>
     `,
-    // ... (This content is already there, I just need to fix the junction and the end)
-    // Wait, replace_file_content replaces the whole chunk. I should just fix the junction lines 161-165 and the end lines.
-    // It's safer to not re-print the whole huge m4-t3 content if I can avoid it, but I need to match the TargetContent.
-
-    // Strategy: Modify lines 162-164 and lines 336-339.
-    // Actually, I can use two chunks if `AllowMultiple` is true? No, the tool documentation says "Do NOT make multiple parallel calls to this tool or the multi_replace_file_content tool for the same file."
-    // I should use `multi_replace_file_content` if I want to do two chunks.
-    // Or just one `replace_file_content` if I cover the range. But the range is huge (lines 162 to 336).
-
-    // Use `multi_replace_file_content` for Module 4.
-
-        < div class="handout-premium" >
-            <div class="topic-header">
-                <h1>Literature Review Methodology</h1>
-                <p class="duration">⏱️ Duration: 2 hours</p>
-            </div>
-            <div class="learning-objectives">
-                <h2>📌 Learning Objectives</h2>
-                <ul>
-                    <li>Find credible sources (Google Scholar, arXiv)</li>
-                    <li>Synthesize existing research on Agri-AI</li>
-                    <li>Identify "Research Gaps" to solve</li>
-                </ul>
-            </div>
-            <div class="farming-analogy">
-                <h2>🚜 The Farming Connection</h2>
-                <div class="analogy-box">
-                    <p><strong>Literature Review = Asking the Neighbors</strong></p>
-                    <p>Before trying a new crop variety, you ask other farmers what worked for them. You don't want to repeat their mistakes (e.g., planting rice in sandy soil). Research is just learning from others' experiments.</p>
-                </div>
-            </div>
-            <div class="student-activity">
-                <h2>🎯 Hands-On Activity</h2>
-                <div class="activity-box">
-                    <h3>Mini-Review</h3>
-                    <p>Find 3 papers on "Deep Learning for Tomato Disease". Comparison table columns: Algorithm Used, Dataset Size, Accuracy Achieved, Limitations.</p>
-                </div>
-            </div>
-        </div >
-    `,
-
     'm4-t4': `
-    < div class="handout-premium" >
+        <div class="handout-premium">
             <div class="topic-header">
                 <h1>Dataset Selection & Sources</h1>
                 <p class="duration">⏱️ Duration: 2 hours</p>
@@ -253,11 +212,11 @@ plt.show()
                     <li><strong>Crop Recommendation:</strong> Soil/Climate data (Tabular)</li>
                 </ul>
             </div>
-        </div >
+        </div>
     `,
 
-        'm4-t5': `
-    < div class="handout-premium" >
+    'm4-t5': `
+        <div class="handout-premium">
             <div class="topic-header">
                 <h1>Feasibility Analysis</h1>
                 <p class="duration">⏱️ Duration: 1 hour</p>
@@ -274,11 +233,11 @@ plt.show()
                     <p>A giant combine harvester is "technically" great, but on a 1-acre farm, it's "economically" a disaster. Same with using a supercomputer for a simple regression task.</p>
                 </div>
             </div>
-        </div >
+        </div>
     `,
 
-            'm4-t6': `
-    < div class="handout-premium" >
+    'm4-t6': `
+        <div class="handout-premium">
             <div class="topic-header">
                 <h1>Project Timeline Planning</h1>
                 <p class="duration">⏱️ Duration: 1 hour</p>
@@ -313,11 +272,11 @@ plt.grid(axis='x')
 plt.show()
                 </code></pre>
             </div>
-        </div >
+        </div>
     `,
 
-                'm4-t7': `
-    < div class="handout-premium" >
+    'm4-t7': `
+        <div class="handout-premium">
             <div class="topic-header">
                 <h1>Resource Allocation (Compute & Tools)</h1>
                 <p class="duration">⏱️ Duration: 1 hour</p>
@@ -337,11 +296,11 @@ plt.show()
                     <p>You don't use your best ox for light cart duty. Similarly, don't waste GPU hours on data cleaning that the CPU can handle.</p>
                 </div>
             </div>
-        </div >
+        </div>
     `,
 
-                    'm4-t8': `
-    < div class="handout-premium" >
+    'm4-t8': `
+        <div class="handout-premium">
             <div class="topic-header">
                 <h1>Team Collaboration Best Practices</h1>
                 <p class="duration">⏱️ Duration: 1 hour</p>
@@ -371,8 +330,9 @@ git commit -m "Added Random Forest baseline"
 git push origin feature-model-v1
                 </code></pre>
             </div>
-        </div >
+        </div>
     `,
+};
 
 if (typeof window !== 'undefined') {
     window.module4Handouts = module4Handouts;

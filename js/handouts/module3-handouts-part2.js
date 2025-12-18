@@ -186,9 +186,9 @@ print(merged)
                     <h3>Calculate "Heat Stress"</h3>
                     <p>Crops suffer if temperature stays above 30°C for 3 consecutive days.</p>
                     <ol>
-                        <li>Create a boolean column `high_temp` (temp > 30).</li>
+                        <li>Create a boolean column \`high_temp\` (temp > 30).</li>
                         <li>Use rolling window of size 3.</li>
-                        <li>If sum of `high_temp` in window is 3, set `heat_stress` flag to True.</li>
+                        <li>If sum of \`high_temp\` in window is 3, set \`heat_stress\` flag to True.</li>
                     </ol>
                 </div>
             </div>
@@ -420,106 +420,7 @@ print("The center patch shows red/yellow, indicating stress!")
         </div>
     `,
 
-        'm3-t8': `
-        <div class="handout-premium">
-            <div class="topic-header">
-                <h1>🌾 Computer Vision Fundamentals</h1>
-                <p class="duration">⏱️ Duration: 3 hours</p>
-            </div>
 
-            <div class="learning-objectives">
-                <h2>📌 Learning Objectives</h2>
-                <ul>
-                    <li>Understand how computers represent images (Pixels, RGB)</li>
-                    <li>Perform basic image processing with OpenCV</li>
-                    <li>Detect edges and contours in leaves</li>
-                </ul>
-            </div>
-
-            <div class="farming-analogy">
-                <h2>🚜 The Farming Connection</h2>
-                <div class="analogy-box">
-                    <p><strong>Computer Vision = The Digital Eye</strong></p>
-                    <p>Before AI can "think" about a leaf, it needs to "see" it. Computer Vision is the process of turning light rays (pixels) into meaningful shapes (edges, blobs, objects).</p>
-                </div>
-            </div>
-
-            <div class="code-section">
-                <h2>💻 Python Implementation</h2>
-                <pre><code class="language-python">
-import cv2  # OpenCV
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Simulate a leaf image (Green square on black background)
-image = np.zeros((100, 100, 3), dtype=np.uint8)
-cv2.rectangle(image, (30, 30), (70, 70), (0, 255, 0), -1) # Green leaf
-
-# === COLOR SPACE CONVERSION ===
-# Convert BGR (OpenCV default) to RGB (Matplotlib)
-image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-# Convert to Grayscale
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-# === EDGE DETECTION ===
-edges = cv2.Canny(gray, 50, 150)
-
-# Display
-fig, axs = plt.subplots(1, 3, figsize=(12, 4))
-axs[0].imshow(image_rgb)
-axs[0].set_title('Original')
-axs[1].imshow(gray, cmap='gray')
-axs[1].set_title('Grayscale')
-axs[2].imshow(edges, cmap='gray')
-axs[2].set_title('Edge Detection')
-plt.show()
-
-print("The Canny algorithm found the outline of the 'leaf'!")
-                </code></pre>
-            </div>
-
-            <div class="student-activity">
-                <h2>🎯 Hands-On Activity</h2>
-                <div class="activity-box">
-                    <h3>Masking Green Color</h3>
-                    <p>Use HSV color space to isolate the plant from the soil (background).</p>
-                    <ol>
-                        <li>Convert image to HSV.</li>
-                        <li>Define green range (e.g., Hue 35-85).</li>
-                        <li>Create a mask with `cv2.inRange`.</li>
-                        <li>Apply mask to show only the plant.</li>
-                    </ol>
-                </div>
-            </div>
-
-            <div class="quiz-section">
-                <h2>📝 Knowledge Check</h2>
-                <div class="quiz-question">
-                    <p><strong>Q1:</strong> Why do we often convert to Grayscale before processing?</p>
-                    <ul>
-                        <li>A) It looks artistic</li>
-                        <li>B) It simplifies the data (3 channels -> 1 channel) reduces computation</li>
-                        <li>C) Colors don't exist in nature</li>
-                        <li>D) It increases resolution</li>
-                    </ul>
-                    <details>
-                        <summary>Show Answer</summary>
-                        <p><strong>Answer: B</strong> - Simplifiction. For shape/structure detection, color is often unnecessary noise.</p>
-                    </details>
-                </div>
-            </div>
-
-            <div class="summary">
-                <h2>📋 Key Takeaways</h2>
-                <ul>
-                    <li>Images are just arrays of numbers (0-255)</li>
-                    <li>Processing steps: Resize -> Grayscale -> Blur -> Edge Detect</li>
-                    <li>OpenCV is the standard library for CV</li>
-                </ul>
-            </div>
-        </div>
-    `
 };
 
 if (typeof window !== 'undefined') {
